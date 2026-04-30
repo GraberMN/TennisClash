@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "TennisClash.h"
+#include "TextureManager.h"
 
 using namespace std;
 
@@ -25,6 +26,9 @@ int main()
 
         window.display();
     }
+
+    // Clear out any sf::Texture objects before the program ends
+    TextureManager::Clear();
 
 	return 0;
 }
