@@ -9,9 +9,8 @@ using namespace std;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    sf::RenderWindow window(sf::VideoMode(900, 600), "Tennis Clash");
+   
 
     while (window.isOpen())
     {
@@ -23,7 +22,7 @@ int main()
         }
 
         window.clear();
-        window.draw(shape);
+
         window.display();
     }
 
