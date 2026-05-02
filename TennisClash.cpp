@@ -10,8 +10,11 @@ using namespace std;
 
 int main()
 {
+    // window + sprite initializations
     sf::RenderWindow window(sf::VideoMode(900, 600), "Tennis Clash");
-   
+    sf::Sprite title(TextureManager::GetTexture("title"));
+    sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
+    tempBackground.setFillColor(sf::Color::White);
 
     while (window.isOpen())
     {
@@ -23,6 +26,8 @@ int main()
         }
 
         window.clear();
+        window.draw(tempBackground);
+        window.draw(title);
 
         window.display();
     }
