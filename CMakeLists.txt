@@ -9,7 +9,7 @@ add_executable (TennisClash "TennisClash.cpp" "TennisClash.h" "TextureManager.cp
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET TennisClash PROPERTY CXX_STANDARD 20)
 endif()
-set_property(TARGET TennisClash PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+set_property(TARGET TennisClash PROPERTY DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
 # TODO: Add tests and install targets if needed.
 target_link_libraries(TennisClash PRIVATE sfml-graphics sfml-audio)
