@@ -12,10 +12,19 @@ int main()
 {
     // window + sprite initializations
     sf::RenderWindow window(sf::VideoMode(900, 600), "Tennis Clash");
+
     sf::Sprite title(TextureManager::GetTexture("title"));
+    sf::Sprite playButton(TextureManager::GetTexture("playButton"));
+    playButton.setPosition(325.f, 230.f);
+    sf::Sprite rulesButton(TextureManager::GetTexture("rulesButton"));
+    rulesButton.setPosition(325.f, 340.f);
+    sf::Sprite optionsButton(TextureManager::GetTexture("optionsButton"));
+    optionsButton.setPosition(325.f, 450.f);
+
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
 
+    // make the window come to life
     while (window.isOpen())
     {
         sf::Event event;
@@ -28,7 +37,10 @@ int main()
         window.clear();
         window.draw(tempBackground);
         window.draw(title);
-
+        window.draw(playButton);
+        window.draw(rulesButton);
+        window.draw(optionsButton);
+        
         window.display();
     }
 
