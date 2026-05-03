@@ -20,6 +20,7 @@ int main()
     rulesButton.setPosition(325.f, 340.f);
     sf::Sprite optionsButton(TextureManager::GetTexture("optionsButton"));
     optionsButton.setPosition(325.f, 450.f);
+    sf::Sprite grassCourt(TextureManager::GetTexture("grassCourt"));
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -35,7 +36,7 @@ int main()
         }
 
         window.clear();
-        window.draw(tempBackground);
+        window.draw(grassCourt);
         window.draw(title);
         window.draw(playButton);
         window.draw(rulesButton);
