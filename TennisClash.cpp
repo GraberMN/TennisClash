@@ -8,6 +8,17 @@
 
 using namespace std;
 
+void ToggleMuted(bool& isMuted) {
+    isMuted = !isMuted;
+}
+
+void DrawMuted(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites) {
+    if (isMuted)
+        window.draw(sprites["mutedButton"]);
+    else
+        window.draw(sprites["volumeButton"]);
+}
+
 int main()
 {
     // window + sprite initializations
@@ -29,6 +40,18 @@ int main()
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
 
+    unordered_map<string, sf::Sprite> sprites;
+    sprites.emplace("title", title);
+    sprites.emplace("playButton", playButton);
+    sprites.emplace("rulesButton", rulesButton);
+    sprites.emplace("optionsButton", optionsButton);
+    sprites.emplace("volumeButton", volumeButton);
+    sprites.emplace("mutedButton", mutedButton);
+    sprites.emplace("grassCourt", grassCourt);
+
+    // boolean variable initializations
+    bool isMuted = false;
+
     // make the window come to life
     while (window.isOpen())
     {
@@ -37,6 +60,13 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            else if (event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2f mousePos((float)event.mouseButton.x, (float)event.mouseButton.y);
+                if (event.mouseButton.button == sf::Mouse::Left) {
+                    if (volumeButton.getGlobalBounds().contains(mousePos.x, mousePos.y))
+                        ToggleMuted(isMuted);
+                }
+            }
         }
 
         window.clear();
@@ -45,7 +75,7 @@ int main()
         window.draw(playButton);
         window.draw(rulesButton);
         window.draw(optionsButton);
-        window.draw(volumeButton);
+        DrawMuted(window, isMuted, sprites);
         
         window.display();
     }
