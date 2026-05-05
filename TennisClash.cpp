@@ -20,6 +20,10 @@ int main()
     rulesButton.setPosition(325.f, 340.f);
     sf::Sprite optionsButton(TextureManager::GetTexture("optionsButton"));
     optionsButton.setPosition(325.f, 450.f);
+    sf::Sprite volumeButton(TextureManager::GetTexture("volumeButton"));
+    volumeButton.setPosition(840.f, 545.f);
+    sf::Sprite mutedButton(TextureManager::GetTexture("mutedButton"));
+    mutedButton.setPosition(840.f, 545.f);
     sf::Sprite grassCourt(TextureManager::GetTexture("grassCourt"));
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
@@ -41,6 +45,7 @@ int main()
         window.draw(playButton);
         window.draw(rulesButton);
         window.draw(optionsButton);
+        window.draw(volumeButton);
         
         window.display();
     }
