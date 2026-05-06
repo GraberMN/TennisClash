@@ -4,7 +4,7 @@
 find_package(SFML 2.5.1 REQUIRED COMPONENTS graphics audio)
 
 # Add source to this project's executable.
-add_executable (TennisClash "TennisClash.cpp" "TennisClash.h" "TextureManager.cpp" "TextureManager.h")
+add_executable (TennisClash "TennisClash.cpp" "TennisClash.h" "TextureManager.cpp" "TextureManager.h" "SoundBufferManager.cpp" "SoundBufferManager.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET TennisClash PROPERTY CXX_STANDARD 20)

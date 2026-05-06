@@ -5,6 +5,7 @@
 #include <SFML/Audio.hpp>
 #include "TennisClash.h"
 #include "TextureManager.h"
+#include "SoundBufferManager.h"
 
 using namespace std;
 
@@ -82,6 +83,9 @@ int main()
 
     // Clear out any sf::Texture objects before the program ends
     TextureManager::Clear();
+
+    // Clear out any sf::SoundBuffer objects before the program ends
+    SoundBufferManager::Clear();
 
 	return 0;
 }
