@@ -27,6 +27,15 @@ void HandleBackgroundMusic(bool& isMuted, sf::Music& backgroundMusic) {
         backgroundMusic.play();
 }
 
+void DrawTitleScreen(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites) {
+    window.draw(sprites["grassCourt"]);
+    window.draw(sprites["title"]);
+    window.draw(sprites["playButton"]);
+    window.draw(sprites["rulesButton"]);
+    window.draw(sprites["optionsButton"]);
+    DrawMuted(window, isMuted, sprites);
+}
+
 int main()
 {
     // window + sprite + sound/music initializations
@@ -65,6 +74,7 @@ int main()
 
     // boolean variable initializations
     bool isMuted = false;
+    bool isTitleScreen = true;
 
     // make the window come to life
     while (window.isOpen())
@@ -86,12 +96,8 @@ int main()
         }
 
         window.clear();
-        window.draw(grassCourt);
-        window.draw(title);
-        window.draw(playButton);
-        window.draw(rulesButton);
-        window.draw(optionsButton);
-        DrawMuted(window, isMuted, sprites);
+        if (isTitleScreen)
+            DrawTitleScreen(window, isMuted, sprites);
         
         window.display();
     }
