@@ -20,9 +20,16 @@ void DrawMuted(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf
         window.draw(sprites["volumeButton"]);
 }
 
+void HandleBackgroundMusic(bool& isMuted, sf::Music& backgroundMusic) {
+    if (isMuted)
+        backgroundMusic.stop();
+    else
+        backgroundMusic.play();
+}
+
 int main()
 {
-    // window + sprite initializations
+    // window + sprite + sound/music initializations
     sf::RenderWindow window(sf::VideoMode(900, 600), "Tennis Clash");
 
     sf::Sprite title(TextureManager::GetTexture("title"));
@@ -41,6 +48,12 @@ int main()
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
 
+    sf::Music backgroundMusic;
+    backgroundMusic.openFromFile("audio/backgroundMusic.wav");
+    backgroundMusic.setLoop(true);
+    backgroundMusic.play();
+
+    // putting sprites and sounds into containers
     unordered_map<string, sf::Sprite> sprites;
     sprites.emplace("title", title);
     sprites.emplace("playButton", playButton);
@@ -64,8 +77,10 @@ int main()
             else if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2f mousePos((float)event.mouseButton.x, (float)event.mouseButton.y);
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    if (volumeButton.getGlobalBounds().contains(mousePos.x, mousePos.y))
+                    if (volumeButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                         ToggleMuted(isMuted);
+                        HandleBackgroundMusic(isMuted, backgroundMusic);
+                    }
                 }
             }
         }
