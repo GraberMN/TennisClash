@@ -33,6 +33,7 @@ void DrawTitleScreen(sf::RenderWindow& window, bool& isMuted, unordered_map<stri
     window.draw(sprites["playButton"]);
     window.draw(sprites["rulesButton"]);
     window.draw(sprites["optionsButton"]);
+    window.draw(sprites["creditsButton"]);
     DrawMuted(window, isMuted, sprites);
 }
 
@@ -52,6 +53,8 @@ int main()
     volumeButton.setPosition(840.f, 545.f);
     sf::Sprite mutedButton(TextureManager::GetTexture("mutedButton"));
     mutedButton.setPosition(840.f, 545.f);
+    sf::Sprite creditsButton(TextureManager::GetTexture("creditsButton"));
+    creditsButton.setPosition(0.f, 565.f);
     sf::Sprite grassCourt(TextureManager::GetTexture("grassCourt"));
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
@@ -70,6 +73,7 @@ int main()
     sprites.emplace("optionsButton", optionsButton);
     sprites.emplace("volumeButton", volumeButton);
     sprites.emplace("mutedButton", mutedButton);
+    sprites.emplace("creditsButton", creditsButton);
     sprites.emplace("grassCourt", grassCourt);
 
     // boolean variable initializations
