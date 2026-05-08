@@ -60,6 +60,8 @@ int main()
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
 
+    sf::Sound magicButtonClick(SoundBufferManager::GetSoundBuffer("magicButtonClick"));
+
     sf::Music backgroundMusic;
     backgroundMusic.openFromFile("audio/backgroundMusic.wav");
     backgroundMusic.setLoop(true);
@@ -76,6 +78,9 @@ int main()
     sprites.emplace("creditsButton", creditsButton);
     sprites.emplace("grassCourt", grassCourt);
 
+    unordered_map<string, sf::Sound> sounds;
+    sounds.emplace("magicButtonClick", magicButtonClick);
+       
     // boolean variable initializations
     bool isMuted = false;
     bool isTitleScreen = true;
@@ -94,6 +99,18 @@ int main()
                     if (volumeButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                         ToggleMuted(isMuted);
                         HandleBackgroundMusic(isMuted, backgroundMusic);
+                    }
+                    if (playButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                        magicButtonClick.play();
+                    }
+                    if (rulesButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                        magicButtonClick.play();
+                    }
+                    if (optionsButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                        magicButtonClick.play();
+                    }
+                    if (creditsButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                        magicButtonClick.play();
                     }
                 }
             }
