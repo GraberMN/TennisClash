@@ -13,4 +13,4 @@ set_property(TARGET TennisClash PROPERTY DEBUGGER_WORKING_DIRECTORY "${CMAKE_CUR
 
 # TODO: Add tests and install targets if needed.
 target_link_libraries(TennisClash PRIVATE sfml-graphics sfml-audio)
-target_include_directories(TennisClash PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/images ${CMAKE_CURRENT_SOURCE_DIR}/audio)
+target_include_directories(TennisClash PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/images ${CMAKE_CURRENT_SOURCE_DIR}/audio ${CMAKE_CURRENT_SOURCE_DIR}/fonts)
