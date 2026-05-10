@@ -38,9 +38,17 @@ void DrawTitleScreen(sf::RenderWindow& window, bool& isMuted, unordered_map<stri
     DrawMuted(window, isMuted, sprites);
 }
 
+void DrawRulesPage(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites) {
+    window.draw(sprites["grassCourt"]);
+    window.draw(sprites["title"]);
+    window.draw(sprites["pageBackground"]);
+    window.draw(sprites["closeButton"]);
+    DrawMuted(window, isMuted, sprites);
+}
+
 int main()
 {
-    // window + sprite + sound/music + font initializations
+    // window + sprite + sound/music + text initializations
     sf::RenderWindow window(sf::VideoMode(900, 600), "Tennis Clash");
 
     sf::Sprite title(TextureManager::GetTexture("title"));
@@ -59,6 +67,8 @@ int main()
     sf::Sprite grassCourt(TextureManager::GetTexture("grassCourt"));
     sf::Sprite pageBackground(TextureManager::GetTexture("pageBackground"));
     pageBackground.setPosition(150.f, 100.f);
+    sf::Sprite closeButton(TextureManager::GetTexture("closeButton"));
+    closeButton.setPosition(715.f, 100.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -69,6 +79,8 @@ int main()
     backgroundMusic.openFromFile("audio/backgroundMusic.wav");
     backgroundMusic.setLoop(true);
     backgroundMusic.play();
+
+    // sf::Text rulesTitle()
 
     // putting sprites and sounds into containers
     unordered_map<string, sf::Sprite> sprites;
@@ -81,6 +93,7 @@ int main()
     sprites.emplace("creditsButton", creditsButton);
     sprites.emplace("grassCourt", grassCourt);
     sprites.emplace("pageBackground", pageBackground);
+    sprites.emplace("closeButton", closeButton);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -107,20 +120,31 @@ int main()
                         ToggleMuted(isMuted);
                         HandleBackgroundMusic(isMuted, backgroundMusic);
                     }
-                    if (playButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    if (playButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isTitleScreen) {
                         magicButtonClick.play();
                     }
-                    if (rulesButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    if (rulesButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isTitleScreen) {
                         magicButtonClick.play();
                         isRulesPage = true;
+                        isTitleScreen = false;
+                        isOptionsPage = false;
+                        isCreditsPage = false;
                     }
-                    if (optionsButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    if (optionsButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isTitleScreen) {
                         magicButtonClick.play();
                         isOptionsPage = true;
+                        isTitleScreen = false;
                     }
-                    if (creditsButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    if (creditsButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isTitleScreen) {
                         magicButtonClick.play();
-                        isOptionsPage = true;
+                        isCreditsPage = true;
+                        isTitleScreen = false;
+                    }
+                    if (closeButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isRulesPage || isOptionsPage || isCreditsPage)) {
+                        isTitleScreen = true;
+                        isRulesPage = false;
+                        isOptionsPage = false;
+                        isCreditsPage = false;
                     }
                 }
             }
@@ -130,7 +154,7 @@ int main()
         if (isTitleScreen)
             DrawTitleScreen(window, isMuted, sprites);
         if (isRulesPage)
-            window.draw(pageBackground);
+            DrawRulesPage(window, isMuted, sprites);
         if (isOptionsPage)
             window.draw(pageBackground);
         if (isCreditsPage)
