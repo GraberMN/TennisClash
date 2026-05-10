@@ -57,6 +57,8 @@ int main()
     sf::Sprite creditsButton(TextureManager::GetTexture("creditsButton"));
     creditsButton.setPosition(0.f, 565.f);
     sf::Sprite grassCourt(TextureManager::GetTexture("grassCourt"));
+    sf::Sprite pageBackground(TextureManager::GetTexture("pageBackground"));
+    pageBackground.setPosition(150.f, 100.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -78,6 +80,7 @@ int main()
     sprites.emplace("mutedButton", mutedButton);
     sprites.emplace("creditsButton", creditsButton);
     sprites.emplace("grassCourt", grassCourt);
+    sprites.emplace("pageBackground", pageBackground);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -85,6 +88,9 @@ int main()
     // boolean variable initializations
     bool isMuted = false;
     bool isTitleScreen = true;
+    bool isRulesPage = false;
+    bool isOptionsPage = false;
+    bool isCreditsPage = false;
 
     // make the window come to life
     while (window.isOpen())
@@ -106,12 +112,15 @@ int main()
                     }
                     if (rulesButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                         magicButtonClick.play();
+                        isRulesPage = true;
                     }
                     if (optionsButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                         magicButtonClick.play();
+                        isOptionsPage = true;
                     }
                     if (creditsButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                         magicButtonClick.play();
+                        isOptionsPage = true;
                     }
                 }
             }
@@ -120,6 +129,12 @@ int main()
         window.clear();
         if (isTitleScreen)
             DrawTitleScreen(window, isMuted, sprites);
+        if (isRulesPage)
+            window.draw(pageBackground);
+        if (isOptionsPage)
+            window.draw(pageBackground);
+        if (isCreditsPage)
+            window.draw(pageBackground);
         
         window.display();
     }
