@@ -6,6 +6,7 @@
 #include "TennisClash.h"
 #include "TextureManager.h"
 #include "SoundBufferManager.h"
+#include "FontManager.h"
 
 using namespace std;
 
@@ -39,7 +40,7 @@ void DrawTitleScreen(sf::RenderWindow& window, bool& isMuted, unordered_map<stri
 
 int main()
 {
-    // window + sprite + sound/music initializations
+    // window + sprite + sound/music + font initializations
     sf::RenderWindow window(sf::VideoMode(900, 600), "Tennis Clash");
 
     sf::Sprite title(TextureManager::GetTexture("title"));
@@ -128,6 +129,9 @@ int main()
 
     // Clear out any sf::SoundBuffer objects before the program ends
     SoundBufferManager::Clear();
+
+    // Clear out any sf::Font objects before the program ends
+    FontManager::Clear();
 
 	return 0;
 }
