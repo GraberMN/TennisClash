@@ -38,11 +38,12 @@ void DrawTitleScreen(sf::RenderWindow& window, bool& isMuted, unordered_map<stri
     DrawMuted(window, isMuted, sprites);
 }
 
-void DrawRulesPage(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites) {
+void DrawRulesPage(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
     window.draw(sprites["grassCourt"]);
     window.draw(sprites["title"]);
     window.draw(sprites["pageBackground"]);
     window.draw(sprites["closeButton"]);
+    window.draw(texts["rulesTitle"]);
     DrawMuted(window, isMuted, sprites);
 }
 
@@ -80,9 +81,14 @@ int main()
     backgroundMusic.setLoop(true);
     backgroundMusic.play();
 
-    // sf::Text rulesTitle()
+    sf::Text rulesTitle;
+    rulesTitle.setFont(FontManager::GetFont("lochleyPixel"));
+    rulesTitle.setString("Rules");
+    rulesTitle.setCharacterSize(50);
+    rulesTitle.setFillColor(sf::Color::Black);
+    rulesTitle.setPosition(165.f, 100.f);
 
-    // putting sprites and sounds into containers
+    // putting sprites, sounds, and texts into containers
     unordered_map<string, sf::Sprite> sprites;
     sprites.emplace("title", title);
     sprites.emplace("playButton", playButton);
@@ -97,6 +103,9 @@ int main()
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
+
+    unordered_map<string, sf::Text> texts;
+    texts.emplace("rulesTitle", rulesTitle);
        
     // boolean variable initializations
     bool isMuted = false;
@@ -154,7 +163,7 @@ int main()
         if (isTitleScreen)
             DrawTitleScreen(window, isMuted, sprites);
         if (isRulesPage)
-            DrawRulesPage(window, isMuted, sprites);
+            DrawRulesPage(window, isMuted, sprites, texts);
         if (isOptionsPage)
             window.draw(pageBackground);
         if (isCreditsPage)
