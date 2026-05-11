@@ -56,6 +56,15 @@ void DrawOptionsPage(sf::RenderWindow& window, bool& isMuted, unordered_map<stri
     DrawMuted(window, isMuted, sprites);
 }
 
+void DrawCreditsPage(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
+    window.draw(sprites["grassCourt"]);
+    window.draw(sprites["title"]);
+    window.draw(sprites["pageBackground"]);
+    window.draw(sprites["closeButton"]);
+    window.draw(texts["creditsTitle"]);
+    DrawMuted(window, isMuted, sprites);
+}
+
 int main()
 {
     // window + sprite + sound/music + text initializations
@@ -104,6 +113,13 @@ int main()
     optionsTitle.setFillColor(sf::Color::Black);
     optionsTitle.setPosition(165.f, 100.f);
 
+    sf::Text creditsTitle;
+    creditsTitle.setFont(FontManager::GetFont("lochleyPixel"));
+    creditsTitle.setString("Credits");
+    creditsTitle.setCharacterSize(50);
+    creditsTitle.setFillColor(sf::Color::Black);
+    creditsTitle.setPosition(165.f, 100.f);
+
     // putting sprites, sounds, and texts into containers
     unordered_map<string, sf::Sprite> sprites;
     sprites.emplace("title", title);
@@ -123,6 +139,7 @@ int main()
     unordered_map<string, sf::Text> texts;
     texts.emplace("rulesTitle", rulesTitle);
     texts.emplace("optionsTitle", optionsTitle);
+    texts.emplace("creditsTitle", creditsTitle);
        
     // boolean variable initializations
     bool isMuted = false;
@@ -167,6 +184,8 @@ int main()
                         magicButtonClick.play();
                         isCreditsPage = true;
                         isTitleScreen = false;
+                        isRulesPage = false;
+                        isOptionsPage = false;
                     }
                     if (closeButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isRulesPage || isOptionsPage || isCreditsPage)) {
                         isTitleScreen = true;
@@ -186,7 +205,7 @@ int main()
         if (isOptionsPage)
             DrawOptionsPage(window, isMuted, sprites, texts);
         if (isCreditsPage)
-            window.draw(pageBackground);
+            DrawCreditsPage(window, isMuted, sprites, texts);
         
         window.display();
     }
