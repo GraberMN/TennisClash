@@ -65,6 +65,11 @@ void DrawCreditsPage(sf::RenderWindow& window, bool& isMuted, unordered_map<stri
     DrawMuted(window, isMuted, sprites);
 }
 
+void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites) {
+    window.draw(sprites["characterSelect"]);
+    DrawMuted(window, isMuted, sprites);
+}
+
 int main()
 {
     // window + sprite + sound/music + text initializations
@@ -88,6 +93,7 @@ int main()
     pageBackground.setPosition(150.f, 100.f);
     sf::Sprite closeButton(TextureManager::GetTexture("closeButton"));
     closeButton.setPosition(715.f, 100.f);
+    sf::Sprite characterSelect(TextureManager::GetTexture("characterSelect"));
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -132,6 +138,7 @@ int main()
     sprites.emplace("grassCourt", grassCourt);
     sprites.emplace("pageBackground", pageBackground);
     sprites.emplace("closeButton", closeButton);
+    sprites.emplace("characterSelect", characterSelect);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -147,6 +154,7 @@ int main()
     bool isRulesPage = false;
     bool isOptionsPage = false;
     bool isCreditsPage = false;
+    bool isCharacterSelectScreen = false;
 
     // make the window come to life
     while (window.isOpen())
@@ -165,6 +173,8 @@ int main()
                     }
                     if (playButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isTitleScreen) {
                         magicButtonClick.play();
+                        isCharacterSelectScreen = true;
+                        isTitleScreen = false;
                     }
                     if (rulesButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isTitleScreen) {
                         magicButtonClick.play();
@@ -206,6 +216,8 @@ int main()
             DrawOptionsPage(window, isMuted, sprites, texts);
         if (isCreditsPage)
             DrawCreditsPage(window, isMuted, sprites, texts);
+        if (isCharacterSelectScreen)
+            DrawCharacterSelectScreen(window, isMuted, sprites);
         
         window.display();
     }
