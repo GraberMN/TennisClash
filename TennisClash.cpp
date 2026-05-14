@@ -67,6 +67,8 @@ void DrawCreditsPage(sf::RenderWindow& window, bool& isMuted, unordered_map<stri
 
 void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites) {
     window.draw(sprites["characterSelect"]);
+    window.draw(sprites["dashCharacterModelSelected"]);
+    window.draw(sprites["swiftCharacterModel"]);
     DrawMuted(window, isMuted, sprites);
 }
 
@@ -94,6 +96,14 @@ int main()
     sf::Sprite closeButton(TextureManager::GetTexture("closeButton"));
     closeButton.setPosition(715.f, 100.f);
     sf::Sprite characterSelect(TextureManager::GetTexture("characterSelect"));
+    sf::Sprite dashCharacterModel(TextureManager::GetTexture("dashCharacterModel"));
+    dashCharacterModel.setPosition(0.f, 150.f);
+    sf::Sprite dashCharacterModelSelected(TextureManager::GetTexture("dashCharacterModelSelected"));
+    dashCharacterModelSelected.setPosition(0.f, 150.f);
+    sf::Sprite swiftCharacterModel(TextureManager::GetTexture("swiftCharacterModel"));
+    swiftCharacterModel.setPosition(250.f, 150.f);
+    sf::Sprite swiftCharacterModelSelected(TextureManager::GetTexture("swiftCharacterModelSelected"));
+    swiftCharacterModelSelected.setPosition(250.f, 150.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -139,6 +149,10 @@ int main()
     sprites.emplace("pageBackground", pageBackground);
     sprites.emplace("closeButton", closeButton);
     sprites.emplace("characterSelect", characterSelect);
+    sprites.emplace("dashCharacterModel", dashCharacterModel);
+    sprites.emplace("dashCharacterModelSelected", dashCharacterModelSelected);
+    sprites.emplace("swiftCharacterModel", swiftCharacterModel);
+    sprites.emplace("swiftCharacterModelSelected", swiftCharacterModelSelected);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
