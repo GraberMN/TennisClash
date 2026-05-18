@@ -254,6 +254,11 @@ int main()
                         isOptionsPage = false;
                         isCreditsPage = false;
                     }
+                    if (backButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
+                        magicButtonClick.play();
+                        isTitleScreen = true;
+                        isCharacterSelectScreen = false;
+                    }
                 }
             }
         }
