@@ -72,6 +72,7 @@ void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, unordere
     window.draw(sprites["heftyCharacterModel"]);
     window.draw(sprites["athenaCharacterModel"]);
     window.draw(sprites["joeCharacterModel"]);
+    window.draw(sprites["janeCharacterModel"]);
     DrawMuted(window, isMuted, sprites);
 }
 
@@ -119,6 +120,11 @@ int main()
     joeCharacterModel.setPosition(250.f, 350.f);
     sf::Sprite joeCharacterModelSelected(TextureManager::GetTexture("joeCharacterModelSelected"));
     joeCharacterModelSelected.setPosition(250.f, 350.f);
+    sf::Sprite janeCharacterModel(TextureManager::GetTexture("janeCharacterModel"));
+    janeCharacterModel.setPosition(500.f, 350.f);
+    sf::Sprite janeCharacterModelSelected(TextureManager::GetTexture("janeCharacterModelSelected"));
+    janeCharacterModelSelected.setPosition(500.f, 350.f);
+
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -174,6 +180,8 @@ int main()
     sprites.emplace("athenaCharacterModelSelected", athenaCharacterModelSelected);
     sprites.emplace("joeCharacterModel", joeCharacterModel);
     sprites.emplace("joeCharacterModelSelected", joeCharacterModelSelected);
+    sprites.emplace("janeCharacterModel", janeCharacterModel);
+    sprites.emplace("janeCharacterModelSelected", janeCharacterModelSelected);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
