@@ -73,6 +73,8 @@ void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, unordere
     window.draw(sprites["athenaCharacterModel"]);
     window.draw(sprites["joeCharacterModel"]);
     window.draw(sprites["janeCharacterModel"]);
+    window.draw(sprites["backButton"]);
+    window.draw(sprites["okButton"]);
     DrawMuted(window, isMuted, sprites);
 }
 
@@ -124,6 +126,10 @@ int main()
     janeCharacterModel.setPosition(500.f, 350.f);
     sf::Sprite janeCharacterModelSelected(TextureManager::GetTexture("janeCharacterModelSelected"));
     janeCharacterModelSelected.setPosition(500.f, 350.f);
+    sf::Sprite backButton(TextureManager::GetTexture("backButton"));
+    backButton.setPosition(775.f, 230.f);
+    sf::Sprite okButton(TextureManager::GetTexture("okButton"));
+    okButton.setPosition(775.f, 430.f);
 
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
@@ -182,6 +188,8 @@ int main()
     sprites.emplace("joeCharacterModelSelected", joeCharacterModelSelected);
     sprites.emplace("janeCharacterModel", janeCharacterModel);
     sprites.emplace("janeCharacterModelSelected", janeCharacterModelSelected);
+    sprites.emplace("backButton", backButton);
+    sprites.emplace("okButton", okButton);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
