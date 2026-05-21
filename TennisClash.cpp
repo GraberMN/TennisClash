@@ -224,6 +224,7 @@ int main()
     tempBackground.setFillColor(sf::Color::White);
 
     sf::Sound magicButtonClick(SoundBufferManager::GetSoundBuffer("magicButtonClick"));
+    sf::Sound characterSelectClick(SoundBufferManager::GetSoundBuffer("characterSelectClick"));
 
     sf::Music backgroundMusic;
     backgroundMusic.openFromFile("audio/backgroundMusic.wav");
@@ -293,6 +294,7 @@ int main()
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
+    sounds.emplace("characterSelectClick", characterSelectClick);
 
     unordered_map<string, sf::Text> texts;
     texts.emplace("rulesTitle", rulesTitle);
@@ -362,27 +364,27 @@ int main()
                         isCharacterSelectScreen = false;
                     }
                     if (dashCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-
+                        characterSelectClick.play();
                         characterSelected = 1;
                     }
                     if (swiftCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-
+                        characterSelectClick.play();
                         characterSelected = 2;
                     }
                     if (heftyCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-
+                        characterSelectClick.play();
                         characterSelected = 3;
                     }
                     if (athenaCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-
+                        characterSelectClick.play();
                         characterSelected = 4;
                     }
                     if (joeCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-
+                        characterSelectClick.play();
                         characterSelected = 5;
                     }
                     if (janeCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-
+                        characterSelectClick.play();
                         characterSelected = 6;
                     }
                 }
