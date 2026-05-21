@@ -66,7 +66,7 @@ void DrawCreditsPage(sf::RenderWindow& window, bool& isMuted, unordered_map<stri
 }
 
 void DrawSelectedCharacter(sf::RenderWindow& window, int& characterSelected, unordered_map<string, sf::Sprite>& sprites) {
-    if (characterSelected = 1) {
+    if (characterSelected == 1) {
         window.draw(sprites["dashCharacterModelSelected"]);
         window.draw(sprites["swiftCharacterModel"]);
         window.draw(sprites["heftyCharacterModel"]);
@@ -75,6 +75,56 @@ void DrawSelectedCharacter(sf::RenderWindow& window, int& characterSelected, uno
         window.draw(sprites["janeCharacterModel"]);
         window.draw(sprites["dashStats"]);
         window.draw(sprites["dashMiniModel"]);
+    }
+    else if (characterSelected == 2) {
+        window.draw(sprites["dashCharacterModel"]);
+        window.draw(sprites["swiftCharacterModelSelected"]);
+        window.draw(sprites["heftyCharacterModel"]);
+        window.draw(sprites["athenaCharacterModel"]);
+        window.draw(sprites["joeCharacterModel"]);
+        window.draw(sprites["janeCharacterModel"]);
+        window.draw(sprites["swiftStats"]);
+        window.draw(sprites["swiftMiniModel"]);
+    }
+    else if (characterSelected == 3) {
+        window.draw(sprites["dashCharacterModel"]);
+        window.draw(sprites["swiftCharacterModel"]);
+        window.draw(sprites["heftyCharacterModelSelected"]);
+        window.draw(sprites["athenaCharacterModel"]);
+        window.draw(sprites["joeCharacterModel"]);
+        window.draw(sprites["janeCharacterModel"]);
+        window.draw(sprites["heftyStats"]);
+        window.draw(sprites["heftyMiniModel"]);
+    }
+    else if (characterSelected == 4) {
+        window.draw(sprites["dashCharacterModel"]);
+        window.draw(sprites["swiftCharacterModel"]);
+        window.draw(sprites["heftyCharacterModel"]);
+        window.draw(sprites["athenaCharacterModelSelected"]);
+        window.draw(sprites["joeCharacterModel"]);
+        window.draw(sprites["janeCharacterModel"]);
+        window.draw(sprites["athenaStats"]);
+        window.draw(sprites["athenaMiniModel"]);
+    }
+    else if (characterSelected == 5) {
+        window.draw(sprites["dashCharacterModel"]);
+        window.draw(sprites["swiftCharacterModel"]);
+        window.draw(sprites["heftyCharacterModel"]);
+        window.draw(sprites["athenaCharacterModel"]);
+        window.draw(sprites["joeCharacterModelSelected"]);
+        window.draw(sprites["janeCharacterModel"]);
+        window.draw(sprites["joeStats"]);
+        window.draw(sprites["joeMiniModel"]);
+    }
+    else if (characterSelected == 6) {
+        window.draw(sprites["dashCharacterModel"]);
+        window.draw(sprites["swiftCharacterModel"]);
+        window.draw(sprites["heftyCharacterModel"]);
+        window.draw(sprites["athenaCharacterModel"]);
+        window.draw(sprites["joeCharacterModel"]);
+        window.draw(sprites["janeCharacterModelSelected"]);
+        window.draw(sprites["janeStats"]);
+        window.draw(sprites["janeMiniModel"]);
     }
 }
 
@@ -277,6 +327,7 @@ int main()
                         magicButtonClick.play();
                         isCharacterSelectScreen = true;
                         isTitleScreen = false;
+                        continue;
                     }
                     if (rulesButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isTitleScreen) {
                         magicButtonClick.play();
