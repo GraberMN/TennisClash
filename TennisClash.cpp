@@ -76,6 +76,7 @@ void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, unordere
     window.draw(sprites["backButton"]);
     window.draw(sprites["okButton"]);
     window.draw(sprites["dashStats"]);
+    window.draw(sprites["dashMiniModel"]);
     DrawMuted(window, isMuted, sprites);
 }
 
@@ -133,6 +134,34 @@ int main()
     okButton.setPosition(775.f, 430.f);
     sf::Sprite dashStats(TextureManager::GetTexture("dashStats"));
     dashStats.setPosition(500.f, 0.f);
+    sf::Sprite swiftStats(TextureManager::GetTexture("swiftStats"));
+    swiftStats.setPosition(500.f, 0.f);
+    sf::Sprite heftyStats(TextureManager::GetTexture("heftyStats"));
+    heftyStats.setPosition(500.f, 0.f);
+    sf::Sprite athenaStats(TextureManager::GetTexture("athenaStats"));
+    athenaStats.setPosition(500.f, 0.f);
+    sf::Sprite joeStats(TextureManager::GetTexture("joeStats"));
+    joeStats.setPosition(500.f, 0.f);
+    sf::Sprite janeStats(TextureManager::GetTexture("janeStats"));
+    janeStats.setPosition(500.f, 0.f);
+    sf::Sprite dashMiniModel(TextureManager::GetTexture("dashCharacterModel"));
+    dashMiniModel.setScale(0.6f, 0.6f);
+    dashMiniModel.setPosition(750.f, 15.f);
+    sf::Sprite swiftMiniModel(TextureManager::GetTexture("swiftCharacterModel"));
+    swiftMiniModel.setScale(0.6f, 0.6f);
+    swiftMiniModel.setPosition(750.f, 15.f);
+    sf::Sprite heftyMiniModel(TextureManager::GetTexture("heftyCharacterModel"));
+    heftyMiniModel.setScale(0.6f, 0.6f);
+    heftyMiniModel.setPosition(750.f, 15.f);
+    sf::Sprite athenaMiniModel(TextureManager::GetTexture("athenaCharacterModel"));
+    athenaMiniModel.setScale(0.6f, 0.6f);
+    athenaMiniModel.setPosition(750.f, 15.f);
+    sf::Sprite joeMiniModel(TextureManager::GetTexture("joeCharacterModel"));
+    joeMiniModel.setScale(0.6f, 0.6f);
+    joeMiniModel.setPosition(750.f, 15.f);
+    sf::Sprite janeMiniModel(TextureManager::GetTexture("janeCharacterModel"));
+    janeMiniModel.setScale(0.6f, 0.6f);
+    janeMiniModel.setPosition(750.f, 15.f);
 
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
@@ -194,6 +223,12 @@ int main()
     sprites.emplace("backButton", backButton);
     sprites.emplace("okButton", okButton);
     sprites.emplace("dashStats", dashStats);
+    sprites.emplace("swiftStats", swiftStats);
+    sprites.emplace("heftyStats", heftyStats);
+    sprites.emplace("athenaStats", athenaStats);
+    sprites.emplace("joeStats", joeStats);
+    sprites.emplace("janeStats", janeStats);
+    sprites.emplace("dashMiniModel", dashMiniModel);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
