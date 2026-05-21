@@ -65,18 +65,24 @@ void DrawCreditsPage(sf::RenderWindow& window, bool& isMuted, unordered_map<stri
     DrawMuted(window, isMuted, sprites);
 }
 
-void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites) {
+void DrawSelectedCharacter(sf::RenderWindow& window, int& characterSelected, unordered_map<string, sf::Sprite>& sprites) {
+    if (characterSelected = 1) {
+        window.draw(sprites["dashCharacterModelSelected"]);
+        window.draw(sprites["swiftCharacterModel"]);
+        window.draw(sprites["heftyCharacterModel"]);
+        window.draw(sprites["athenaCharacterModel"]);
+        window.draw(sprites["joeCharacterModel"]);
+        window.draw(sprites["janeCharacterModel"]);
+        window.draw(sprites["dashStats"]);
+        window.draw(sprites["dashMiniModel"]);
+    }
+}
+
+void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, unordered_map<string, sf::Sprite>& sprites) {
     window.draw(sprites["characterSelect"]);
-    window.draw(sprites["dashCharacterModelSelected"]);
-    window.draw(sprites["swiftCharacterModel"]);
-    window.draw(sprites["heftyCharacterModel"]);
-    window.draw(sprites["athenaCharacterModel"]);
-    window.draw(sprites["joeCharacterModel"]);
-    window.draw(sprites["janeCharacterModel"]);
     window.draw(sprites["backButton"]);
     window.draw(sprites["okButton"]);
-    window.draw(sprites["dashStats"]);
-    window.draw(sprites["dashMiniModel"]);
+    DrawSelectedCharacter(window, characterSelected, sprites);
     DrawMuted(window, isMuted, sprites);
 }
 
@@ -229,6 +235,11 @@ int main()
     sprites.emplace("joeStats", joeStats);
     sprites.emplace("janeStats", janeStats);
     sprites.emplace("dashMiniModel", dashMiniModel);
+    sprites.emplace("swiftMiniModel", swiftMiniModel);
+    sprites.emplace("heftyMiniModel", heftyMiniModel);
+    sprites.emplace("athenaMiniModel", athenaMiniModel);
+    sprites.emplace("joeMiniModel", joeMiniModel);
+    sprites.emplace("janeMiniModel", janeMiniModel);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -238,13 +249,14 @@ int main()
     texts.emplace("optionsTitle", optionsTitle);
     texts.emplace("creditsTitle", creditsTitle);
        
-    // boolean variable initializations
+    // boolean + integer variable initializations
     bool isMuted = false;
     bool isTitleScreen = true;
     bool isRulesPage = false;
     bool isOptionsPage = false;
     bool isCreditsPage = false;
     bool isCharacterSelectScreen = false;
+    int characterSelected = 1;
 
     // make the window come to life
     while (window.isOpen())
@@ -298,6 +310,30 @@ int main()
                         isTitleScreen = true;
                         isCharacterSelectScreen = false;
                     }
+                    if (dashCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
+
+                        characterSelected = 1;
+                    }
+                    if (swiftCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
+
+                        characterSelected = 2;
+                    }
+                    if (heftyCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
+
+                        characterSelected = 3;
+                    }
+                    if (athenaCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
+
+                        characterSelected = 4;
+                    }
+                    if (joeCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
+
+                        characterSelected = 5;
+                    }
+                    if (janeCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
+
+                        characterSelected = 6;
+                    }
                 }
             }
         }
@@ -312,7 +348,7 @@ int main()
         if (isCreditsPage)
             DrawCreditsPage(window, isMuted, sprites, texts);
         if (isCharacterSelectScreen)
-            DrawCharacterSelectScreen(window, isMuted, sprites);
+            DrawCharacterSelectScreen(window, isMuted, characterSelected, sprites);
         
         window.display();
     }
