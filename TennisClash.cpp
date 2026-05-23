@@ -234,6 +234,7 @@ int main()
 
     sf::Sound magicButtonClick(SoundBufferManager::GetSoundBuffer("magicButtonClick"));
     sf::Sound characterSelectClick(SoundBufferManager::GetSoundBuffer("characterSelectClick"));
+    sf::Sound arcadeCountdown(SoundBufferManager::GetSoundBuffer("arcadeCountdown"));
 
     sf::Music backgroundMusic;
     backgroundMusic.openFromFile("audio/backgroundMusic.wav");
@@ -307,6 +308,7 @@ int main()
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
     sounds.emplace("characterSelectClick", characterSelectClick);
+    sounds.emplace("arcadeCountdown", arcadeCountdown);
 
     unordered_map<string, sf::Text> texts;
     texts.emplace("rulesTitle", rulesTitle);
@@ -407,6 +409,7 @@ int main()
                         isCharacterSelectScreen = false;
                         gameStartTime = chrono::high_resolution_clock::now();
                         backgroundMusic.stop();
+                        arcadeCountdown.play();
                     }
                 }
             }
