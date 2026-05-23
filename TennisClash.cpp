@@ -138,6 +138,7 @@ void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, int& cha
 
 void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, unordered_map<string, sf::Sprite>& sprites) {
     window.draw(sprites["grassCourt"]);
+    window.draw(sprites["dashPlayer"]);
 }
 
 int main()
@@ -228,6 +229,10 @@ int main()
     setText.setPosition(300.f, 250.f);
     sf::Sprite goText(TextureManager::GetTexture("goText"));
     goText.setPosition(300.f, 250.f);
+    sf::Sprite dashPlayer(TextureManager::GetTexture("dashPlayer"));
+    dashPlayer.setPosition(750.f, 235.f);
+    sf::Sprite swiftPlayer(TextureManager::GetTexture("swiftPlayer"));
+    swiftPlayer.setPosition(750.f, 235.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -304,6 +309,8 @@ int main()
     sprites.emplace("readyText", readyText);
     sprites.emplace("setText", setText);
     sprites.emplace("goText", goText);
+    sprites.emplace("dashPlayer", dashPlayer);
+    sprites.emplace("swiftPlayer", swiftPlayer);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
