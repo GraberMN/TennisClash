@@ -136,6 +136,10 @@ void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, int& cha
     DrawMuted(window, isMuted, sprites);
 }
 
+void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, unordered_map<string, sf::Sprite>& sprites) {
+    window.draw(sprites["grassCourt"]);
+}
+
 int main()
 {
     // window + sprite + sound/music + text initializations
@@ -218,7 +222,12 @@ int main()
     sf::Sprite janeMiniModel(TextureManager::GetTexture("janeCharacterModel"));
     janeMiniModel.setScale(0.6f, 0.6f);
     janeMiniModel.setPosition(750.f, 15.f);
-
+    sf::Sprite readyText(TextureManager::GetTexture("readyText"));
+    readyText.setPosition(300.f, 250.f);
+    sf::Sprite setText(TextureManager::GetTexture("setText"));
+    setText.setPosition(300.f, 250.f);
+    sf::Sprite goText(TextureManager::GetTexture("goText"));
+    goText.setPosition(300.f, 250.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -291,6 +300,9 @@ int main()
     sprites.emplace("athenaMiniModel", athenaMiniModel);
     sprites.emplace("joeMiniModel", joeMiniModel);
     sprites.emplace("janeMiniModel", janeMiniModel);
+    sprites.emplace("readyText", readyText);
+    sprites.emplace("setText", setText);
+    sprites.emplace("goText", goText);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -308,7 +320,10 @@ int main()
     bool isOptionsPage = false;
     bool isCreditsPage = false;
     bool isCharacterSelectScreen = false;
+    bool isGameScreen = false;
     int characterSelected = 1;
+
+    time_t gameStartTime; // for keeping track of time passed
 
     // make the window come to life
     while (window.isOpen())
@@ -387,6 +402,12 @@ int main()
                         characterSelectClick.play();
                         characterSelected = 6;
                     }
+                    if (okButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
+                        isGameScreen = true;
+                        isCharacterSelectScreen = false;
+                        gameStartTime = time(NULL);
+                        backgroundMusic.stop();
+                    }
                 }
             }
         }
@@ -402,6 +423,19 @@ int main()
             DrawCreditsPage(window, isMuted, sprites, texts);
         if (isCharacterSelectScreen)
             DrawCharacterSelectScreen(window, isMuted, characterSelected, sprites);
+        if (isGameScreen) {
+            time_t currentTime = time(NULL);
+            double inGameTime = difftime(currentTime, gameStartTime);
+            DrawGameScreen(window, isMuted, characterSelected, sprites);
+            if (inGameTime <= 4.0) {
+                if (inGameTime <= 1.0)
+                    window.draw(readyText);
+                else if (inGameTime <= 2.0)
+                    window.draw(setText);
+                else
+                    window.draw(goText);
+            }
+        }    
         
         window.display();
     }
