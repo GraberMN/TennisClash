@@ -323,7 +323,7 @@ int main()
     bool isGameScreen = false;
     int characterSelected = 1;
 
-    time_t gameStartTime; // for keeping track of time passed
+    chrono::time_point<chrono::high_resolution_clock> gameStartTime; // for keeping track of time passed
 
     // make the window come to life
     while (window.isOpen())
@@ -405,7 +405,7 @@ int main()
                     if (okButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
                         isGameScreen = true;
                         isCharacterSelectScreen = false;
-                        gameStartTime = time(NULL);
+                        gameStartTime = chrono::high_resolution_clock::now();
                         backgroundMusic.stop();
                     }
                 }
@@ -424,13 +424,13 @@ int main()
         if (isCharacterSelectScreen)
             DrawCharacterSelectScreen(window, isMuted, characterSelected, sprites);
         if (isGameScreen) {
-            time_t currentTime = time(NULL);
-            double inGameTime = difftime(currentTime, gameStartTime);
+            chrono::time_point<chrono::high_resolution_clock> currentTime = chrono::high_resolution_clock::now();
+            chrono::duration<double> inGameTime = currentTime - gameStartTime;
             DrawGameScreen(window, isMuted, characterSelected, sprites);
-            if (inGameTime <= 4.0) {
-                if (inGameTime <= 1.0)
+            if (inGameTime.count() <= 3.0) {
+                if (inGameTime.count() <= 1.0)
                     window.draw(readyText);
-                else if (inGameTime <= 2.0)
+                else if (inGameTime.count() <= 2.0)
                     window.draw(setText);
                 else
                     window.draw(goText);
