@@ -136,9 +136,30 @@ void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, int& cha
     DrawMuted(window, isMuted, sprites);
 }
 
+void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, unordered_map<string, sf::Sprite>& sprites) {
+    if (characterSelected == 1) {
+        window.draw(sprites["dashPlayer"]);
+    }
+    else if (characterSelected == 2) {
+        window.draw(sprites["swiftPlayer"]);
+    }
+    else if (characterSelected == 3) {
+        window.draw(sprites["heftyPlayer"]);
+    }
+    else if (characterSelected == 4) {
+        window.draw(sprites["athenaPlayer"]);
+    }
+    else if (characterSelected == 5) {
+        window.draw(sprites["joePlayer"]);
+    }
+    else if (characterSelected == 6) {
+        window.draw(sprites["janePlayer"]);
+    }
+}
+
 void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, unordered_map<string, sf::Sprite>& sprites) {
     window.draw(sprites["grassCourt"]);
-    window.draw(sprites["dashPlayer"]);
+    DrawCorrectCharacter(window, characterSelected, sprites);
 }
 
 int main()
