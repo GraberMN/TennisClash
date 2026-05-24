@@ -233,6 +233,14 @@ int main()
     dashPlayer.setPosition(750.f, 235.f);
     sf::Sprite swiftPlayer(TextureManager::GetTexture("swiftPlayer"));
     swiftPlayer.setPosition(750.f, 235.f);
+    sf::Sprite heftyPlayer(TextureManager::GetTexture("heftyPlayer"));
+    heftyPlayer.setPosition(750.f, 235.f);
+    sf::Sprite athenaPlayer(TextureManager::GetTexture("athenaPlayer"));
+    athenaPlayer.setPosition(750.f, 235.f);
+    sf::Sprite joePlayer(TextureManager::GetTexture("joePlayer"));
+    joePlayer.setPosition(750.f, 235.f);
+    sf::Sprite janePlayer(TextureManager::GetTexture("janePlayer"));
+    janePlayer.setPosition(750.f, 235.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -311,6 +319,10 @@ int main()
     sprites.emplace("goText", goText);
     sprites.emplace("dashPlayer", dashPlayer);
     sprites.emplace("swiftPlayer", swiftPlayer);
+    sprites.emplace("heftyPlayer", heftyPlayer);
+    sprites.emplace("athenaPlayer", athenaPlayer);
+    sprites.emplace("joePlayer", joePlayer);
+    sprites.emplace("janePlayer", janePlayer);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
