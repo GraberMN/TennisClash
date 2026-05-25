@@ -139,21 +139,27 @@ void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, int& cha
 void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, unordered_map<string, sf::Sprite>& sprites) {
     if (characterSelected == 1) {
         window.draw(sprites["dashPlayer"]);
+        window.draw(sprites["dashBannerRight"]);
     }
     else if (characterSelected == 2) {
         window.draw(sprites["swiftPlayer"]);
+        window.draw(sprites["swiftBannerRight"]);
     }
     else if (characterSelected == 3) {
         window.draw(sprites["heftyPlayer"]);
+        window.draw(sprites["heftyBannerRight"]);
     }
     else if (characterSelected == 4) {
         window.draw(sprites["athenaPlayer"]);
+        window.draw(sprites["athenaBannerRight"]);
     }
     else if (characterSelected == 5) {
         window.draw(sprites["joePlayer"]);
+        window.draw(sprites["joeBannerRight"]);
     }
     else if (characterSelected == 6) {
         window.draw(sprites["janePlayer"]);
+        window.draw(sprites["janeBannerRight"]);
     }
 }
 
@@ -262,6 +268,18 @@ int main()
     joePlayer.setPosition(750.f, 235.f);
     sf::Sprite janePlayer(TextureManager::GetTexture("janePlayer"));
     janePlayer.setPosition(750.f, 235.f);
+    sf::Sprite dashBannerRight(TextureManager::GetTexture("dashBannerRight"));
+    dashBannerRight.setPosition(450.f, 30.f); 
+    sf::Sprite swiftBannerRight(TextureManager::GetTexture("swiftBannerRight"));
+    swiftBannerRight.setPosition(450.f, 30.f);
+    sf::Sprite heftyBannerRight(TextureManager::GetTexture("heftyBannerRight"));
+    heftyBannerRight.setPosition(450.f, 30.f);
+    sf::Sprite athenaBannerRight(TextureManager::GetTexture("athenaBannerRight"));
+    athenaBannerRight.setPosition(450.f, 30.f);
+    sf::Sprite joeBannerRight(TextureManager::GetTexture("joeBannerRight"));
+    joeBannerRight.setPosition(450.f, 30.f);
+    sf::Sprite janeBannerRight(TextureManager::GetTexture("janeBannerRight"));
+    janeBannerRight.setPosition(450.f, 30.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -344,6 +362,12 @@ int main()
     sprites.emplace("athenaPlayer", athenaPlayer);
     sprites.emplace("joePlayer", joePlayer);
     sprites.emplace("janePlayer", janePlayer);
+    sprites.emplace("dashBannerRight", dashBannerRight);
+    sprites.emplace("swiftBannerRight", swiftBannerRight);
+    sprites.emplace("heftyBannerRight", heftyBannerRight);
+    sprites.emplace("athenaBannerRight", athenaBannerRight);
+    sprites.emplace("joeBannerRight", joeBannerRight);
+    sprites.emplace("janeBannerRight", janeBannerRight);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
