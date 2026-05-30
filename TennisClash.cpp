@@ -7,6 +7,7 @@
 #include "TextureManager.h"
 #include "SoundBufferManager.h"
 #include "FontManager.h"
+#include "Random.h"
 
 using namespace std;
 
