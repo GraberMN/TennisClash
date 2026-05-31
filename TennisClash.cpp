@@ -164,9 +164,37 @@ void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, unor
     }
 }
 
-void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, unordered_map<string, sf::Sprite>& sprites) {
+void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, unordered_map<string, sf::Sprite>& sprites) {
+    if (randomCPU == 1) {
+        window.draw(sprites["dashPlayer"]);
+        window.draw(sprites["dashBannerLeft"]);
+    }
+    else if (randomCPU == 2) {
+        window.draw(sprites["swiftPlayer"]);
+        window.draw(sprites["swiftBannerLeft"]);
+    }
+    else if (randomCPU == 3) {
+        window.draw(sprites["heftyPlayer"]);
+        window.draw(sprites["heftyBannerLeft"]);
+    }
+    else if (randomCPU == 4) {
+        window.draw(sprites["athenaPlayer"]);
+        window.draw(sprites["athenaBannerLeft"]);
+    }
+    else if (randomCPU == 5) {
+        window.draw(sprites["joePlayer"]);
+        window.draw(sprites["joeBannerLeft"]);
+    }
+    else if (randomCPU == 6) {
+        window.draw(sprites["janePlayer"]);
+        window.draw(sprites["janeBannerLeft"]);
+    }
+}
+
+void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, unordered_map<string, sf::Sprite>& sprites) {
     window.draw(sprites["grassCourt"]);
     DrawCorrectCharacter(window, characterSelected, sprites);
+    DrawRandomCPU(window, randomCPU, sprites);
 }
 
 int main()
@@ -281,6 +309,18 @@ int main()
     joeBannerRight.setPosition(450.f, 30.f);
     sf::Sprite janeBannerRight(TextureManager::GetTexture("janeBannerRight"));
     janeBannerRight.setPosition(450.f, 30.f);
+    sf::Sprite dashBannerLeft(TextureManager::GetTexture("dashBannerLeft"));
+    dashBannerLeft.setPosition(150.f, 30.f);
+    sf::Sprite swiftBannerLeft(TextureManager::GetTexture("swiftBannerLeft"));
+    swiftBannerLeft.setPosition(150.f, 30.f);
+    sf::Sprite heftyBannerLeft(TextureManager::GetTexture("heftyBannerLeft"));
+    heftyBannerLeft.setPosition(150.f, 30.f);
+    sf::Sprite athenaBannerLeft(TextureManager::GetTexture("athenaBannerLeft"));
+    athenaBannerLeft.setPosition(150.f, 30.f);
+    sf::Sprite joeBannerLeft(TextureManager::GetTexture("joeBannerLeft"));
+    joeBannerLeft.setPosition(150.f, 30.f);
+    sf::Sprite janeBannerLeft(TextureManager::GetTexture("janeBannerLeft"));
+    janeBannerLeft.setPosition(150.f, 30.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -369,6 +409,12 @@ int main()
     sprites.emplace("athenaBannerRight", athenaBannerRight);
     sprites.emplace("joeBannerRight", joeBannerRight);
     sprites.emplace("janeBannerRight", janeBannerRight);
+    sprites.emplace("dashBannerLeft", dashBannerLeft);
+    sprites.emplace("swiftBannerLeft", swiftBannerLeft);
+    sprites.emplace("heftyBannerLeft", heftyBannerLeft);
+    sprites.emplace("athenaBannerLeft", athenaBannerLeft);
+    sprites.emplace("joeBannerLeft", joeBannerLeft);
+    sprites.emplace("janeBannerLeft", janeBannerLeft);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -389,6 +435,7 @@ int main()
     bool isCharacterSelectScreen = false;
     bool isGameScreen = false;
     int characterSelected = 1;
+    int randomCPU = characterSelected;
 
     chrono::time_point<chrono::high_resolution_clock> gameStartTime; // for keeping track of time passed
 
@@ -475,6 +522,34 @@ int main()
                         gameStartTime = chrono::high_resolution_clock::now();
                         backgroundMusic.stop();
                         arcadeCountdown.play();
+                        randomCPU = Random::Int(1, 6);
+                        while (randomCPU == characterSelected) {
+                            randomCPU = Random::Int(1, 6);
+                        }
+                        if (randomCPU == 1) {
+                            sprites["dashPlayer"].setPosition(150.f, 435.f);
+                            sprites["dashPlayer"].setRotation(180.f);
+                        }
+                        else if (randomCPU == 2) {
+                            sprites["swiftPlayer"].setPosition(150.f, 435.f);
+                            sprites["swiftPlayer"].setRotation(180.f);
+                        }
+                        else if (randomCPU == 3) {
+                            sprites["heftyPlayer"].setPosition(150.f, 435.f);
+                            sprites["heftyPlayer"].setRotation(180.f);
+                        }
+                        else if (randomCPU == 4) {
+                            sprites["athenaPlayer"].setPosition(150.f, 435.f);
+                            sprites["athenaPlayer"].setRotation(180.f);
+                        }
+                        else if (randomCPU == 5) {
+                            sprites["joePlayer"].setPosition(150.f, 435.f);
+                            sprites["joePlayer"].setRotation(180.f);
+                        }
+                        else if (randomCPU == 6) {
+                            sprites["janePlayer"].setPosition(150.f, 435.f);
+                            sprites["janePlayer"].setRotation(180.f);
+                        }
                     }
                 }
             }
@@ -494,7 +569,7 @@ int main()
         if (isGameScreen) {
             chrono::time_point<chrono::high_resolution_clock> currentTime = chrono::high_resolution_clock::now();
             chrono::duration<double> inGameTime = currentTime - gameStartTime;
-            DrawGameScreen(window, isMuted, characterSelected, sprites);
+            DrawGameScreen(window, isMuted, characterSelected, randomCPU, sprites);
             if (inGameTime.count() <= 3.0) {
                 if (inGameTime.count() <= 1.0)
                     window.draw(readyText);
