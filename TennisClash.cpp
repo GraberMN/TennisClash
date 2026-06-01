@@ -203,15 +203,15 @@ void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelec
     DrawRandomCPU(window, randomCPU, sprites);
 }
 
-void MoveCharacter(string& characterName, unordered_map<string, sf::Sprite>& sprites) {
+void MoveCharacter(string& characterName, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, float>& characterSpeeds) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        sprites[characterName + "Player"].move(0.f, -0.2f);
+        sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName] * -1.f);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        sprites[characterName + "Player"].move(0.f, 0.2f);
+        sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName]);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        sprites[characterName + "Player"].move(0.2f, 0.f);
+        sprites[characterName + "Player"].move(characterSpeeds[characterName], 0.f);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        sprites[characterName + "Player"].move(-0.2f, 0.f);
+        sprites[characterName + "Player"].move(characterSpeeds[characterName] * -1.f, 0.f);
 }
 
 int main()
@@ -442,7 +442,15 @@ int main()
     texts.emplace("rulesTitle", rulesTitle);
     texts.emplace("optionsTitle", optionsTitle);
     texts.emplace("creditsTitle", creditsTitle);
-       
+    
+    unordered_map<string, float> characterSpeeds;
+    characterSpeeds.emplace("dash", 0.3f);
+    characterSpeeds.emplace("swift", 0.3f);
+    characterSpeeds.emplace("hefty", 0.1f);
+    characterSpeeds.emplace("athena", 0.1f);
+    characterSpeeds.emplace("joe", 0.2f);
+    characterSpeeds.emplace("jane", 0.2f);
+
     // boolean + integer + string variable initializations
     bool isMuted = false;
     bool isTitleScreen = true;
@@ -588,7 +596,7 @@ int main()
         if (isCharacterSelectScreen)
             DrawCharacterSelectScreen(window, isMuted, characterSelected, sprites);
         if (isGameScreen) {
-            MoveCharacter(characterName, sprites);
+            MoveCharacter(characterName, sprites, characterSpeeds);
             chrono::time_point<chrono::high_resolution_clock> currentTime = chrono::high_resolution_clock::now();
             chrono::duration<double> inGameTime = currentTime - gameStartTime;
             DrawGameScreen(window, isMuted, characterSelected, randomCPU, characterName, sprites);
