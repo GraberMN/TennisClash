@@ -204,13 +204,13 @@ void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelec
 }
 
 void MoveCharacter(string& characterName, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, float>& characterSpeeds) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sprites[characterName + "Player"].getPosition().y >= 125.f)
         sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName] * -1.f);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sprites[characterName + "Player"].getPosition().y <= 500.f)
         sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName]);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sprites[characterName + "Player"].getPosition().x <= 800.f)
         sprites[characterName + "Player"].move(characterSpeeds[characterName], 0.f);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sprites[characterName + "Player"].getPosition().x >= 450.f)
         sprites[characterName + "Player"].move(characterSpeeds[characterName] * -1.f, 0.f);
 }
 
