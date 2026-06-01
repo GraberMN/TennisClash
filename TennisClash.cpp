@@ -137,30 +137,36 @@ void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, int& cha
     DrawMuted(window, isMuted, sprites);
 }
 
-void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, unordered_map<string, sf::Sprite>& sprites) {
+void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, string& characterName, unordered_map<string, sf::Sprite>& sprites) {
     if (characterSelected == 1) {
         window.draw(sprites["dashPlayer"]);
         window.draw(sprites["dashBannerRight"]);
+        characterName = "dash";
     }
     else if (characterSelected == 2) {
         window.draw(sprites["swiftPlayer"]);
         window.draw(sprites["swiftBannerRight"]);
+        characterName = "swift";
     }
     else if (characterSelected == 3) {
         window.draw(sprites["heftyPlayer"]);
         window.draw(sprites["heftyBannerRight"]);
+        characterName = "hefty";
     }
     else if (characterSelected == 4) {
         window.draw(sprites["athenaPlayer"]);
         window.draw(sprites["athenaBannerRight"]);
+        characterName = "athena";
     }
     else if (characterSelected == 5) {
         window.draw(sprites["joePlayer"]);
         window.draw(sprites["joeBannerRight"]);
+        characterName = "joe";
     }
     else if (characterSelected == 6) {
         window.draw(sprites["janePlayer"]);
         window.draw(sprites["janeBannerRight"]);
+        characterName = "jane";
     }
 }
 
@@ -191,10 +197,21 @@ void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, unordered_map<strin
     }
 }
 
-void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, unordered_map<string, sf::Sprite>& sprites) {
+void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, string& characterName, unordered_map<string, sf::Sprite>& sprites) {
     window.draw(sprites["grassCourt"]);
-    DrawCorrectCharacter(window, characterSelected, sprites);
+    DrawCorrectCharacter(window, characterSelected, characterName, sprites);
     DrawRandomCPU(window, randomCPU, sprites);
+}
+
+void MoveCharacter(string& characterName, unordered_map<string, sf::Sprite>& sprites) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        sprites[characterName + "Player"].move(0.f, -0.2f);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        sprites[characterName + "Player"].move(0.f, 0.2f);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        sprites[characterName + "Player"].move(0.2f, 0.f);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        sprites[characterName + "Player"].move(-0.2f, 0.f);
 }
 
 int main()
@@ -426,7 +443,7 @@ int main()
     texts.emplace("optionsTitle", optionsTitle);
     texts.emplace("creditsTitle", creditsTitle);
        
-    // boolean + integer variable initializations
+    // boolean + integer + string variable initializations
     bool isMuted = false;
     bool isTitleScreen = true;
     bool isRulesPage = false;
@@ -436,6 +453,7 @@ int main()
     bool isGameScreen = false;
     int characterSelected = 1;
     int randomCPU = characterSelected;
+    string characterName = "dash";
 
     chrono::time_point<chrono::high_resolution_clock> gameStartTime; // for keeping track of time passed
 
@@ -553,6 +571,9 @@ int main()
                     }
                 }
             }
+            else if (event.type == sf::Event::KeyPressed) {
+                
+            }
         }
 
         window.clear();
@@ -567,9 +588,10 @@ int main()
         if (isCharacterSelectScreen)
             DrawCharacterSelectScreen(window, isMuted, characterSelected, sprites);
         if (isGameScreen) {
+            MoveCharacter(characterName, sprites);
             chrono::time_point<chrono::high_resolution_clock> currentTime = chrono::high_resolution_clock::now();
             chrono::duration<double> inGameTime = currentTime - gameStartTime;
-            DrawGameScreen(window, isMuted, characterSelected, randomCPU, sprites);
+            DrawGameScreen(window, isMuted, characterSelected, randomCPU, characterName, sprites);
             if (inGameTime.count() <= 3.0) {
                 if (inGameTime.count() <= 1.0)
                     window.draw(readyText);
