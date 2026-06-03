@@ -139,6 +139,7 @@ void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, int& cha
 
 void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, string& characterName, unordered_map<string, sf::Sprite>& sprites) {
     if (characterSelected == 1) {
+        window.draw(sprites["dashRacket"]);
         window.draw(sprites["dashPlayer"]);
         window.draw(sprites["dashBannerRight"]);
         characterName = "dash";
@@ -338,6 +339,10 @@ int main()
     joeBannerLeft.setPosition(150.f, 30.f);
     sf::Sprite janeBannerLeft(TextureManager::GetTexture("janeBannerLeft"));
     janeBannerLeft.setPosition(150.f, 30.f);
+    sf::Sprite dashRacket(TextureManager::GetTexture("dashRacket"));
+    dashRacket.setOrigin(75.f, 10.f);
+    dashRacket.setPosition(785.f, 240.f);
+    dashRacket.setRotation(60.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -432,6 +437,7 @@ int main()
     sprites.emplace("athenaBannerLeft", athenaBannerLeft);
     sprites.emplace("joeBannerLeft", joeBannerLeft);
     sprites.emplace("janeBannerLeft", janeBannerLeft);
+    sprites.emplace("dashRacket", dashRacket);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
