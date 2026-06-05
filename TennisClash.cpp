@@ -139,67 +139,67 @@ void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, int& cha
 
 void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, string& characterName, unordered_map<string, sf::Sprite>& sprites) {
     if (characterSelected == 1) {
+        window.draw(sprites["dashBannerRight"]);
         window.draw(sprites["dashRacket"]);
         window.draw(sprites["dashPlayer"]);
-        window.draw(sprites["dashBannerRight"]);
         characterName = "dash";
     }
     else if (characterSelected == 2) {
+        window.draw(sprites["swiftBannerRight"]);
         window.draw(sprites["swiftRacket"]);
         window.draw(sprites["swiftPlayer"]);
-        window.draw(sprites["swiftBannerRight"]);
         characterName = "swift";
     }
     else if (characterSelected == 3) {
+        window.draw(sprites["heftyBannerRight"]);
         window.draw(sprites["heftyRacket"]);
         window.draw(sprites["heftyPlayer"]);
-        window.draw(sprites["heftyBannerRight"]);
         characterName = "hefty";
     }
     else if (characterSelected == 4) {
+        window.draw(sprites["athenaBannerRight"]);
         window.draw(sprites["athenaRacket"]);
         window.draw(sprites["athenaPlayer"]);
-        window.draw(sprites["athenaBannerRight"]);
         characterName = "athena";
     }
     else if (characterSelected == 5) {
+        window.draw(sprites["joeBannerRight"]);
         window.draw(sprites["joeRacket"]);
         window.draw(sprites["joePlayer"]);
-        window.draw(sprites["joeBannerRight"]);
         characterName = "joe";
     }
     else if (characterSelected == 6) {
+        window.draw(sprites["janeBannerRight"]);
         window.draw(sprites["janeRacket"]);
         window.draw(sprites["janePlayer"]);
-        window.draw(sprites["janeBannerRight"]);
         characterName = "jane";
     }
 }
 
 void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, unordered_map<string, sf::Sprite>& sprites) {
     if (randomCPU == 1) {
-        window.draw(sprites["dashPlayer"]);
         window.draw(sprites["dashBannerLeft"]);
+        window.draw(sprites["dashPlayer"]);
     }
     else if (randomCPU == 2) {
-        window.draw(sprites["swiftPlayer"]);
         window.draw(sprites["swiftBannerLeft"]);
+        window.draw(sprites["swiftPlayer"]);
     }
     else if (randomCPU == 3) {
-        window.draw(sprites["heftyPlayer"]);
         window.draw(sprites["heftyBannerLeft"]);
+        window.draw(sprites["heftyPlayer"]);
     }
     else if (randomCPU == 4) {
-        window.draw(sprites["athenaPlayer"]);
         window.draw(sprites["athenaBannerLeft"]);
+        window.draw(sprites["athenaPlayer"]);
     }
     else if (randomCPU == 5) {
-        window.draw(sprites["joePlayer"]);
         window.draw(sprites["joeBannerLeft"]);
+        window.draw(sprites["joePlayer"]);
     }
     else if (randomCPU == 6) {
-        window.draw(sprites["janePlayer"]);
         window.draw(sprites["janeBannerLeft"]);
+        window.draw(sprites["janePlayer"]);
     }
 }
 
