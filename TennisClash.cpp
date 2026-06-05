@@ -395,6 +395,7 @@ int main()
     sf::Sound magicButtonClick(SoundBufferManager::GetSoundBuffer("magicButtonClick"));
     sf::Sound characterSelectClick(SoundBufferManager::GetSoundBuffer("characterSelectClick"));
     sf::Sound arcadeCountdown(SoundBufferManager::GetSoundBuffer("arcadeCountdown"));
+    sf::Sound racketSwing(SoundBufferManager::GetSoundBuffer("racketSwing"));
 
     sf::Music backgroundMusic;
     backgroundMusic.openFromFile("audio/backgroundMusic.wav");
@@ -493,6 +494,7 @@ int main()
     sounds.emplace("magicButtonClick", magicButtonClick);
     sounds.emplace("characterSelectClick", characterSelectClick);
     sounds.emplace("arcadeCountdown", arcadeCountdown);
+    sounds.emplace("racketSwing", racketSwing);
 
     unordered_map<string, sf::Text> texts;
     texts.emplace("rulesTitle", rulesTitle);
@@ -638,6 +640,7 @@ int main()
             }
             else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Space && isGameScreen) {
+                    racketSwing.play();
                     CharacterSwing(characterName, isSwung, sprites);
                 }
             }
