@@ -209,6 +209,18 @@ void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelec
     DrawRandomCPU(window, randomCPU, sprites);
 }
 
+void CharacterSwing(string& characterName, bool& isSwung, unordered_map<string, sf::Sprite>& sprites) {
+    if (!isSwung) {
+        sprites[characterName + "Racket"].setRotation(0.f);
+        isSwung = true;
+    }
+    else {
+        this_thread::sleep_for(chrono::milliseconds(100));
+        sprites[characterName + "Racket"].setRotation(60.f);
+        isSwung = false;
+    }
+}
+
 void MoveCharacter(string& characterName, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, float>& characterSpeeds) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sprites[characterName + "Player"].getPosition().y >= 125.f) {
         sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName] * -1.f);
@@ -497,6 +509,7 @@ int main()
 
     // boolean + integer + string variable initializations
     bool isMuted = false;
+    bool isSwung = false;
     bool isTitleScreen = true;
     bool isRulesPage = false;
     bool isOptionsPage = false;
@@ -624,7 +637,9 @@ int main()
                 }
             }
             else if (event.type == sf::Event::KeyPressed) {
-                
+                if (event.key.code == sf::Keyboard::Space && isGameScreen) {
+                    CharacterSwing(characterName, isSwung, sprites);
+                }
             }
         }
 
@@ -653,8 +668,9 @@ int main()
                     window.draw(goText);
             }
         }    
-        
         window.display();
+        if (isSwung)
+            CharacterSwing(characterName, isSwung, sprites);
     }
 
     // Clear out any sf::Texture objects before the program ends
