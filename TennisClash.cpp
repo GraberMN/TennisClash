@@ -145,26 +145,31 @@ void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, stri
         characterName = "dash";
     }
     else if (characterSelected == 2) {
+        window.draw(sprites["swiftRacket"]);
         window.draw(sprites["swiftPlayer"]);
         window.draw(sprites["swiftBannerRight"]);
         characterName = "swift";
     }
     else if (characterSelected == 3) {
+        window.draw(sprites["heftyRacket"]);
         window.draw(sprites["heftyPlayer"]);
         window.draw(sprites["heftyBannerRight"]);
         characterName = "hefty";
     }
     else if (characterSelected == 4) {
+        window.draw(sprites["athenaRacket"]);
         window.draw(sprites["athenaPlayer"]);
         window.draw(sprites["athenaBannerRight"]);
         characterName = "athena";
     }
     else if (characterSelected == 5) {
+        window.draw(sprites["joeRacket"]);
         window.draw(sprites["joePlayer"]);
         window.draw(sprites["joeBannerRight"]);
         characterName = "joe";
     }
     else if (characterSelected == 6) {
+        window.draw(sprites["janeRacket"]);
         window.draw(sprites["janePlayer"]);
         window.draw(sprites["janeBannerRight"]);
         characterName = "jane";
@@ -205,14 +210,22 @@ void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelec
 }
 
 void MoveCharacter(string& characterName, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, float>& characterSpeeds) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sprites[characterName + "Player"].getPosition().y >= 125.f)
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sprites[characterName + "Player"].getPosition().y >= 125.f) {
         sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName] * -1.f);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sprites[characterName + "Player"].getPosition().y <= 500.f)
+        sprites[characterName + "Racket"].move(0.f, characterSpeeds[characterName] * -1.f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sprites[characterName + "Player"].getPosition().y <= 500.f) {
         sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName]);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sprites[characterName + "Player"].getPosition().x <= 800.f)
+        sprites[characterName + "Racket"].move(0.f, characterSpeeds[characterName]);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sprites[characterName + "Player"].getPosition().x <= 800.f) {
         sprites[characterName + "Player"].move(characterSpeeds[characterName], 0.f);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sprites[characterName + "Player"].getPosition().x >= 450.f)
+        sprites[characterName + "Racket"].move(characterSpeeds[characterName], 0.f);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sprites[characterName + "Player"].getPosition().x >= 450.f) {
         sprites[characterName + "Player"].move(characterSpeeds[characterName] * -1.f, 0.f);
+        sprites[characterName + "Racket"].move(characterSpeeds[characterName] * -1.f, 0.f);
+    }
 }
 
 int main()
@@ -343,6 +356,26 @@ int main()
     dashRacket.setOrigin(75.f, 10.f);
     dashRacket.setPosition(785.f, 240.f);
     dashRacket.setRotation(60.f);
+    sf::Sprite swiftRacket(TextureManager::GetTexture("swiftRacket"));
+    swiftRacket.setOrigin(75.f, 10.f);
+    swiftRacket.setPosition(785.f, 240.f);
+    swiftRacket.setRotation(60.f);
+    sf::Sprite heftyRacket(TextureManager::GetTexture("heftyRacket"));
+    heftyRacket.setOrigin(75.f, 10.f);
+    heftyRacket.setPosition(785.f, 240.f);
+    heftyRacket.setRotation(60.f);
+    sf::Sprite athenaRacket(TextureManager::GetTexture("athenaRacket"));
+    athenaRacket.setOrigin(75.f, 10.f);
+    athenaRacket.setPosition(785.f, 240.f);
+    athenaRacket.setRotation(60.f);
+    sf::Sprite joeRacket(TextureManager::GetTexture("joeRacket"));
+    joeRacket.setOrigin(75.f, 10.f);
+    joeRacket.setPosition(785.f, 240.f);
+    joeRacket.setRotation(60.f);
+    sf::Sprite janeRacket(TextureManager::GetTexture("janeRacket"));
+    janeRacket.setOrigin(75.f, 10.f);
+    janeRacket.setPosition(785.f, 240.f);
+    janeRacket.setRotation(60.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -438,6 +471,11 @@ int main()
     sprites.emplace("joeBannerLeft", joeBannerLeft);
     sprites.emplace("janeBannerLeft", janeBannerLeft);
     sprites.emplace("dashRacket", dashRacket);
+    sprites.emplace("swiftRacket", swiftRacket);
+    sprites.emplace("heftyRacket", heftyRacket);
+    sprites.emplace("athenaRacket", athenaRacket);
+    sprites.emplace("joeRacket", joeRacket);
+    sprites.emplace("janeRacket", janeRacket);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
