@@ -207,6 +207,7 @@ void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelec
     window.draw(sprites["grassCourt"]);
     DrawCorrectCharacter(window, characterSelected, characterName, sprites);
     DrawRandomCPU(window, randomCPU, sprites);
+    window.draw(sprites["tennisBall"]);
 }
 
 void CharacterSwing(string& characterName, bool& isSwung, unordered_map<string, sf::Sprite>& sprites) {
@@ -388,6 +389,8 @@ int main()
     janeRacket.setOrigin(75.f, 10.f);
     janeRacket.setPosition(785.f, 240.f);
     janeRacket.setRotation(60.f);
+    sf::Sprite tennisBall(TextureManager::GetTexture("tennisBall"));
+    tennisBall.setPosition(180.f, 450.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -489,6 +492,7 @@ int main()
     sprites.emplace("athenaRacket", athenaRacket);
     sprites.emplace("joeRacket", joeRacket);
     sprites.emplace("janeRacket", janeRacket);
+    sprites.emplace("tennisBall", tennisBall);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
