@@ -179,26 +179,32 @@ void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, stri
 void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, unordered_map<string, sf::Sprite>& sprites) {
     if (randomCPU == 1) {
         window.draw(sprites["dashBannerLeft"]);
+        window.draw(sprites["dashRacket"]);
         window.draw(sprites["dashPlayer"]);
     }
     else if (randomCPU == 2) {
         window.draw(sprites["swiftBannerLeft"]);
+        window.draw(sprites["swiftRacket"]);
         window.draw(sprites["swiftPlayer"]);
     }
     else if (randomCPU == 3) {
         window.draw(sprites["heftyBannerLeft"]);
+        window.draw(sprites["heftyRacket"]);
         window.draw(sprites["heftyPlayer"]);
     }
     else if (randomCPU == 4) {
         window.draw(sprites["athenaBannerLeft"]);
+        window.draw(sprites["athenaRacket"]);
         window.draw(sprites["athenaPlayer"]);
     }
     else if (randomCPU == 5) {
         window.draw(sprites["joeBannerLeft"]);
+        window.draw(sprites["joeRacket"]);
         window.draw(sprites["joePlayer"]);
     }
     else if (randomCPU == 6) {
         window.draw(sprites["janeBannerLeft"]);
+        window.draw(sprites["janeRacket"]);
         window.draw(sprites["janePlayer"]);
     }
 }
@@ -390,7 +396,7 @@ int main()
     janeRacket.setPosition(785.f, 240.f);
     janeRacket.setRotation(60.f);
     sf::Sprite tennisBall(TextureManager::GetTexture("tennisBall"));
-    tennisBall.setPosition(180.f, 450.f);
+    tennisBall.setPosition(150.f, 450.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -618,26 +624,38 @@ int main()
                         if (randomCPU == 1) {
                             sprites["dashPlayer"].setPosition(150.f, 435.f);
                             sprites["dashPlayer"].setRotation(180.f);
+                            sprites["dashRacket"].setPosition(116.f, 433.f);
+                            sprites["dashRacket"].setRotation(240.f);
                         }
                         else if (randomCPU == 2) {
                             sprites["swiftPlayer"].setPosition(150.f, 435.f);
                             sprites["swiftPlayer"].setRotation(180.f);
+                            sprites["swiftRacket"].setPosition(116.f, 433.f);
+                            sprites["swiftRacket"].setRotation(240.f);
                         }
                         else if (randomCPU == 3) {
                             sprites["heftyPlayer"].setPosition(150.f, 435.f);
                             sprites["heftyPlayer"].setRotation(180.f);
+                            sprites["heftyRacket"].setPosition(116.f, 433.f);
+                            sprites["heftyRacket"].setRotation(240.f);
                         }
                         else if (randomCPU == 4) {
                             sprites["athenaPlayer"].setPosition(150.f, 435.f);
                             sprites["athenaPlayer"].setRotation(180.f);
+                            sprites["athenaRacket"].setPosition(116.f, 433.f);
+                            sprites["athenaRacket"].setRotation(240.f);
                         }
                         else if (randomCPU == 5) {
                             sprites["joePlayer"].setPosition(150.f, 435.f);
                             sprites["joePlayer"].setRotation(180.f);
+                            sprites["joeRacket"].setPosition(116.f, 433.f);
+                            sprites["joeRacket"].setRotation(240.f);
                         }
                         else if (randomCPU == 6) {
                             sprites["janePlayer"].setPosition(150.f, 435.f);
                             sprites["janePlayer"].setRotation(180.f);
+                            sprites["janeRacket"].setPosition(116.f, 433.f);
+                            sprites["janeRacket"].setRotation(240.f);
                         }
                     }
                 }
