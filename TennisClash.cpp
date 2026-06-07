@@ -234,18 +234,22 @@ void MoveCharacter(string& characterName, unordered_map<string, sf::Sprite>& spr
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sprites[characterName + "Player"].getPosition().y >= 125.f) {
         sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName] * -1.f);
         sprites[characterName + "Racket"].move(0.f, characterSpeeds[characterName] * -1.f);
+        sprites["characterRacketHitZone"].move(0.f, characterSpeeds[characterName] * -1.f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sprites[characterName + "Player"].getPosition().y <= 500.f) {
         sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName]);
         sprites[characterName + "Racket"].move(0.f, characterSpeeds[characterName]);
+        sprites["characterRacketHitZone"].move(0.f, characterSpeeds[characterName]);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sprites[characterName + "Player"].getPosition().x <= 800.f) {
         sprites[characterName + "Player"].move(characterSpeeds[characterName], 0.f);
         sprites[characterName + "Racket"].move(characterSpeeds[characterName], 0.f);
+        sprites["characterRacketHitZone"].move(characterSpeeds[characterName], 0.f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sprites[characterName + "Player"].getPosition().x >= 450.f) {
         sprites[characterName + "Player"].move(characterSpeeds[characterName] * -1.f, 0.f);
         sprites[characterName + "Racket"].move(characterSpeeds[characterName] * -1.f, 0.f);
+        sprites["characterRacketHitZone"].move(characterSpeeds[characterName] * -1.f, 0.f);
     }
 }
 
