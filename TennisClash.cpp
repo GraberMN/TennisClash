@@ -710,8 +710,10 @@ int main()
             }
         }    
         window.display();
-        if (isSwung)
-            CharacterSwing(characterName, isSwung, sprites);
+        if (isSwung) {
+            thread characterSwingT(CharacterSwing, ref(characterName), ref(isSwung), ref(sprites));
+            characterSwingT.detach();
+        }
     }
 
     // Clear out any sf::Texture objects before the program ends
