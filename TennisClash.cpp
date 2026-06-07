@@ -174,6 +174,7 @@ void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, stri
         window.draw(sprites["janePlayer"]);
         characterName = "jane";
     }
+    window.draw(sprites["characterRacketHitZone"]);
 }
 
 void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, unordered_map<string, sf::Sprite>& sprites) {
@@ -207,6 +208,7 @@ void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, unordered_map<strin
         window.draw(sprites["janeRacket"]);
         window.draw(sprites["janePlayer"]);
     }
+    window.draw(sprites["randomCPURacketHitZone"]);
 }
 
 void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, string& characterName, unordered_map<string, sf::Sprite>& sprites) {
@@ -395,6 +397,10 @@ int main()
     janeRacket.setOrigin(75.f, 10.f);
     janeRacket.setPosition(785.f, 240.f);
     janeRacket.setRotation(60.f);
+    sf::Sprite characterRacketHitZone(TextureManager::GetTexture("racketHitZone"));
+    characterRacketHitZone.setPosition(720.f, 175.f);
+    sf::Sprite randomCPURacketHitZone(TextureManager::GetTexture("racketHitZone"));
+    randomCPURacketHitZone.setPosition(118.f, 433.f);
     sf::Sprite tennisBall(TextureManager::GetTexture("tennisBall"));
     tennisBall.setPosition(150.f, 450.f);
 
@@ -498,6 +504,8 @@ int main()
     sprites.emplace("athenaRacket", athenaRacket);
     sprites.emplace("joeRacket", joeRacket);
     sprites.emplace("janeRacket", janeRacket);
+    sprites.emplace("characterRacketHitZone", characterRacketHitZone);
+    sprites.emplace("randomCPURacketHitZone", randomCPURacketHitZone);
     sprites.emplace("tennisBall", tennisBall);
 
     unordered_map<string, sf::Sound> sounds;
@@ -530,6 +538,7 @@ int main()
     bool isGameScreen = false;
     int characterSelected = 1;
     int randomCPU = characterSelected;
+    int pointNumber = 1;
     string characterName = "dash";
 
     chrono::time_point<chrono::high_resolution_clock> gameStartTime; // for keeping track of time passed
@@ -624,37 +633,37 @@ int main()
                         if (randomCPU == 1) {
                             sprites["dashPlayer"].setPosition(150.f, 435.f);
                             sprites["dashPlayer"].setRotation(180.f);
-                            sprites["dashRacket"].setPosition(116.f, 433.f);
+                            sprites["dashRacket"].setPosition(116.f, 430.f);
                             sprites["dashRacket"].setRotation(240.f);
                         }
                         else if (randomCPU == 2) {
                             sprites["swiftPlayer"].setPosition(150.f, 435.f);
                             sprites["swiftPlayer"].setRotation(180.f);
-                            sprites["swiftRacket"].setPosition(116.f, 433.f);
+                            sprites["swiftRacket"].setPosition(116.f, 430.f);
                             sprites["swiftRacket"].setRotation(240.f);
                         }
                         else if (randomCPU == 3) {
                             sprites["heftyPlayer"].setPosition(150.f, 435.f);
                             sprites["heftyPlayer"].setRotation(180.f);
-                            sprites["heftyRacket"].setPosition(116.f, 433.f);
+                            sprites["heftyRacket"].setPosition(116.f, 430.f);
                             sprites["heftyRacket"].setRotation(240.f);
                         }
                         else if (randomCPU == 4) {
                             sprites["athenaPlayer"].setPosition(150.f, 435.f);
                             sprites["athenaPlayer"].setRotation(180.f);
-                            sprites["athenaRacket"].setPosition(116.f, 433.f);
+                            sprites["athenaRacket"].setPosition(116.f, 430.f);
                             sprites["athenaRacket"].setRotation(240.f);
                         }
                         else if (randomCPU == 5) {
                             sprites["joePlayer"].setPosition(150.f, 435.f);
                             sprites["joePlayer"].setRotation(180.f);
-                            sprites["joeRacket"].setPosition(116.f, 433.f);
+                            sprites["joeRacket"].setPosition(116.f, 430.f);
                             sprites["joeRacket"].setRotation(240.f);
                         }
                         else if (randomCPU == 6) {
                             sprites["janePlayer"].setPosition(150.f, 435.f);
                             sprites["janePlayer"].setRotation(180.f);
-                            sprites["janeRacket"].setPosition(116.f, 433.f);
+                            sprites["janeRacket"].setPosition(116.f, 430.f);
                             sprites["janeRacket"].setRotation(240.f);
                         }
                     }
@@ -691,6 +700,9 @@ int main()
                     window.draw(setText);
                 else
                     window.draw(goText);
+            }
+            else {
+                sprites["tennisBall"].move(0.2f, 0.f);
             }
         }    
         window.display();
