@@ -531,7 +531,15 @@ int main()
     characterSpeeds.emplace("joe", 0.2f);
     characterSpeeds.emplace("jane", 0.2f);
 
-    // boolean + integer + string variable initializations
+    unordered_map<string, float> characterPower;
+    characterPower.emplace("dash", 0.15f);
+    characterPower.emplace("swift", 0.15f);
+    characterPower.emplace("hefty", 0.25f);
+    characterPower.emplace("athena", 0.25f);
+    characterPower.emplace("joe", 0.2f);
+    characterPower.emplace("jane", 0.2f);
+
+    // boolean + integer/float + string variable initializations
     bool isMuted = false;
     bool isSwung = false;
     bool isTitleScreen = true;
@@ -543,6 +551,8 @@ int main()
     int characterSelected = 1;
     int randomCPU = characterSelected;
     int pointNumber = 1;
+    float tennisBallSpeed = 0.2f;
+    float tennisBallY = Random::Float(-0.13f, -0.05f);
     string characterName = "dash";
 
     chrono::time_point<chrono::high_resolution_clock> gameStartTime; // for keeping track of time passed
@@ -677,6 +687,10 @@ int main()
                 if (event.key.code == sf::Keyboard::Space && isGameScreen) {
                     racketSwing.play();
                     CharacterSwing(characterName, isSwung, sprites);
+                    if (sprites["tennisBall"].getGlobalBounds().intersects(sprites["characterRacketHitZone"].getGlobalBounds())) {
+                        tennisBallSpeed = characterPower[characterName] * -1.f;
+                        tennisBallY = Random::Float(-0.05f, 0.05f);
+                    }
                 }
             }
         }
@@ -706,7 +720,7 @@ int main()
                     window.draw(goText);
             }
             else {
-                sprites["tennisBall"].move(0.2f, 0.f);
+                sprites["tennisBall"].move(tennisBallSpeed, tennisBallY);
             }
         }    
         window.display();
