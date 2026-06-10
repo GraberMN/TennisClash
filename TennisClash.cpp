@@ -177,44 +177,50 @@ void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, stri
     window.draw(sprites["characterRacketHitZone"]);
 }
 
-void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, unordered_map<string, sf::Sprite>& sprites) {
+void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, string& randomCPUName, unordered_map<string, sf::Sprite>& sprites) {
     if (randomCPU == 1) {
         window.draw(sprites["dashBannerLeft"]);
         window.draw(sprites["dashRacket"]);
         window.draw(sprites["dashPlayer"]);
+        randomCPUName = "dash";
     }
     else if (randomCPU == 2) {
         window.draw(sprites["swiftBannerLeft"]);
         window.draw(sprites["swiftRacket"]);
         window.draw(sprites["swiftPlayer"]);
+        randomCPUName = "swift";
     }
     else if (randomCPU == 3) {
         window.draw(sprites["heftyBannerLeft"]);
         window.draw(sprites["heftyRacket"]);
         window.draw(sprites["heftyPlayer"]);
+        randomCPUName = "hefty";
     }
     else if (randomCPU == 4) {
         window.draw(sprites["athenaBannerLeft"]);
         window.draw(sprites["athenaRacket"]);
         window.draw(sprites["athenaPlayer"]);
+        randomCPUName = "athena";
     }
     else if (randomCPU == 5) {
         window.draw(sprites["joeBannerLeft"]);
         window.draw(sprites["joeRacket"]);
         window.draw(sprites["joePlayer"]);
+        randomCPUName = "joe";
     }
     else if (randomCPU == 6) {
         window.draw(sprites["janeBannerLeft"]);
         window.draw(sprites["janeRacket"]);
         window.draw(sprites["janePlayer"]);
+        randomCPUName = "jane";
     }
     window.draw(sprites["randomCPURacketHitZone"]);
 }
 
-void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, string& characterName, unordered_map<string, sf::Sprite>& sprites) {
+void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, string& characterName, string& randomCPUName, unordered_map<string, sf::Sprite>& sprites) {
     window.draw(sprites["grassCourt"]);
     DrawCorrectCharacter(window, characterSelected, characterName, sprites);
-    DrawRandomCPU(window, randomCPU, sprites);
+    DrawRandomCPU(window, randomCPU, randomCPUName, sprites);
     window.draw(sprites["tennisBall"]);
 }
 
@@ -250,6 +256,19 @@ void MoveCharacter(string& characterName, unordered_map<string, sf::Sprite>& spr
         sprites[characterName + "Player"].move(characterSpeeds[characterName] * -1.f, 0.f);
         sprites[characterName + "Racket"].move(characterSpeeds[characterName] * -1.f, 0.f);
         sprites["characterRacketHitZone"].move(characterSpeeds[characterName] * -1.f, 0.f);
+    }
+}
+
+void MoveRandomCPU(string& randomCPUName, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, float>& characterSpeeds) {
+    if (sprites["tennisBall"].getPosition().y < sprites["randomCPURacketHitZone"].getPosition().y && sprites[randomCPUName + "Player"].getPosition().y >= 175.f) {
+        sprites[randomCPUName + "Player"].move(0.f, characterSpeeds[randomCPUName] * -1.f);
+        sprites[randomCPUName + "Racket"].move(0.f, characterSpeeds[randomCPUName] * -1.f);
+        sprites["randomCPURacketHitZone"].move(0.f, characterSpeeds[randomCPUName] * -1.f);
+    }
+    else if (sprites["tennisBall"].getPosition().y > sprites["randomCPURacketHitZone"].getPosition().y && sprites[randomCPUName + "Player"].getPosition().y <= 550.f) {
+        sprites[randomCPUName + "Player"].move(0.f, characterSpeeds[randomCPUName]);
+        sprites[randomCPUName + "Racket"].move(0.f, characterSpeeds[randomCPUName]);
+        sprites["randomCPURacketHitZone"].move(0.f, characterSpeeds[randomCPUName]);
     }
 }
 
@@ -554,6 +573,7 @@ int main()
     float tennisBallSpeed = 0.2f;
     float tennisBallY = Random::Float(-0.13f, -0.05f);
     string characterName = "dash";
+    string randomCPUName = "dash";
 
     chrono::time_point<chrono::high_resolution_clock> gameStartTime; // for keeping track of time passed
 
@@ -708,9 +728,10 @@ int main()
             DrawCharacterSelectScreen(window, isMuted, characterSelected, sprites);
         if (isGameScreen) {
             MoveCharacter(characterName, sprites, characterSpeeds);
+            MoveRandomCPU(randomCPUName, sprites, characterSpeeds);
             chrono::time_point<chrono::high_resolution_clock> currentTime = chrono::high_resolution_clock::now();
             chrono::duration<double> inGameTime = currentTime - gameStartTime;
-            DrawGameScreen(window, isMuted, characterSelected, randomCPU, characterName, sprites);
+            DrawGameScreen(window, isMuted, characterSelected, randomCPU, characterName, randomCPUName, sprites);
             if (inGameTime.count() <= 3.0) {
                 if (inGameTime.count() <= 1.0)
                     window.draw(readyText);
