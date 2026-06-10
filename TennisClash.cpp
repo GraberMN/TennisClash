@@ -709,7 +709,10 @@ int main()
                     CharacterSwing(characterName, isSwung, sprites);
                     if (sprites["tennisBall"].getGlobalBounds().intersects(sprites["characterRacketHitZone"].getGlobalBounds())) {
                         tennisBallSpeed = characterPower[characterName] * -1.f;
-                        tennisBallY = Random::Float(-0.05f, 0.05f);
+                        if (sprites[characterName + "Player"].getPosition().y <= 312.f)
+                            tennisBallY = Random::Float(-0.05f, 0.15f);
+                        else
+                            tennisBallY = Random::Float(-0.15f, 0.05f);
                     }
                 }
             }
