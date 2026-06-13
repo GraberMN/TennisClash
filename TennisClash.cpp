@@ -443,6 +443,7 @@ int main()
     sf::Sound characterSelectClick(SoundBufferManager::GetSoundBuffer("characterSelectClick"));
     sf::Sound arcadeCountdown(SoundBufferManager::GetSoundBuffer("arcadeCountdown"));
     sf::Sound racketSwing(SoundBufferManager::GetSoundBuffer("racketSwing"));
+    sf::Sound tennisBallHit(SoundBufferManager::GetSoundBuffer("tennisBallHit"));
 
     sf::Music backgroundMusic;
     backgroundMusic.openFromFile("audio/backgroundMusic.wav");
@@ -545,6 +546,7 @@ int main()
     sounds.emplace("characterSelectClick", characterSelectClick);
     sounds.emplace("arcadeCountdown", arcadeCountdown);
     sounds.emplace("racketSwing", racketSwing);
+    sounds.emplace("tennisBallHit", tennisBallHit);
 
     unordered_map<string, sf::Text> texts;
     texts.emplace("rulesTitle", rulesTitle);
@@ -719,6 +721,7 @@ int main()
                     racketSwing.play();
                     CharacterSwing(characterName, isSwung, sprites);
                     if (sprites["tennisBall"].getGlobalBounds().intersects(sprites["characterRacketHitZone"].getGlobalBounds())) {
+                        tennisBallHit.play();
                         tennisBallSpeed = characterPower[characterName] * -1.f;
                         if (sprites[characterName + "Player"].getPosition().y <= 312.f)
                             tennisBallY = Random::Float(-0.05f, 0.15f);
@@ -761,6 +764,7 @@ int main()
                     racketSwing.play();
                     thread randomCPUSwingT(RandomCPUSwing, ref(randomCPUName), ref(isSwingingCPU), ref(sprites));
                     randomCPUSwingT.detach();
+                    tennisBallHit.play();
                     if (!isServe) {
                         tennisBallSpeed = characterPower[randomCPUName];
                         if (sprites[randomCPUName + "Player"].getPosition().y <= 312.f)
