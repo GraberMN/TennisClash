@@ -236,6 +236,15 @@ void CharacterSwing(string& characterName, bool& isSwung, unordered_map<string, 
     }
 }
 
+void RandomCPUSwing(string& randomCPUName, bool& isSwingingCPU, unordered_map<string, sf::Sprite>& sprites) {
+    this_thread::sleep_for(chrono::milliseconds(50));
+    sprites[randomCPUName + "Racket"].setRotation(180.f);
+    this_thread::sleep_for(chrono::milliseconds(100));
+    sprites[randomCPUName + "Racket"].setRotation(240.f);
+    this_thread::sleep_for(chrono::milliseconds(200));
+    isSwingingCPU = false;
+}
+
 void MoveCharacter(string& characterName, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, float>& characterSpeeds) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && sprites[characterName + "Player"].getPosition().y >= 125.f) {
         sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName] * -1.f);
@@ -561,6 +570,7 @@ int main()
     // boolean + integer/float + string variable initializations
     bool isMuted = false;
     bool isSwung = false;
+    bool isSwingingCPU = false;
     bool isTitleScreen = true;
     bool isRulesPage = false;
     bool isOptionsPage = false;
@@ -745,6 +755,12 @@ int main()
             }
             else {
                 sprites["tennisBall"].move(tennisBallSpeed, tennisBallY);
+                if (sprites["tennisBall"].getGlobalBounds().intersects(sprites["randomCPURacketHitZone"].getGlobalBounds()) && !isSwingingCPU) {
+                    isSwingingCPU = true;
+                    racketSwing.play();
+                    thread randomCPUSwingT(RandomCPUSwing, ref(randomCPUName), ref(isSwingingCPU), ref(sprites));
+                    randomCPUSwingT.detach();
+                }
             }
         }    
         window.display();
