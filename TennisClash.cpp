@@ -217,10 +217,12 @@ void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, string& randomCPUNa
     window.draw(sprites["randomCPURacketHitZone"]);
 }
 
-void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, string& characterName, string& randomCPUName, unordered_map<string, sf::Sprite>& sprites) {
+void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, string& characterName, string& randomCPUName, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
     window.draw(sprites["grassCourt"]);
     DrawCorrectCharacter(window, characterSelected, characterName, sprites);
     DrawRandomCPU(window, randomCPU, randomCPUName, sprites);
+    window.draw(texts["playerScore"]);
+    window.draw(texts["randomCPUScore"]);
     window.draw(sprites["tennisBall"]);
 }
 
@@ -471,6 +473,28 @@ int main()
     creditsTitle.setFillColor(sf::Color::Black);
     creditsTitle.setPosition(165.f, 100.f);
 
+    int playerScoreNum = 0;
+    sf::Text playerScore;
+    playerScore.setFont(FontManager::GetFont("aileronRegular"));
+    if (playerScoreNum < 10)
+        playerScore.setString("0" + to_string(playerScoreNum));
+    else
+        playerScore.setString(to_string(playerScoreNum));
+    playerScore.setCharacterSize(30);
+    playerScore.setFillColor(sf::Color::Green);
+    playerScore.setPosition(475.f, 40.f);
+
+    int randomCPUScoreNum = 0;
+    sf::Text randomCPUScore;
+    randomCPUScore.setFont(FontManager::GetFont("aileronRegular"));
+    if (randomCPUScoreNum < 10)
+        randomCPUScore.setString("0" + to_string(randomCPUScoreNum));
+    else
+        randomCPUScore.setString(to_string(randomCPUScoreNum));
+    randomCPUScore.setCharacterSize(30);
+    randomCPUScore.setFillColor(sf::Color::Green);
+    randomCPUScore.setPosition(400.f, 40.f);
+
     // putting sprites, sounds, and texts into containers
     unordered_map<string, sf::Sprite> sprites;
     sprites.emplace("title", title);
@@ -552,6 +576,8 @@ int main()
     texts.emplace("rulesTitle", rulesTitle);
     texts.emplace("optionsTitle", optionsTitle);
     texts.emplace("creditsTitle", creditsTitle);
+    texts.emplace("playerScore", playerScore);
+    texts.emplace("randomCPUScore", randomCPUScore);
     
     unordered_map<string, float> characterSpeeds;
     characterSpeeds.emplace("dash", 0.3f);
@@ -748,7 +774,7 @@ int main()
             MoveRandomCPU(randomCPUName, sprites, characterSpeeds);
             chrono::time_point<chrono::high_resolution_clock> currentTime = chrono::high_resolution_clock::now();
             chrono::duration<double> inGameTime = currentTime - gameStartTime;
-            DrawGameScreen(window, isMuted, characterSelected, randomCPU, characterName, randomCPUName, sprites);
+            DrawGameScreen(window, isMuted, characterSelected, randomCPU, characterName, randomCPUName, sprites, texts);
             if (inGameTime.count() <= 3.0) {
                 if (inGameTime.count() <= 1.0)
                     window.draw(readyText);
