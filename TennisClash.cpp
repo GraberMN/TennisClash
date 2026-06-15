@@ -750,9 +750,9 @@ int main()
                         tennisBallHit.play();
                         tennisBallSpeed = characterPower[characterName] * -1.f;
                         if (sprites[characterName + "Player"].getPosition().y <= 312.f)
-                            tennisBallY = Random::Float(-0.05f, 0.15f);
+                            tennisBallY = Random::Float(0.0f, 0.15f);
                         else
-                            tennisBallY = Random::Float(-0.15f, 0.05f);
+                            tennisBallY = Random::Float(-0.15f, 0.0f);
                     }
                 }
             }
@@ -794,11 +794,31 @@ int main()
                     if (!isServe) {
                         tennisBallSpeed = characterPower[randomCPUName];
                         if (sprites[randomCPUName + "Player"].getPosition().y <= 312.f)
-                            tennisBallY = Random::Float(-0.05f, 0.15f);
+                            tennisBallY = Random::Float(0.0f, 0.15f);
                         else
-                            tennisBallY = Random::Float(-0.15f, 0.05f);
+                            tennisBallY = Random::Float(-0.15f, 0.0f);
                     }
                     isServe = false;
+                }
+                if (sprites["tennisBall"].getPosition().x >= 850.f) {
+                    sprites["tennisBall"].setPosition(450.f, 700.f);
+                    randomCPUScoreNum++;
+                    tennisBallSpeed = 0;
+                    tennisBallY = 0;
+                    if (randomCPUScoreNum < 10)
+                        texts["randomCPUScore"].setString("0" + to_string(randomCPUScoreNum));
+                    else
+                        texts["randomCPUScore"].setString(to_string(randomCPUScoreNum));
+                }
+                if (sprites["tennisBall"].getPosition().x <= 130.f) {
+                    sprites["tennisBall"].setPosition(450.f, 700.f);
+                    playerScoreNum++;
+                    tennisBallSpeed = 0;
+                    tennisBallY = 0;
+                    if (playerScoreNum < 10)
+                        texts["playerScore"].setString("0" + to_string(playerScoreNum));
+                    else
+                        texts["playerScore"].setString(to_string(playerScoreNum));
                 }
             }
         }    
