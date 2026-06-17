@@ -284,10 +284,20 @@ void MoveRandomCPU(string& randomCPUName, unordered_map<string, sf::Sprite>& spr
 }
 
 void StartNextPoint(int& pointNumber, float& tennisBallSpeed, float& tennisBallY, string& characterName, string& randomCPUName, bool& isServe, unordered_map<string, sf::Sprite>& sprites) {
-    this_thread::sleep_for(chrono::milliseconds(1000));
+    this_thread::sleep_for(chrono::milliseconds(1250));
     isServe = true;
     if (pointNumber % 2 == 0) {
-
+        sprites[characterName + "Player"].setPosition(750.f, 385.f);
+        sprites[characterName + "Racket"].setPosition(785.f, 390.f);
+        sprites[characterName + "Racket"].setRotation(60.f);
+        sprites["characterRacketHitZone"].setPosition(720.f, 325.f);
+        sprites[randomCPUName + "Player"].setPosition(150.f, 285.f);
+        sprites[randomCPUName + "Racket"].setPosition(116.f, 280.f);
+        sprites[randomCPUName + "Racket"].setRotation(240.f);
+        sprites["randomCPURacketHitZone"].setPosition(118.f, 283.f);
+        sprites["tennisBall"].setPosition(150.f, 300.f);
+        tennisBallSpeed = 0.2f;
+        tennisBallY = Random::Float(0.01f, 0.09f);
     }
     else {
         sprites[characterName + "Player"].setPosition(750.f, 235.f);
@@ -782,9 +792,9 @@ int main()
                         tennisBallHit.play();
                         tennisBallSpeed = characterPower[characterName] * -1.f;
                         if (sprites[characterName + "Player"].getPosition().y <= 312.f)
-                            tennisBallY = Random::Float(0.0f, 0.15f);
+                            tennisBallY = Random::Float(0.0f, 0.13f);
                         else
-                            tennisBallY = Random::Float(-0.15f, 0.0f);
+                            tennisBallY = Random::Float(-0.13f, 0.0f);
                     }
                 }
             }
@@ -826,9 +836,9 @@ int main()
                     if (!isServe) {
                         tennisBallSpeed = characterPower[randomCPUName];
                         if (sprites[randomCPUName + "Player"].getPosition().y <= 312.f)
-                            tennisBallY = Random::Float(0.0f, 0.15f);
+                            tennisBallY = Random::Float(0.0f, 0.13f);
                         else
-                            tennisBallY = Random::Float(-0.15f, 0.0f);
+                            tennisBallY = Random::Float(-0.13f, 0.0f);
                     }
                     isServe = false;
                 }
