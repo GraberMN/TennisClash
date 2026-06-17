@@ -283,6 +283,27 @@ void MoveRandomCPU(string& randomCPUName, unordered_map<string, sf::Sprite>& spr
     }
 }
 
+void StartNextPoint(int& pointNumber, float& tennisBallSpeed, float& tennisBallY, string& characterName, string& randomCPUName, bool& isServe, unordered_map<string, sf::Sprite>& sprites) {
+    this_thread::sleep_for(chrono::milliseconds(1000));
+    isServe = true;
+    if (pointNumber % 2 == 0) {
+
+    }
+    else {
+        sprites[characterName + "Player"].setPosition(750.f, 235.f);
+        sprites[characterName + "Racket"].setPosition(785.f, 240.f);
+        sprites[characterName + "Racket"].setRotation(60.f);
+        sprites["characterRacketHitZone"].setPosition(720.f, 175.f);
+        sprites[randomCPUName + "Player"].setPosition(150.f, 435.f);
+        sprites[randomCPUName + "Racket"].setPosition(116.f, 430.f);
+        sprites[randomCPUName + "Racket"].setRotation(240.f);
+        sprites["randomCPURacketHitZone"].setPosition(118.f, 433.f);
+        sprites["tennisBall"].setPosition(150.f, 450.f);
+        tennisBallSpeed = 0.2f;
+        tennisBallY = Random::Float(-0.13f, -0.05f);
+    }
+}
+
 int main()
 {
     // window + sprite + sound/music + text initializations
@@ -437,6 +458,10 @@ int main()
     randomCPURacketHitZone.setPosition(118.f, 433.f);
     sf::Sprite tennisBall(TextureManager::GetTexture("tennisBall"));
     tennisBall.setPosition(150.f, 450.f);
+    sf::Sprite niceShotText(TextureManager::GetTexture("niceShotText"));
+    niceShotText.setPosition(300.f, 250.f);
+    sf::Sprite goodTryText(TextureManager::GetTexture("goodTryText"));
+    goodTryText.setPosition(300.f, 250.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -446,6 +471,8 @@ int main()
     sf::Sound arcadeCountdown(SoundBufferManager::GetSoundBuffer("arcadeCountdown"));
     sf::Sound racketSwing(SoundBufferManager::GetSoundBuffer("racketSwing"));
     sf::Sound tennisBallHit(SoundBufferManager::GetSoundBuffer("tennisBallHit"));
+    sf::Sound niceShot(SoundBufferManager::GetSoundBuffer("niceShot"));
+    sf::Sound goodTry(SoundBufferManager::GetSoundBuffer("goodTry"));
 
     sf::Music backgroundMusic;
     backgroundMusic.openFromFile("audio/backgroundMusic.wav");
@@ -453,21 +480,21 @@ int main()
     backgroundMusic.play();
 
     sf::Text rulesTitle;
-    rulesTitle.setFont(FontManager::GetFont("lochleyPixel"));
+    rulesTitle.setFont(FontManager::GetFont("yosterIsland"));
     rulesTitle.setString("Rules");
     rulesTitle.setCharacterSize(50);
     rulesTitle.setFillColor(sf::Color::Black);
     rulesTitle.setPosition(165.f, 100.f);
 
     sf::Text optionsTitle;
-    optionsTitle.setFont(FontManager::GetFont("lochleyPixel"));
+    optionsTitle.setFont(FontManager::GetFont("yosterIsland"));
     optionsTitle.setString("Options");
     optionsTitle.setCharacterSize(50);
     optionsTitle.setFillColor(sf::Color::Black);
     optionsTitle.setPosition(165.f, 100.f);
 
     sf::Text creditsTitle;
-    creditsTitle.setFont(FontManager::GetFont("lochleyPixel"));
+    creditsTitle.setFont(FontManager::GetFont("yosterIsland"));
     creditsTitle.setString("Credits");
     creditsTitle.setCharacterSize(50);
     creditsTitle.setFillColor(sf::Color::Black);
@@ -564,6 +591,8 @@ int main()
     sprites.emplace("characterRacketHitZone", characterRacketHitZone);
     sprites.emplace("randomCPURacketHitZone", randomCPURacketHitZone);
     sprites.emplace("tennisBall", tennisBall);
+    sprites.emplace("niceShotText", niceShotText);
+    sprites.emplace("goodTryText", goodTryText);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -571,6 +600,8 @@ int main()
     sounds.emplace("arcadeCountdown", arcadeCountdown);
     sounds.emplace("racketSwing", racketSwing);
     sounds.emplace("tennisBallHit", tennisBallHit);
+    sounds.emplace("niceShot", niceShot);
+    sounds.emplace("goodTry", goodTry);
 
     unordered_map<string, sf::Text> texts;
     texts.emplace("rulesTitle", rulesTitle);
@@ -600,6 +631,7 @@ int main()
     bool isSwung = false;
     bool isSwingingCPU = false;
     bool isServe = true;
+    bool isNextPoint = false;
     bool isTitleScreen = true;
     bool isRulesPage = false;
     bool isOptionsPage = false;
@@ -809,6 +841,10 @@ int main()
                         texts["randomCPUScore"].setString("0" + to_string(randomCPUScoreNum));
                     else
                         texts["randomCPUScore"].setString(to_string(randomCPUScoreNum));
+                    pointNumber++;
+                    window.draw(goodTryText);
+                    goodTry.play();
+                    isNextPoint = true;
                 }
                 if (sprites["tennisBall"].getPosition().x <= 130.f) {
                     sprites["tennisBall"].setPosition(450.f, 700.f);
@@ -819,6 +855,10 @@ int main()
                         texts["playerScore"].setString("0" + to_string(playerScoreNum));
                     else
                         texts["playerScore"].setString(to_string(playerScoreNum));
+                    pointNumber++;
+                    window.draw(niceShotText);
+                    niceShot.play();
+                    isNextPoint = true;
                 }
             }
         }    
@@ -826,6 +866,10 @@ int main()
         if (isSwung) {
             thread characterSwingT(CharacterSwing, ref(characterName), ref(isSwung), ref(sprites));
             characterSwingT.detach();
+        }
+        if (isNextPoint) {
+            isNextPoint = false; 
+            StartNextPoint(pointNumber, tennisBallSpeed, tennisBallY, characterName, randomCPUName, isServe, sprites);
         }
     }
 
