@@ -228,11 +228,14 @@ void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelec
 
 void DrawWinScreen(sf::RenderWindow& window, unordered_map<string, sf::Sprite>& sprites) {
     window.draw(sprites["winScreen"]);
-
+    window.draw(sprites["titleScreenButton"]);
+    window.draw(sprites["playAgainButton"]);
 }
 
 void DrawLossScreen(sf::RenderWindow& window, unordered_map<string, sf::Sprite>& sprites) {
     window.draw(sprites["lossScreen"]);
+    window.draw(sprites["titleScreenButton"]);
+    window.draw(sprites["playAgainButton"]);
 }
 
 void CharacterSwing(string& characterName, bool& isSwung, unordered_map<string, sf::Sprite>& sprites) {
@@ -489,6 +492,10 @@ int main()
     goodTryText.setPosition(300.f, 250.f);
     sf::Sprite winScreen(TextureManager::GetTexture("winScreen"));
     sf::Sprite lossScreen(TextureManager::GetTexture("lossScreen"));
+    sf::Sprite titleScreenButton(TextureManager::GetTexture("titleScreenButton"));
+    titleScreenButton.setPosition(25.f, 475.f);
+    sf::Sprite playAgainButton(TextureManager::GetTexture("playAgainButton"));
+    playAgainButton.setPosition(625.f, 475.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -632,6 +639,8 @@ int main()
     sprites.emplace("goodTryText", goodTryText);
     sprites.emplace("winScreen", winScreen);
     sprites.emplace("lossScreen", lossScreen);
+    sprites.emplace("titleScreenButton", titleScreenButton);
+    sprites.emplace("playAgainButton", playAgainButton);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
