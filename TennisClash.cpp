@@ -226,6 +226,14 @@ void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelec
     window.draw(sprites["tennisBall"]);
 }
 
+void DrawWinScreen(sf::RenderWindow& window, unordered_map<string, sf::Sprite>& sprites) {
+
+}
+
+void DrawLossScreen(sf::RenderWindow& window, unordered_map<string, sf::Sprite>& sprites) {
+
+}
+
 void CharacterSwing(string& characterName, bool& isSwung, unordered_map<string, sf::Sprite>& sprites) {
     if (!isSwung) {
         sprites[characterName + "Racket"].setRotation(0.f);
@@ -283,34 +291,40 @@ void MoveRandomCPU(string& randomCPUName, unordered_map<string, sf::Sprite>& spr
     }
 }
 
-void StartNextPoint(int& pointNumber, float& tennisBallSpeed, float& tennisBallY, string& characterName, string& randomCPUName, bool& isServe, unordered_map<string, sf::Sprite>& sprites) {
+void StartNextPoint(int& pointNumber, int& gameWinner, float& tennisBallSpeed, float& tennisBallY, string& characterName, string& randomCPUName, bool& isServe, unordered_map<string, sf::Sprite>& sprites) {
     this_thread::sleep_for(chrono::milliseconds(1250));
     isServe = true;
-    if (pointNumber % 2 == 0) {
-        sprites[characterName + "Player"].setPosition(750.f, 385.f);
-        sprites[characterName + "Racket"].setPosition(785.f, 390.f);
-        sprites[characterName + "Racket"].setRotation(60.f);
-        sprites["characterRacketHitZone"].setPosition(720.f, 325.f);
-        sprites[randomCPUName + "Player"].setPosition(150.f, 285.f);
-        sprites[randomCPUName + "Racket"].setPosition(116.f, 280.f);
-        sprites[randomCPUName + "Racket"].setRotation(240.f);
-        sprites["randomCPURacketHitZone"].setPosition(118.f, 283.f);
-        sprites["tennisBall"].setPosition(150.f, 300.f);
-        tennisBallSpeed = 0.2f;
-        tennisBallY = Random::Float(0.01f, 0.09f);
+    if (gameWinner == 0) {
+        if (pointNumber % 2 == 0) {
+            sprites[characterName + "Player"].setPosition(750.f, 385.f);
+            sprites[characterName + "Racket"].setPosition(785.f, 390.f);
+            sprites[characterName + "Racket"].setRotation(60.f);
+            sprites["characterRacketHitZone"].setPosition(720.f, 325.f);
+            sprites[randomCPUName + "Player"].setPosition(150.f, 285.f);
+            sprites[randomCPUName + "Racket"].setPosition(116.f, 280.f);
+            sprites[randomCPUName + "Racket"].setRotation(240.f);
+            sprites["randomCPURacketHitZone"].setPosition(118.f, 283.f);
+            sprites["tennisBall"].setPosition(150.f, 300.f);
+            tennisBallSpeed = 0.2f;
+            tennisBallY = Random::Float(0.01f, 0.09f);
+        }
+        else {
+            sprites[characterName + "Player"].setPosition(750.f, 235.f);
+            sprites[characterName + "Racket"].setPosition(785.f, 240.f);
+            sprites[characterName + "Racket"].setRotation(60.f);
+            sprites["characterRacketHitZone"].setPosition(720.f, 175.f);
+            sprites[randomCPUName + "Player"].setPosition(150.f, 435.f);
+            sprites[randomCPUName + "Racket"].setPosition(116.f, 430.f);
+            sprites[randomCPUName + "Racket"].setRotation(240.f);
+            sprites["randomCPURacketHitZone"].setPosition(118.f, 433.f);
+            sprites["tennisBall"].setPosition(150.f, 450.f);
+            tennisBallSpeed = 0.2f;
+            tennisBallY = Random::Float(-0.13f, -0.05f);
+        }
     }
     else {
-        sprites[characterName + "Player"].setPosition(750.f, 235.f);
-        sprites[characterName + "Racket"].setPosition(785.f, 240.f);
-        sprites[characterName + "Racket"].setRotation(60.f);
-        sprites["characterRacketHitZone"].setPosition(720.f, 175.f);
-        sprites[randomCPUName + "Player"].setPosition(150.f, 435.f);
-        sprites[randomCPUName + "Racket"].setPosition(116.f, 430.f);
-        sprites[randomCPUName + "Racket"].setRotation(240.f);
-        sprites["randomCPURacketHitZone"].setPosition(118.f, 433.f);
-        sprites["tennisBall"].setPosition(150.f, 450.f);
-        tennisBallSpeed = 0.2f;
-        tennisBallY = Random::Float(-0.13f, -0.05f);
+        tennisBallSpeed = 0.0f;
+        tennisBallY = 0.0f;
     }
 }
 
@@ -510,6 +524,16 @@ int main()
     creditsTitle.setFillColor(sf::Color::Black);
     creditsTitle.setPosition(165.f, 100.f);
 
+    int winCondition = 7;
+    sf::Text firstToText;
+    firstToText.setFont(FontManager::GetFont("komikaAxis"));
+    firstToText.setString("First to " + to_string(winCondition));
+    firstToText.setCharacterSize(30);
+    firstToText.setOutlineColor(sf::Color::Cyan);
+    firstToText.setOutlineThickness(1.f);
+    firstToText.setFillColor(sf::Color::Black);
+    firstToText.setPosition(355.f, 325.f);
+
     int playerScoreNum = 0;
     sf::Text playerScore;
     playerScore.setFont(FontManager::GetFont("aileronRegular"));
@@ -619,6 +643,7 @@ int main()
     texts.emplace("creditsTitle", creditsTitle);
     texts.emplace("playerScore", playerScore);
     texts.emplace("randomCPUScore", randomCPUScore);
+    texts.emplace("firstToText", firstToText);
     
     unordered_map<string, float> characterSpeeds;
     characterSpeeds.emplace("dash", 0.3f);
@@ -651,6 +676,7 @@ int main()
     int characterSelected = 1;
     int randomCPU = characterSelected;
     int pointNumber = 1;
+    int gameWinner = 0;
     float tennisBallSpeed = 0.2f;
     float tennisBallY = Random::Float(-0.13f, -0.05f);
     string characterName = "dash";
@@ -818,6 +844,7 @@ int main()
             chrono::duration<double> inGameTime = currentTime - gameStartTime;
             DrawGameScreen(window, isMuted, characterSelected, randomCPU, characterName, randomCPUName, sprites, texts);
             if (inGameTime.count() <= 3.0) {
+                window.draw(firstToText);
                 if (inGameTime.count() <= 1.0)
                     window.draw(readyText);
                 else if (inGameTime.count() <= 2.0)
@@ -871,15 +898,27 @@ int main()
                     isNextPoint = true;
                 }
             }
-        }    
+        }
+        if (gameWinner == 1)
+            DrawWinScreen(window, sprites);
+        if (gameWinner == 2)
+            DrawLossScreen(window, sprites);
         window.display();
         if (isSwung) {
             thread characterSwingT(CharacterSwing, ref(characterName), ref(isSwung), ref(sprites));
             characterSwingT.detach();
         }
         if (isNextPoint) {
-            isNextPoint = false; 
-            StartNextPoint(pointNumber, tennisBallSpeed, tennisBallY, characterName, randomCPUName, isServe, sprites);
+            isNextPoint = false;
+            if (playerScoreNum >= winCondition) {
+                gameWinner = 1;
+                isGameScreen = false;
+            }
+            if (randomCPUScoreNum >= winCondition) {
+                gameWinner = 2;
+                isGameScreen = false;
+            }
+            StartNextPoint(pointNumber, gameWinner, tennisBallSpeed, tennisBallY, characterName, randomCPUName, isServe, sprites);
         }
     }
 
