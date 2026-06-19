@@ -227,11 +227,12 @@ void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelec
 }
 
 void DrawWinScreen(sf::RenderWindow& window, unordered_map<string, sf::Sprite>& sprites) {
+    window.draw(sprites["winScreen"]);
 
 }
 
 void DrawLossScreen(sf::RenderWindow& window, unordered_map<string, sf::Sprite>& sprites) {
-
+    window.draw(sprites["lossScreen"]);
 }
 
 void CharacterSwing(string& characterName, bool& isSwung, unordered_map<string, sf::Sprite>& sprites) {
@@ -306,7 +307,7 @@ void StartNextPoint(int& pointNumber, int& gameWinner, float& tennisBallSpeed, f
             sprites["randomCPURacketHitZone"].setPosition(118.f, 283.f);
             sprites["tennisBall"].setPosition(150.f, 300.f);
             tennisBallSpeed = 0.2f;
-            tennisBallY = Random::Float(0.01f, 0.09f);
+            tennisBallY = Random::Float(0.01f, 0.08f);
         }
         else {
             sprites[characterName + "Player"].setPosition(750.f, 235.f);
@@ -486,6 +487,8 @@ int main()
     niceShotText.setPosition(300.f, 250.f);
     sf::Sprite goodTryText(TextureManager::GetTexture("goodTryText"));
     goodTryText.setPosition(300.f, 250.f);
+    sf::Sprite winScreen(TextureManager::GetTexture("winScreen"));
+    sf::Sprite lossScreen(TextureManager::GetTexture("lossScreen"));
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -627,6 +630,8 @@ int main()
     sprites.emplace("tennisBall", tennisBall);
     sprites.emplace("niceShotText", niceShotText);
     sprites.emplace("goodTryText", goodTryText);
+    sprites.emplace("winScreen", winScreen);
+    sprites.emplace("lossScreen", lossScreen);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
