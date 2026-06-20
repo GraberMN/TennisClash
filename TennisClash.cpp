@@ -295,7 +295,7 @@ void MoveRandomCPU(string& randomCPUName, unordered_map<string, sf::Sprite>& spr
     }
 }
 
-void StartNextPoint(int& pointNumber, int& gameWinner, float& tennisBallSpeed, float& tennisBallY, string& characterName, string& randomCPUName, bool& isServe, unordered_map<string, sf::Sprite>& sprites) {
+void StartNextPoint(int& pointNumber, int& gameWinner, float& tennisBallSpeed, float& tennisBallY, string& characterName, string& randomCPUName, bool& isServe, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Sound>& sounds) {
     this_thread::sleep_for(chrono::milliseconds(1250));
     isServe = true;
     if (gameWinner == 0) {
@@ -327,6 +327,10 @@ void StartNextPoint(int& pointNumber, int& gameWinner, float& tennisBallSpeed, f
         }
     }
     else {
+        if (gameWinner == 1)
+            sounds["winSound"].play();
+        if (gameWinner == 2)
+            sounds["lossSound"].play();
         tennisBallSpeed = 0.0f;
         tennisBallY = 0.0f;
     }
@@ -507,6 +511,8 @@ int main()
     sf::Sound tennisBallHit(SoundBufferManager::GetSoundBuffer("tennisBallHit"));
     sf::Sound niceShot(SoundBufferManager::GetSoundBuffer("niceShot"));
     sf::Sound goodTry(SoundBufferManager::GetSoundBuffer("goodTry"));
+    sf::Sound winSound(SoundBufferManager::GetSoundBuffer("winSound"));
+    sf::Sound lossSound(SoundBufferManager::GetSoundBuffer("lossSound"));
 
     sf::Music backgroundMusic;
     backgroundMusic.openFromFile("audio/backgroundMusic.wav");
@@ -542,7 +548,7 @@ int main()
     firstToText.setOutlineColor(sf::Color::Cyan);
     firstToText.setOutlineThickness(1.f);
     firstToText.setFillColor(sf::Color::Black);
-    firstToText.setPosition(355.f, 325.f);
+    firstToText.setPosition(360.f, 330.f);
 
     int playerScoreNum = 0;
     sf::Text playerScore;
@@ -650,6 +656,8 @@ int main()
     sounds.emplace("tennisBallHit", tennisBallHit);
     sounds.emplace("niceShot", niceShot);
     sounds.emplace("goodTry", goodTry);
+    sounds.emplace("winSound", winSound);
+    sounds.emplace("lossSound", lossSound);
 
     unordered_map<string, sf::Text> texts;
     texts.emplace("rulesTitle", rulesTitle);
@@ -822,6 +830,12 @@ int main()
                             sprites["janeRacket"].setRotation(240.f);
                         }
                     }
+                    if (titleScreenButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && gameWinner > 0) {
+
+                    }
+                    if (playAgainButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && gameWinner > 0) {
+
+                    }
                 }
             }
             else if (event.type == sf::Event::KeyPressed) {
@@ -932,7 +946,7 @@ int main()
                 gameWinner = 2;
                 isGameScreen = false;
             }
-            StartNextPoint(pointNumber, gameWinner, tennisBallSpeed, tennisBallY, characterName, randomCPUName, isServe, sprites);
+            StartNextPoint(pointNumber, gameWinner, tennisBallSpeed, tennisBallY, characterName, randomCPUName, isServe, sprites, sounds);
         }
     }
 
