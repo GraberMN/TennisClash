@@ -301,10 +301,12 @@ void StartNextPoint(int& pointNumber, int& gameWinner, float& tennisBallSpeed, f
     if (gameWinner == 0) {
         if (pointNumber % 2 == 0) {
             sprites[characterName + "Player"].setPosition(750.f, 385.f);
+            sprites[characterName + "Player"].setRotation(0.f);
             sprites[characterName + "Racket"].setPosition(785.f, 390.f);
             sprites[characterName + "Racket"].setRotation(60.f);
             sprites["characterRacketHitZone"].setPosition(720.f, 325.f);
             sprites[randomCPUName + "Player"].setPosition(150.f, 285.f);
+            sprites[randomCPUName + "Player"].setRotation(180.f);
             sprites[randomCPUName + "Racket"].setPosition(116.f, 280.f);
             sprites[randomCPUName + "Racket"].setRotation(240.f);
             sprites["randomCPURacketHitZone"].setPosition(118.f, 283.f);
@@ -314,10 +316,12 @@ void StartNextPoint(int& pointNumber, int& gameWinner, float& tennisBallSpeed, f
         }
         else {
             sprites[characterName + "Player"].setPosition(750.f, 235.f);
+            sprites[characterName + "Player"].setRotation(0.f);
             sprites[characterName + "Racket"].setPosition(785.f, 240.f);
             sprites[characterName + "Racket"].setRotation(60.f);
             sprites["characterRacketHitZone"].setPosition(720.f, 175.f);
             sprites[randomCPUName + "Player"].setPosition(150.f, 435.f);
+            sprites[randomCPUName + "Player"].setRotation(180.f);
             sprites[randomCPUName + "Racket"].setPosition(116.f, 430.f);
             sprites[randomCPUName + "Racket"].setRotation(240.f);
             sprites["randomCPURacketHitZone"].setPosition(118.f, 433.f);
@@ -559,7 +563,7 @@ int main()
         playerScore.setString(to_string(playerScoreNum));
     playerScore.setCharacterSize(30);
     playerScore.setFillColor(sf::Color::Green);
-    playerScore.setPosition(475.f, 40.f);
+    playerScore.setPosition(465.f, 40.f);
 
     int randomCPUScoreNum = 0;
     sf::Text randomCPUScore;
@@ -570,7 +574,7 @@ int main()
         randomCPUScore.setString(to_string(randomCPUScoreNum));
     randomCPUScore.setCharacterSize(30);
     randomCPUScore.setFillColor(sf::Color::Green);
-    randomCPUScore.setPosition(400.f, 40.f);
+    randomCPUScore.setPosition(410.f, 40.f);
 
     // putting sprites, sounds, and texts into containers
     unordered_map<string, sf::Sprite> sprites;
@@ -789,6 +793,42 @@ int main()
                         gameStartTime = chrono::high_resolution_clock::now();
                         backgroundMusic.stop();
                         arcadeCountdown.play();
+                        if (characterSelected == 1) {
+                            sprites["dashPlayer"].setPosition(750.f, 235.f);
+                            sprites["dashPlayer"].setRotation(0.f);
+                            sprites["dashRacket"].setPosition(785.f, 240.f);
+                            sprites["dashRacket"].setRotation(60.f);
+                        }
+                        else if (characterSelected == 2) {
+                            sprites["swiftPlayer"].setPosition(750.f, 235.f);
+                            sprites["swiftPlayer"].setRotation(0.f);
+                            sprites["swiftRacket"].setPosition(785.f, 240.f);
+                            sprites["swiftRacket"].setRotation(60.f);
+                        }
+                        else if (characterSelected == 3) {
+                            sprites["heftyPlayer"].setPosition(750.f, 235.f);
+                            sprites["heftyPlayer"].setRotation(0.f);
+                            sprites["heftyRacket"].setPosition(785.f, 240.f);
+                            sprites["heftyRacket"].setRotation(60.f);
+                        }
+                        else if (characterSelected == 4) {
+                            sprites["athenaPlayer"].setPosition(750.f, 235.f);
+                            sprites["athenaPlayer"].setRotation(0.f);
+                            sprites["athenaRacket"].setPosition(785.f, 240.f);
+                            sprites["athenaRacket"].setRotation(60.f);
+                        }
+                        else if (characterSelected == 5) {
+                            sprites["joePlayer"].setPosition(750.f, 235.f);
+                            sprites["joePlayer"].setRotation(0.f);
+                            sprites["joeRacket"].setPosition(785.f, 240.f);
+                            sprites["joeRacket"].setRotation(60.f);
+                        }
+                        else if (characterSelected == 6) {
+                            sprites["janePlayer"].setPosition(750.f, 385.f);
+                            sprites["janePlayer"].setRotation(0.f);
+                            sprites["janeRacket"].setPosition(785.f, 390.f);
+                            sprites["janeRacket"].setRotation(60.f);
+                        }
                         randomCPU = Random::Int(1, 6);
                         while (randomCPU == characterSelected) {
                             randomCPU = Random::Int(1, 6);
@@ -831,9 +871,29 @@ int main()
                         }
                     }
                     if (titleScreenButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && gameWinner > 0) {
-
+                        magicButtonClick.play();
+                        gameWinner = 0;
+                        isTitleScreen = true;
+                        HandleBackgroundMusic(isMuted, backgroundMusic);
+                        isSwung = false;
+                        isSwingingCPU = false;
+                        characterSelected = 1;
+                        randomCPU = characterSelected;
+                        characterName = "dash";
+                        randomCPUName = "dash";
+                        pointNumber = 1;
+                        sprites["characterRacketHitZone"].setPosition(720.f, 175.f);
+                        sprites["randomCPURacketHitZone"].setPosition(118.f, 433.f);
+                        sprites["tennisBall"].setPosition(150.f, 450.f);
+                        tennisBallSpeed = 0.2f;
+                        tennisBallY = Random::Float(-0.13f, -0.05f);
+                        playerScoreNum = 0;
+                        randomCPUScoreNum = 0;
+                        texts["playerScore"].setString("0" + to_string(playerScoreNum));
+                        texts["randomCPUScore"].setString("0" + to_string(randomCPUScoreNum));
                     }
                     if (playAgainButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && gameWinner > 0) {
+                        magicButtonClick.play();
 
                     }
                 }
