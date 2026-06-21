@@ -311,7 +311,7 @@ void StartNextPoint(int& pointNumber, int& gameWinner, float& tennisBallSpeed, f
             sprites[randomCPUName + "Racket"].setRotation(240.f);
             sprites["randomCPURacketHitZone"].setPosition(118.f, 283.f);
             sprites["tennisBall"].setPosition(150.f, 300.f);
-            tennisBallSpeed = 0.2f;
+            tennisBallSpeed = 0.15f;
             tennisBallY = Random::Float(0.01f, 0.08f);
         }
         else {
@@ -326,7 +326,7 @@ void StartNextPoint(int& pointNumber, int& gameWinner, float& tennisBallSpeed, f
             sprites[randomCPUName + "Racket"].setRotation(240.f);
             sprites["randomCPURacketHitZone"].setPosition(118.f, 433.f);
             sprites["tennisBall"].setPosition(150.f, 450.f);
-            tennisBallSpeed = 0.2f;
+            tennisBallSpeed = 0.15f;
             tennisBallY = Random::Float(-0.13f, -0.05f);
         }
     }
@@ -703,7 +703,7 @@ int main()
     int randomCPU = characterSelected;
     int pointNumber = 1;
     int gameWinner = 0;
-    float tennisBallSpeed = 0.2f;
+    float tennisBallSpeed = 0.15f;
     float tennisBallY = Random::Float(-0.13f, -0.05f);
     string characterName = "dash";
     string randomCPUName = "dash";
@@ -824,9 +824,9 @@ int main()
                             sprites["joeRacket"].setRotation(60.f);
                         }
                         else if (characterSelected == 6) {
-                            sprites["janePlayer"].setPosition(750.f, 385.f);
+                            sprites["janePlayer"].setPosition(750.f, 235.f);
                             sprites["janePlayer"].setRotation(0.f);
-                            sprites["janeRacket"].setPosition(785.f, 390.f);
+                            sprites["janeRacket"].setPosition(785.f, 240.f);
                             sprites["janeRacket"].setRotation(60.f);
                         }
                         randomCPU = Random::Int(1, 6);
@@ -885,7 +885,7 @@ int main()
                         sprites["characterRacketHitZone"].setPosition(720.f, 175.f);
                         sprites["randomCPURacketHitZone"].setPosition(118.f, 433.f);
                         sprites["tennisBall"].setPosition(150.f, 450.f);
-                        tennisBallSpeed = 0.2f;
+                        tennisBallSpeed = 0.15f;
                         tennisBallY = Random::Float(-0.13f, -0.05f);
                         playerScoreNum = 0;
                         randomCPUScoreNum = 0;
@@ -894,7 +894,94 @@ int main()
                     }
                     if (playAgainButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && gameWinner > 0) {
                         magicButtonClick.play();
-
+                        gameWinner = 0;
+                        isGameScreen = true;
+                        isSwung = false;
+                        isSwingingCPU = false;
+                        pointNumber = 1;
+                        sprites["characterRacketHitZone"].setPosition(720.f, 175.f);
+                        sprites["randomCPURacketHitZone"].setPosition(118.f, 433.f);
+                        sprites["tennisBall"].setPosition(150.f, 450.f);
+                        tennisBallSpeed = 0.15f;
+                        tennisBallY = Random::Float(-0.13f, -0.05f);
+                        playerScoreNum = 0;
+                        randomCPUScoreNum = 0;
+                        texts["playerScore"].setString("0" + to_string(playerScoreNum));
+                        texts["randomCPUScore"].setString("0" + to_string(randomCPUScoreNum));
+                        gameStartTime = chrono::high_resolution_clock::now();
+                        arcadeCountdown.play();
+                        if (characterSelected == 1) {
+                            sprites["dashPlayer"].setPosition(750.f, 235.f);
+                            sprites["dashPlayer"].setRotation(0.f);
+                            sprites["dashRacket"].setPosition(785.f, 240.f);
+                            sprites["dashRacket"].setRotation(60.f);
+                        }
+                        else if (characterSelected == 2) {
+                            sprites["swiftPlayer"].setPosition(750.f, 235.f);
+                            sprites["swiftPlayer"].setRotation(0.f);
+                            sprites["swiftRacket"].setPosition(785.f, 240.f);
+                            sprites["swiftRacket"].setRotation(60.f);
+                        }
+                        else if (characterSelected == 3) {
+                            sprites["heftyPlayer"].setPosition(750.f, 235.f);
+                            sprites["heftyPlayer"].setRotation(0.f);
+                            sprites["heftyRacket"].setPosition(785.f, 240.f);
+                            sprites["heftyRacket"].setRotation(60.f);
+                        }
+                        else if (characterSelected == 4) {
+                            sprites["athenaPlayer"].setPosition(750.f, 235.f);
+                            sprites["athenaPlayer"].setRotation(0.f);
+                            sprites["athenaRacket"].setPosition(785.f, 240.f);
+                            sprites["athenaRacket"].setRotation(60.f);
+                        }
+                        else if (characterSelected == 5) {
+                            sprites["joePlayer"].setPosition(750.f, 235.f);
+                            sprites["joePlayer"].setRotation(0.f);
+                            sprites["joeRacket"].setPosition(785.f, 240.f);
+                            sprites["joeRacket"].setRotation(60.f);
+                        }
+                        else if (characterSelected == 6) {
+                            sprites["janePlayer"].setPosition(750.f, 235.f);
+                            sprites["janePlayer"].setRotation(0.f);
+                            sprites["janeRacket"].setPosition(785.f, 240.f);
+                            sprites["janeRacket"].setRotation(60.f);
+                        }
+                        if (randomCPU == 1) {
+                            sprites["dashPlayer"].setPosition(150.f, 435.f);
+                            sprites["dashPlayer"].setRotation(180.f);
+                            sprites["dashRacket"].setPosition(116.f, 430.f);
+                            sprites["dashRacket"].setRotation(240.f);
+                        }
+                        else if (randomCPU == 2) {
+                            sprites["swiftPlayer"].setPosition(150.f, 435.f);
+                            sprites["swiftPlayer"].setRotation(180.f);
+                            sprites["swiftRacket"].setPosition(116.f, 430.f);
+                            sprites["swiftRacket"].setRotation(240.f);
+                        }
+                        else if (randomCPU == 3) {
+                            sprites["heftyPlayer"].setPosition(150.f, 435.f);
+                            sprites["heftyPlayer"].setRotation(180.f);
+                            sprites["heftyRacket"].setPosition(116.f, 430.f);
+                            sprites["heftyRacket"].setRotation(240.f);
+                        }
+                        else if (randomCPU == 4) {
+                            sprites["athenaPlayer"].setPosition(150.f, 435.f);
+                            sprites["athenaPlayer"].setRotation(180.f);
+                            sprites["athenaRacket"].setPosition(116.f, 430.f);
+                            sprites["athenaRacket"].setRotation(240.f);
+                        }
+                        else if (randomCPU == 5) {
+                            sprites["joePlayer"].setPosition(150.f, 435.f);
+                            sprites["joePlayer"].setRotation(180.f);
+                            sprites["joeRacket"].setPosition(116.f, 430.f);
+                            sprites["joeRacket"].setRotation(240.f);
+                        }
+                        else if (randomCPU == 6) {
+                            sprites["janePlayer"].setPosition(150.f, 435.f);
+                            sprites["janePlayer"].setRotation(180.f);
+                            sprites["janeRacket"].setPosition(116.f, 430.f);
+                            sprites["janeRacket"].setRotation(240.f);
+                        }
                     }
                 }
             }
@@ -960,8 +1047,8 @@ int main()
                 if (sprites["tennisBall"].getPosition().x >= 850.f) {
                     sprites["tennisBall"].setPosition(450.f, 700.f);
                     randomCPUScoreNum++;
-                    tennisBallSpeed = 0;
-                    tennisBallY = 0;
+                    tennisBallSpeed = 0.f;
+                    tennisBallY = 0.f;
                     if (randomCPUScoreNum < 10)
                         texts["randomCPUScore"].setString("0" + to_string(randomCPUScoreNum));
                     else
@@ -974,8 +1061,8 @@ int main()
                 if (sprites["tennisBall"].getPosition().x <= 130.f) {
                     sprites["tennisBall"].setPosition(450.f, 700.f);
                     playerScoreNum++;
-                    tennisBallSpeed = 0;
-                    tennisBallY = 0;
+                    tennisBallSpeed = 0.f;
+                    tennisBallY = 0.f;
                     if (playerScoreNum < 10)
                         texts["playerScore"].setString("0" + to_string(playerScoreNum));
                     else
