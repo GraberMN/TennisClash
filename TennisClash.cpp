@@ -45,6 +45,7 @@ void DrawRulesPage(sf::RenderWindow& window, bool& isMuted, unordered_map<string
     window.draw(sprites["pageBackground"]);
     window.draw(sprites["closeButton"]);
     window.draw(texts["rulesTitle"]);
+    window.draw(texts["rulesText"]);
     DrawMuted(window, isMuted, sprites);
 }
 
@@ -530,6 +531,13 @@ int main()
     rulesTitle.setFillColor(sf::Color::Black);
     rulesTitle.setPosition(165.f, 100.f);
 
+    sf::Text rulesText;
+    rulesText.setFont(FontManager::GetFont("aileronRegular"));
+    rulesText.setString("Press the arrow keys to move, and the spacebar to swing.\n\nYour opponent will always change sides and serve diagonally\nat the start of each point. Then, anywhere is fair game.\n\nDifferent characters have unique stats (shot power and\nfoot speed), so choose wisely.\n\nOnly forehands (right of you) are allowed, and winners are key.\n\nThe default score to win is 7 but can be changed in Options.\nCheck out Options for more incredible customization.\n\nSo get out there and show everyone who the King\nof the Court really is!");
+    rulesText.setCharacterSize(20);
+    rulesText.setFillColor(sf::Color::Black);
+    rulesText.setPosition(165.f, 160.f);
+
     sf::Text optionsTitle;
     optionsTitle.setFont(FontManager::GetFont("yosterIsland"));
     optionsTitle.setString("Options");
@@ -665,6 +673,7 @@ int main()
 
     unordered_map<string, sf::Text> texts;
     texts.emplace("rulesTitle", rulesTitle);
+    texts.emplace("rulesText", rulesText);
     texts.emplace("optionsTitle", optionsTitle);
     texts.emplace("creditsTitle", creditsTitle);
     texts.emplace("playerScore", playerScore);
