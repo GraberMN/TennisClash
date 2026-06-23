@@ -64,6 +64,7 @@ void DrawCreditsPage(sf::RenderWindow& window, bool& isMuted, unordered_map<stri
     window.draw(sprites["pageBackground"]);
     window.draw(sprites["closeButton"]);
     window.draw(texts["creditsTitle"]);
+    window.draw(texts["creditsText"]);
     DrawMuted(window, isMuted, sprites);
 }
 
@@ -552,6 +553,13 @@ int main()
     creditsTitle.setFillColor(sf::Color::Black);
     creditsTitle.setPosition(165.f, 100.f);
 
+    sf::Text creditsText;
+    creditsText.setFont(FontManager::GetFont("aileronRegular"));
+    creditsText.setString("                           Ideas, Programming, and Game Design\n                                                      Mateo Graber\n\n                                                       Visual Assets\n                 Mateo Graber            Pixabay            Magnific (Freepik)\n\n                                                             Audio\n                                           Pixabay             Mateo Graber\n\n                                                             Fonts\n                                      FontSpace            1001 Fonts\n\n                                                    Special Thanks\n                        Photopea          FreeConvert          ImageColorPicker");
+    creditsText.setCharacterSize(20);
+    creditsText.setFillColor(sf::Color::Black);
+    creditsText.setPosition(165.f, 160.f);
+
     int winCondition = 7;
     sf::Text firstToText;
     firstToText.setFont(FontManager::GetFont("komikaAxis"));
@@ -676,6 +684,7 @@ int main()
     texts.emplace("rulesText", rulesText);
     texts.emplace("optionsTitle", optionsTitle);
     texts.emplace("creditsTitle", creditsTitle);
+    texts.emplace("creditsText", creditsText);
     texts.emplace("playerScore", playerScore);
     texts.emplace("randomCPUScore", randomCPUScore);
     texts.emplace("firstToText", firstToText);
