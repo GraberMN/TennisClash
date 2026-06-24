@@ -29,8 +29,17 @@ void HandleBackgroundMusic(bool& isMuted, sf::Music& backgroundMusic) {
         backgroundMusic.play();
 }
 
-void DrawTitleScreen(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites) {
-    window.draw(sprites["grassCourt"]);
+void DrawCorrectCourt(sf::RenderWindow& window, int& courtSelected, unordered_map<string, sf::Sprite>& sprites) {
+    if (courtSelected == 1)
+        window.draw(sprites["grassCourt"]);
+    else if (courtSelected == 2)
+        window.draw(sprites["clayCourt"]);
+    else if (courtSelected == 3)
+        window.draw(sprites["hardCourt"]);
+}
+
+void DrawTitleScreen(sf::RenderWindow& window, bool& isMuted, int& courtSelected, unordered_map<string, sf::Sprite>& sprites) {
+    DrawCorrectCourt(window, courtSelected, sprites);
     window.draw(sprites["title"]);
     window.draw(sprites["playButton"]);
     window.draw(sprites["rulesButton"]);
@@ -39,8 +48,8 @@ void DrawTitleScreen(sf::RenderWindow& window, bool& isMuted, unordered_map<stri
     DrawMuted(window, isMuted, sprites);
 }
 
-void DrawRulesPage(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
-    window.draw(sprites["grassCourt"]);
+void DrawRulesPage(sf::RenderWindow& window, bool& isMuted, int& courtSelected, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
+    DrawCorrectCourt(window, courtSelected, sprites);
     window.draw(sprites["title"]);
     window.draw(sprites["pageBackground"]);
     window.draw(sprites["closeButton"]);
@@ -49,17 +58,23 @@ void DrawRulesPage(sf::RenderWindow& window, bool& isMuted, unordered_map<string
     DrawMuted(window, isMuted, sprites);
 }
 
-void DrawOptionsPage(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
-    window.draw(sprites["grassCourt"]);
+void DrawOptionsPage(sf::RenderWindow& window, bool& isMuted, int& courtSelected, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
+    DrawCorrectCourt(window, courtSelected, sprites);
     window.draw(sprites["title"]);
     window.draw(sprites["pageBackground"]);
     window.draw(sprites["closeButton"]);
     window.draw(texts["optionsTitle"]);
+    window.draw(texts["optionsCourt"]);
+    window.draw(texts["optionsCourtChoices"]);
+    window.draw(sprites["courtRadio1"]);
+    window.draw(sprites["courtRadio2"]);
+    window.draw(sprites["courtRadio3"]);
+    window.draw(sprites["courtRadioSelected"]);
     DrawMuted(window, isMuted, sprites);
 }
 
-void DrawCreditsPage(sf::RenderWindow& window, bool& isMuted, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
-    window.draw(sprites["grassCourt"]);
+void DrawCreditsPage(sf::RenderWindow& window, bool& isMuted, int& courtSelected, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
+    DrawCorrectCourt(window, courtSelected, sprites);
     window.draw(sprites["title"]);
     window.draw(sprites["pageBackground"]);
     window.draw(sprites["closeButton"]);
@@ -219,8 +234,8 @@ void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, string& randomCPUNa
     window.draw(sprites["randomCPURacketHitZone"]);
 }
 
-void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, string& characterName, string& randomCPUName, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
-    window.draw(sprites["grassCourt"]);
+void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, int& courtSelected, string& characterName, string& randomCPUName, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
+    DrawCorrectCourt(window, courtSelected, sprites);
     DrawCorrectCharacter(window, characterSelected, characterName, sprites);
     DrawRandomCPU(window, randomCPU, randomCPUName, sprites);
     window.draw(texts["playerScore"]);
@@ -361,6 +376,8 @@ int main()
     sf::Sprite creditsButton(TextureManager::GetTexture("creditsButton"));
     creditsButton.setPosition(0.f, 565.f);
     sf::Sprite grassCourt(TextureManager::GetTexture("grassCourt"));
+    sf::Sprite clayCourt(TextureManager::GetTexture("clayCourt"));
+    sf::Sprite hardCourt(TextureManager::GetTexture("hardCourt"));
     sf::Sprite pageBackground(TextureManager::GetTexture("pageBackground"));
     pageBackground.setPosition(150.f, 100.f);
     sf::Sprite closeButton(TextureManager::GetTexture("closeButton"));
@@ -506,6 +523,14 @@ int main()
     titleScreenButton.setPosition(25.f, 475.f);
     sf::Sprite playAgainButton(TextureManager::GetTexture("playAgainButton"));
     playAgainButton.setPosition(625.f, 475.f);
+    sf::Sprite courtRadio1(TextureManager::GetTexture("radioButtonNo"));
+    courtRadio1.setPosition(175.f, 240.f);
+    sf::Sprite courtRadio2(TextureManager::GetTexture("radioButtonNo"));
+    courtRadio2.setPosition(325.f, 240.f);
+    sf::Sprite courtRadio3(TextureManager::GetTexture("radioButtonNo"));
+    courtRadio3.setPosition(475.f, 240.f);
+    sf::Sprite courtRadioSelected(TextureManager::GetTexture("radioButtonYes"));
+    courtRadioSelected.setPosition(175.f, 240.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -545,6 +570,22 @@ int main()
     optionsTitle.setCharacterSize(50);
     optionsTitle.setFillColor(sf::Color::Black);
     optionsTitle.setPosition(165.f, 100.f);
+
+
+
+    sf::Text optionsCourt;
+    optionsCourt.setFont(FontManager::GetFont("aileronRegular"));
+    optionsCourt.setString("Court");
+    optionsCourt.setCharacterSize(25);
+    optionsCourt.setFillColor(sf::Color::Black);
+    optionsCourt.setPosition(170.f, 205.f);
+
+    sf::Text optionsCourtChoices;
+    optionsCourtChoices.setFont(FontManager::GetFont("aileronRegular"));
+    optionsCourtChoices.setString("Grass                         Clay                            Hard");
+    optionsCourtChoices.setCharacterSize(20);
+    optionsCourtChoices.setFillColor(sf::Color::Black);
+    optionsCourtChoices.setPosition(195.f, 235.f);
 
     sf::Text creditsTitle;
     creditsTitle.setFont(FontManager::GetFont("yosterIsland"));
@@ -602,6 +643,8 @@ int main()
     sprites.emplace("mutedButton", mutedButton);
     sprites.emplace("creditsButton", creditsButton);
     sprites.emplace("grassCourt", grassCourt);
+    sprites.emplace("clayCourt", clayCourt);
+    sprites.emplace("hardCourt", hardCourt);
     sprites.emplace("pageBackground", pageBackground);
     sprites.emplace("closeButton", closeButton);
     sprites.emplace("characterSelect", characterSelect);
@@ -667,6 +710,10 @@ int main()
     sprites.emplace("lossScreen", lossScreen);
     sprites.emplace("titleScreenButton", titleScreenButton);
     sprites.emplace("playAgainButton", playAgainButton);
+    sprites.emplace("courtRadio1", courtRadio1);
+    sprites.emplace("courtRadio2", courtRadio2);
+    sprites.emplace("courtRadio3", courtRadio3);
+    sprites.emplace("courtRadioSelected", courtRadioSelected);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -683,6 +730,8 @@ int main()
     texts.emplace("rulesTitle", rulesTitle);
     texts.emplace("rulesText", rulesText);
     texts.emplace("optionsTitle", optionsTitle);
+    texts.emplace("optionsCourt", optionsCourt);
+    texts.emplace("optionsCourtChoices", optionsCourtChoices);
     texts.emplace("creditsTitle", creditsTitle);
     texts.emplace("creditsText", creditsText);
     texts.emplace("playerScore", playerScore);
@@ -721,6 +770,7 @@ int main()
     int randomCPU = characterSelected;
     int pointNumber = 1;
     int gameWinner = 0;
+    int courtSelected = 1;
     float tennisBallSpeed = 0.15f;
     float tennisBallY = Random::Float(-0.13f, -0.05f);
     string characterName = "dash";
@@ -769,6 +819,18 @@ int main()
                         isTitleScreen = false;
                         isRulesPage = false;
                         isOptionsPage = false;
+                    }
+                    if (courtRadio1.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sprites["courtRadioSelected"].setPosition(175.f, 240.f);
+                        courtSelected = 1;
+                    }
+                    if (courtRadio2.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sprites["courtRadioSelected"].setPosition(325.f, 240.f);
+                        courtSelected = 2;
+                    }
+                    if (courtRadio3.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sprites["courtRadioSelected"].setPosition(475.f, 240.f);
+                        courtSelected = 3;
                     }
                     if (closeButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isRulesPage || isOptionsPage || isCreditsPage)) {
                         isTitleScreen = true;
@@ -1021,13 +1083,13 @@ int main()
 
         window.clear();
         if (isTitleScreen)
-            DrawTitleScreen(window, isMuted, sprites);
+            DrawTitleScreen(window, isMuted, courtSelected, sprites);
         if (isRulesPage)
-            DrawRulesPage(window, isMuted, sprites, texts);
+            DrawRulesPage(window, isMuted, courtSelected, sprites, texts);
         if (isOptionsPage)
-            DrawOptionsPage(window, isMuted, sprites, texts);
+            DrawOptionsPage(window, isMuted, courtSelected, sprites, texts);
         if (isCreditsPage)
-            DrawCreditsPage(window, isMuted, sprites, texts);
+            DrawCreditsPage(window, isMuted, courtSelected, sprites, texts);
         if (isCharacterSelectScreen)
             DrawCharacterSelectScreen(window, isMuted, characterSelected, sprites);
         if (isGameScreen) {
@@ -1035,7 +1097,7 @@ int main()
             MoveRandomCPU(randomCPUName, sprites, characterSpeeds);
             chrono::time_point<chrono::high_resolution_clock> currentTime = chrono::high_resolution_clock::now();
             chrono::duration<double> inGameTime = currentTime - gameStartTime;
-            DrawGameScreen(window, isMuted, characterSelected, randomCPU, characterName, randomCPUName, sprites, texts);
+            DrawGameScreen(window, isMuted, characterSelected, randomCPU, courtSelected, characterName, randomCPUName, sprites, texts);
             if (inGameTime.count() <= 3.0) {
                 window.draw(firstToText);
                 if (inGameTime.count() <= 1.0)
