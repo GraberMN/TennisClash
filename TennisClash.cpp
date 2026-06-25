@@ -29,6 +29,19 @@ void HandleBackgroundMusic(bool& isMuted, sf::Music& backgroundMusic) {
         backgroundMusic.play();
 }
 
+void ChangeVolume(float& volumeSelected, sf::Music& backgroundMusic, unordered_map<string, sf::Sound>& sounds) {
+    backgroundMusic.setVolume(volumeSelected);
+    sounds["magicButtonClick"].setVolume(volumeSelected);
+    sounds["characterSelectClick"].setVolume(volumeSelected);
+    sounds["arcadeCountdown"].setVolume(volumeSelected);
+    sounds["racketSwing"].setVolume(volumeSelected);
+    sounds["tennisBallHit"].setVolume(volumeSelected);
+    sounds["niceShot"].setVolume(volumeSelected);
+    sounds["goodTry"].setVolume(volumeSelected);
+    sounds["winSound"].setVolume(volumeSelected);
+    sounds["lossSound"].setVolume(volumeSelected);
+}
+
 void DrawCorrectCourt(sf::RenderWindow& window, int& courtSelected, unordered_map<string, sf::Sprite>& sprites) {
     if (courtSelected == 1)
         window.draw(sprites["grassCourt"]);
@@ -64,6 +77,14 @@ void DrawOptionsPage(sf::RenderWindow& window, bool& isMuted, int& courtSelected
     window.draw(sprites["pageBackground"]);
     window.draw(sprites["closeButton"]);
     window.draw(texts["optionsTitle"]);
+    window.draw(texts["optionsVolume"]);
+    window.draw(texts["optionsVolumeChoices"]);
+    window.draw(sprites["volumeRadio1"]);
+    window.draw(sprites["volumeRadio2"]);
+    window.draw(sprites["volumeRadio3"]);
+    window.draw(sprites["volumeRadio4"]);
+    window.draw(sprites["volumeRadio5"]);
+    window.draw(sprites["volumeRadioSelected"]);
     window.draw(texts["optionsCourt"]);
     window.draw(texts["optionsCourtChoices"]);
     window.draw(sprites["courtRadio1"]);
@@ -523,14 +544,26 @@ int main()
     titleScreenButton.setPosition(25.f, 475.f);
     sf::Sprite playAgainButton(TextureManager::GetTexture("playAgainButton"));
     playAgainButton.setPosition(625.f, 475.f);
+    sf::Sprite volumeRadio1(TextureManager::GetTexture("radioButtonNo"));
+    volumeRadio1.setPosition(175.f, 195.f);
+    sf::Sprite volumeRadio2(TextureManager::GetTexture("radioButtonNo"));
+    volumeRadio2.setPosition(270.f, 195.f);
+    sf::Sprite volumeRadio3(TextureManager::GetTexture("radioButtonNo"));
+    volumeRadio3.setPosition(389.f, 195.f);
+    sf::Sprite volumeRadio4(TextureManager::GetTexture("radioButtonNo"));
+    volumeRadio4.setPosition(509.f, 195.f);
+    sf::Sprite volumeRadio5(TextureManager::GetTexture("radioButtonNo"));
+    volumeRadio5.setPosition(630.f, 195.f);
+    sf::Sprite volumeRadioSelected(TextureManager::GetTexture("radioButtonYes"));
+    volumeRadioSelected.setPosition(630.f, 195.f);
     sf::Sprite courtRadio1(TextureManager::GetTexture("radioButtonNo"));
-    courtRadio1.setPosition(175.f, 240.f);
+    courtRadio1.setPosition(175.f, 260.f);
     sf::Sprite courtRadio2(TextureManager::GetTexture("radioButtonNo"));
-    courtRadio2.setPosition(325.f, 240.f);
+    courtRadio2.setPosition(325.f, 260.f);
     sf::Sprite courtRadio3(TextureManager::GetTexture("radioButtonNo"));
-    courtRadio3.setPosition(475.f, 240.f);
+    courtRadio3.setPosition(475.f, 260.f);
     sf::Sprite courtRadioSelected(TextureManager::GetTexture("radioButtonYes"));
-    courtRadioSelected.setPosition(175.f, 240.f);
+    courtRadioSelected.setPosition(175.f, 260.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -571,21 +604,33 @@ int main()
     optionsTitle.setFillColor(sf::Color::Black);
     optionsTitle.setPosition(165.f, 100.f);
 
+    sf::Text optionsVolume;
+    optionsVolume.setFont(FontManager::GetFont("aileronRegular"));
+    optionsVolume.setString("Volume");
+    optionsVolume.setCharacterSize(25);
+    optionsVolume.setFillColor(sf::Color::Black);
+    optionsVolume.setPosition(170.f, 160.f);
 
+    sf::Text optionsVolumeChoices;
+    optionsVolumeChoices.setFont(FontManager::GetFont("aileronRegular"));
+    optionsVolumeChoices.setString("0%                 25%                    50%                    75%                    100%");
+    optionsVolumeChoices.setCharacterSize(20);
+    optionsVolumeChoices.setFillColor(sf::Color::Black);
+    optionsVolumeChoices.setPosition(195.f, 190.f);
 
     sf::Text optionsCourt;
     optionsCourt.setFont(FontManager::GetFont("aileronRegular"));
     optionsCourt.setString("Court");
     optionsCourt.setCharacterSize(25);
     optionsCourt.setFillColor(sf::Color::Black);
-    optionsCourt.setPosition(170.f, 205.f);
+    optionsCourt.setPosition(170.f, 225.f);
 
     sf::Text optionsCourtChoices;
     optionsCourtChoices.setFont(FontManager::GetFont("aileronRegular"));
     optionsCourtChoices.setString("Grass                         Clay                            Hard");
     optionsCourtChoices.setCharacterSize(20);
     optionsCourtChoices.setFillColor(sf::Color::Black);
-    optionsCourtChoices.setPosition(195.f, 235.f);
+    optionsCourtChoices.setPosition(195.f, 255.f);
 
     sf::Text creditsTitle;
     creditsTitle.setFont(FontManager::GetFont("yosterIsland"));
@@ -710,6 +755,12 @@ int main()
     sprites.emplace("lossScreen", lossScreen);
     sprites.emplace("titleScreenButton", titleScreenButton);
     sprites.emplace("playAgainButton", playAgainButton);
+    sprites.emplace("volumeRadio1", volumeRadio1);
+    sprites.emplace("volumeRadio2", volumeRadio2);
+    sprites.emplace("volumeRadio3", volumeRadio3);
+    sprites.emplace("volumeRadio4", volumeRadio4);
+    sprites.emplace("volumeRadio5", volumeRadio5);
+    sprites.emplace("volumeRadioSelected", volumeRadioSelected);
     sprites.emplace("courtRadio1", courtRadio1);
     sprites.emplace("courtRadio2", courtRadio2);
     sprites.emplace("courtRadio3", courtRadio3);
@@ -730,6 +781,8 @@ int main()
     texts.emplace("rulesTitle", rulesTitle);
     texts.emplace("rulesText", rulesText);
     texts.emplace("optionsTitle", optionsTitle);
+    texts.emplace("optionsVolume", optionsVolume);
+    texts.emplace("optionsVolumeChoices", optionsVolumeChoices);
     texts.emplace("optionsCourt", optionsCourt);
     texts.emplace("optionsCourtChoices", optionsCourtChoices);
     texts.emplace("creditsTitle", creditsTitle);
@@ -771,6 +824,7 @@ int main()
     int pointNumber = 1;
     int gameWinner = 0;
     int courtSelected = 1;
+    float volumeSelected = 100.f;
     float tennisBallSpeed = 0.15f;
     float tennisBallY = Random::Float(-0.13f, -0.05f);
     string characterName = "dash";
@@ -794,42 +848,67 @@ int main()
                         HandleBackgroundMusic(isMuted, backgroundMusic);
                     }
                     if (playButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isTitleScreen) {
-                        magicButtonClick.play();
+                        sounds["magicButtonClick"].play();
                         isCharacterSelectScreen = true;
                         isTitleScreen = false;
                         continue;
                     }
                     if (rulesButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isTitleScreen) {
-                        magicButtonClick.play();
+                        sounds["magicButtonClick"].play();
                         isRulesPage = true;
                         isTitleScreen = false;
                         isOptionsPage = false;
                         isCreditsPage = false;
                     }
                     if (optionsButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isTitleScreen) {
-                        magicButtonClick.play();
+                        sounds["magicButtonClick"].play();
                         isOptionsPage = true;
                         isTitleScreen = false;
                         isRulesPage = false;
                         isCreditsPage = false;
                     }
                     if (creditsButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isTitleScreen) {
-                        magicButtonClick.play();
+                        sounds["magicButtonClick"].play();
                         isCreditsPage = true;
                         isTitleScreen = false;
                         isRulesPage = false;
                         isOptionsPage = false;
                     }
+                    if (volumeRadio1.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sprites["volumeRadioSelected"].setPosition(175.f, 195.f);
+                        volumeSelected = 0.f;
+                        ChangeVolume(volumeSelected, backgroundMusic, sounds);
+                    }
+                    if (volumeRadio2.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sprites["volumeRadioSelected"].setPosition(270.f, 195.f);
+                        volumeSelected = 25.f;
+                        ChangeVolume(volumeSelected, backgroundMusic, sounds);
+                    }
+                    if (volumeRadio3.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sprites["volumeRadioSelected"].setPosition(389.f, 195.f);
+                        volumeSelected = 50.f;
+                        ChangeVolume(volumeSelected, backgroundMusic, sounds);
+                    }
+                    if (volumeRadio4.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sprites["volumeRadioSelected"].setPosition(509.f, 195.f);
+                        volumeSelected = 75.f;
+                        ChangeVolume(volumeSelected, backgroundMusic, sounds);
+                    }
+                    if (volumeRadio5.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sprites["volumeRadioSelected"].setPosition(630.f, 195.f);
+                        volumeSelected = 100.f;
+                        ChangeVolume(volumeSelected, backgroundMusic, sounds);
+                    }
                     if (courtRadio1.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
-                        sprites["courtRadioSelected"].setPosition(175.f, 240.f);
+                        sprites["courtRadioSelected"].setPosition(175.f, 260.f);
                         courtSelected = 1;
                     }
                     if (courtRadio2.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
-                        sprites["courtRadioSelected"].setPosition(325.f, 240.f);
+                        sprites["courtRadioSelected"].setPosition(325.f, 260.f);
                         courtSelected = 2;
                     }
                     if (courtRadio3.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
-                        sprites["courtRadioSelected"].setPosition(475.f, 240.f);
+                        sprites["courtRadioSelected"].setPosition(475.f, 260.f);
                         courtSelected = 3;
                     }
                     if (closeButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isRulesPage || isOptionsPage || isCreditsPage)) {
@@ -839,32 +918,32 @@ int main()
                         isCreditsPage = false;
                     }
                     if (backButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-                        magicButtonClick.play();
+                        sounds["magicButtonClick"].play();
                         isTitleScreen = true;
                         isCharacterSelectScreen = false;
                     }
                     if (dashCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-                        characterSelectClick.play();
+                        sounds["characterSelectClick"].play();
                         characterSelected = 1;
                     }
                     if (swiftCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-                        characterSelectClick.play();
+                        sounds["characterSelectClick"].play();
                         characterSelected = 2;
                     }
                     if (heftyCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-                        characterSelectClick.play();
+                        sounds["characterSelectClick"].play();
                         characterSelected = 3;
                     }
                     if (athenaCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-                        characterSelectClick.play();
+                        sounds["characterSelectClick"].play();
                         characterSelected = 4;
                     }
                     if (joeCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-                        characterSelectClick.play();
+                        sounds["characterSelectClick"].play();
                         characterSelected = 5;
                     }
                     if (janeCharacterModel.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
-                        characterSelectClick.play();
+                        sounds["characterSelectClick"].play();
                         characterSelected = 6;
                     }
                     if (okButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
@@ -872,7 +951,7 @@ int main()
                         isCharacterSelectScreen = false;
                         gameStartTime = chrono::high_resolution_clock::now();
                         backgroundMusic.stop();
-                        arcadeCountdown.play();
+                        sounds["arcadeCountdown"].play();
                         if (characterSelected == 1) {
                             sprites["dashPlayer"].setPosition(750.f, 235.f);
                             sprites["dashPlayer"].setRotation(0.f);
@@ -951,7 +1030,7 @@ int main()
                         }
                     }
                     if (titleScreenButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && gameWinner > 0) {
-                        magicButtonClick.play();
+                        sounds["magicButtonClick"].play();
                         gameWinner = 0;
                         isTitleScreen = true;
                         HandleBackgroundMusic(isMuted, backgroundMusic);
@@ -973,7 +1052,7 @@ int main()
                         texts["randomCPUScore"].setString("0" + to_string(randomCPUScoreNum));
                     }
                     if (playAgainButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && gameWinner > 0) {
-                        magicButtonClick.play();
+                        sounds["magicButtonClick"].play();
                         gameWinner = 0;
                         isGameScreen = true;
                         isSwung = false;
@@ -989,7 +1068,7 @@ int main()
                         texts["playerScore"].setString("0" + to_string(playerScoreNum));
                         texts["randomCPUScore"].setString("0" + to_string(randomCPUScoreNum));
                         gameStartTime = chrono::high_resolution_clock::now();
-                        arcadeCountdown.play();
+                        sounds["arcadeCountdown"].play();
                         if (characterSelected == 1) {
                             sprites["dashPlayer"].setPosition(750.f, 235.f);
                             sprites["dashPlayer"].setRotation(0.f);
@@ -1067,10 +1146,10 @@ int main()
             }
             else if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Space && isGameScreen) {
-                    racketSwing.play();
+                    sounds["racketSwing"].play();
                     CharacterSwing(characterName, isSwung, sprites);
                     if (sprites["tennisBall"].getGlobalBounds().intersects(sprites["characterRacketHitZone"].getGlobalBounds())) {
-                        tennisBallHit.play();
+                        sounds["tennisBallHit"].play();
                         tennisBallSpeed = characterPower[characterName] * -1.f;
                         if (sprites[characterName + "Player"].getPosition().y <= 312.f)
                             tennisBallY = Random::Float(0.0f, 0.13f);
@@ -1111,10 +1190,10 @@ int main()
                 sprites["tennisBall"].move(tennisBallSpeed, tennisBallY);
                 if (sprites["tennisBall"].getGlobalBounds().intersects(sprites["randomCPURacketHitZone"].getGlobalBounds()) && !isSwingingCPU) {
                     isSwingingCPU = true;
-                    racketSwing.play();
+                    sounds["racketSwing"].play();
                     thread randomCPUSwingT(RandomCPUSwing, ref(randomCPUName), ref(isSwingingCPU), ref(sprites));
                     randomCPUSwingT.detach();
-                    tennisBallHit.play();
+                    sounds["tennisBallHit"].play();
                     if (!isServe) {
                         tennisBallSpeed = characterPower[randomCPUName];
                         if (sprites[randomCPUName + "Player"].getPosition().y <= 312.f)
@@ -1135,7 +1214,7 @@ int main()
                         texts["randomCPUScore"].setString(to_string(randomCPUScoreNum));
                     pointNumber++;
                     window.draw(goodTryText);
-                    goodTry.play();
+                    sounds["goodTry"].play();
                     isNextPoint = true;
                 }
                 if (sprites["tennisBall"].getPosition().x <= 130.f) {
@@ -1149,7 +1228,7 @@ int main()
                         texts["playerScore"].setString(to_string(playerScoreNum));
                     pointNumber++;
                     window.draw(niceShotText);
-                    niceShot.play();
+                    sounds["niceShot"].play();
                     isNextPoint = true;
                 }
             }
