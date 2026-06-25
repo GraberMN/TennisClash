@@ -91,6 +91,13 @@ void DrawOptionsPage(sf::RenderWindow& window, bool& isMuted, int& courtSelected
     window.draw(sprites["courtRadio2"]);
     window.draw(sprites["courtRadio3"]);
     window.draw(sprites["courtRadioSelected"]);
+    window.draw(texts["optionsScoreToWin"]);
+    window.draw(texts["optionsScoreToWinChoices"]);
+    window.draw(sprites["scoreToWinRadio1"]);
+    window.draw(sprites["scoreToWinRadio2"]);
+    window.draw(sprites["scoreToWinRadio3"]);
+    window.draw(sprites["scoreToWinRadioSelected"]);
+
     DrawMuted(window, isMuted, sprites);
 }
 
@@ -564,6 +571,14 @@ int main()
     courtRadio3.setPosition(475.f, 260.f);
     sf::Sprite courtRadioSelected(TextureManager::GetTexture("radioButtonYes"));
     courtRadioSelected.setPosition(175.f, 260.f);
+    sf::Sprite scoreToWinRadio1(TextureManager::GetTexture("radioButtonNo"));
+    scoreToWinRadio1.setPosition(175.f, 325.f);
+    sf::Sprite scoreToWinRadio2(TextureManager::GetTexture("radioButtonNo"));
+    scoreToWinRadio2.setPosition(325.f, 325.f);
+    sf::Sprite scoreToWinRadio3(TextureManager::GetTexture("radioButtonNo"));
+    scoreToWinRadio3.setPosition(475.f, 325.f);
+    sf::Sprite scoreToWinRadioSelected(TextureManager::GetTexture("radioButtonYes"));
+    scoreToWinRadioSelected.setPosition(175.f, 325.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -631,6 +646,20 @@ int main()
     optionsCourtChoices.setCharacterSize(20);
     optionsCourtChoices.setFillColor(sf::Color::Black);
     optionsCourtChoices.setPosition(195.f, 255.f);
+
+    sf::Text optionsScoreToWin;
+    optionsScoreToWin.setFont(FontManager::GetFont("aileronRegular"));
+    optionsScoreToWin.setString("Score To Win");
+    optionsScoreToWin.setCharacterSize(25);
+    optionsScoreToWin.setFillColor(sf::Color::Black);
+    optionsScoreToWin.setPosition(170.f, 290.f);
+
+    sf::Text optionsScoreToWinChoices;
+    optionsScoreToWinChoices.setFont(FontManager::GetFont("aileronRegular"));
+    optionsScoreToWinChoices.setString("7                                  11                                 21");
+    optionsScoreToWinChoices.setCharacterSize(20);
+    optionsScoreToWinChoices.setFillColor(sf::Color::Black);
+    optionsScoreToWinChoices.setPosition(195.f, 320.f);
 
     sf::Text creditsTitle;
     creditsTitle.setFont(FontManager::GetFont("yosterIsland"));
@@ -765,6 +794,10 @@ int main()
     sprites.emplace("courtRadio2", courtRadio2);
     sprites.emplace("courtRadio3", courtRadio3);
     sprites.emplace("courtRadioSelected", courtRadioSelected);
+    sprites.emplace("scoreToWinRadio1", scoreToWinRadio1);
+    sprites.emplace("scoreToWinRadio2", scoreToWinRadio2);
+    sprites.emplace("scoreToWinRadio3", scoreToWinRadio3);
+    sprites.emplace("scoreToWinRadioSelected", scoreToWinRadioSelected);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -785,6 +818,8 @@ int main()
     texts.emplace("optionsVolumeChoices", optionsVolumeChoices);
     texts.emplace("optionsCourt", optionsCourt);
     texts.emplace("optionsCourtChoices", optionsCourtChoices);
+    texts.emplace("optionsScoreToWin", optionsScoreToWin);
+    texts.emplace("optionsScoreToWinChoices", optionsScoreToWinChoices);
     texts.emplace("creditsTitle", creditsTitle);
     texts.emplace("creditsText", creditsText);
     texts.emplace("playerScore", playerScore);
@@ -875,41 +910,67 @@ int main()
                         isOptionsPage = false;
                     }
                     if (volumeRadio1.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
                         sprites["volumeRadioSelected"].setPosition(175.f, 195.f);
                         volumeSelected = 0.f;
                         ChangeVolume(volumeSelected, backgroundMusic, sounds);
                     }
                     if (volumeRadio2.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
                         sprites["volumeRadioSelected"].setPosition(270.f, 195.f);
                         volumeSelected = 25.f;
                         ChangeVolume(volumeSelected, backgroundMusic, sounds);
                     }
                     if (volumeRadio3.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
                         sprites["volumeRadioSelected"].setPosition(389.f, 195.f);
                         volumeSelected = 50.f;
                         ChangeVolume(volumeSelected, backgroundMusic, sounds);
                     }
                     if (volumeRadio4.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
                         sprites["volumeRadioSelected"].setPosition(509.f, 195.f);
                         volumeSelected = 75.f;
                         ChangeVolume(volumeSelected, backgroundMusic, sounds);
                     }
                     if (volumeRadio5.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
                         sprites["volumeRadioSelected"].setPosition(630.f, 195.f);
                         volumeSelected = 100.f;
                         ChangeVolume(volumeSelected, backgroundMusic, sounds);
                     }
                     if (courtRadio1.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
                         sprites["courtRadioSelected"].setPosition(175.f, 260.f);
                         courtSelected = 1;
                     }
                     if (courtRadio2.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
                         sprites["courtRadioSelected"].setPosition(325.f, 260.f);
                         courtSelected = 2;
                     }
                     if (courtRadio3.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
                         sprites["courtRadioSelected"].setPosition(475.f, 260.f);
                         courtSelected = 3;
+                    }
+                    if (scoreToWinRadio1.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
+                        sprites["scoreToWinRadioSelected"].setPosition(175.f, 325.f);
+                        winCondition = 7;
+                        firstToText.setString("First to " + to_string(winCondition));
+                    }
+                    if (scoreToWinRadio2.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
+                        sprites["scoreToWinRadioSelected"].setPosition(325.f, 325.f);
+                        winCondition = 11;
+                        firstToText.setString("First to " + to_string(winCondition));
+                    }
+                    if (scoreToWinRadio3.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
+                        sprites["scoreToWinRadioSelected"].setPosition(475.f, 325.f);
+                        winCondition = 21;
+                        firstToText.setString("First to " + to_string(winCondition));
                     }
                     if (closeButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isRulesPage || isOptionsPage || isCreditsPage)) {
                         isTitleScreen = true;
