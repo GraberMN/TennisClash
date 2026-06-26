@@ -71,7 +71,7 @@ void DrawRulesPage(sf::RenderWindow& window, bool& isMuted, int& courtSelected, 
     DrawMuted(window, isMuted, sprites);
 }
 
-void DrawOptionsPage(sf::RenderWindow& window, bool& isMuted, int& courtSelected, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
+void DrawOptionsPage(sf::RenderWindow& window, bool& isMuted, bool& isRandomClicked, bool& isPreciseClicked, int& courtSelected, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
     DrawCorrectCourt(window, courtSelected, sprites);
     window.draw(sprites["title"]);
     window.draw(sprites["pageBackground"]);
@@ -97,7 +97,16 @@ void DrawOptionsPage(sf::RenderWindow& window, bool& isMuted, int& courtSelected
     window.draw(sprites["scoreToWinRadio2"]);
     window.draw(sprites["scoreToWinRadio3"]);
     window.draw(sprites["scoreToWinRadioSelected"]);
-
+    window.draw(texts["optionsHitMode"]);
+    window.draw(texts["optionsHitModeChoice1"]);
+    window.draw(texts["optionsHitModeChoice2"]);
+    window.draw(sprites["hitModeRadio1"]);
+    window.draw(sprites["hitModeRadio2"]);
+    window.draw(sprites["hitModeRadioSelected"]);
+    if (isRandomClicked) 
+        window.draw(sprites["randomMoreInfoBox"]);
+    if (isPreciseClicked)
+        window.draw(sprites["preciseMoreInfoBox"]);
     DrawMuted(window, isMuted, sprites);
 }
 
@@ -579,6 +588,16 @@ int main()
     scoreToWinRadio3.setPosition(475.f, 325.f);
     sf::Sprite scoreToWinRadioSelected(TextureManager::GetTexture("radioButtonYes"));
     scoreToWinRadioSelected.setPosition(175.f, 325.f);
+    sf::Sprite hitModeRadio1(TextureManager::GetTexture("radioButtonNo"));
+    hitModeRadio1.setPosition(175.f, 390.f);
+    sf::Sprite hitModeRadio2(TextureManager::GetTexture("radioButtonNo"));
+    hitModeRadio2.setPosition(405.f, 390.f);
+    sf::Sprite hitModeRadioSelected(TextureManager::GetTexture("radioButtonYes"));
+    hitModeRadioSelected.setPosition(175.f, 390.f);
+    sf::Sprite randomMoreInfoBox(TextureManager::GetTexture("randomMoreInfoBox"));
+    randomMoreInfoBox.setPosition(195.f, 385.f);
+    sf::Sprite preciseMoreInfoBox(TextureManager::GetTexture("preciseMoreInfoBox"));
+    preciseMoreInfoBox.setPosition(425.f, 385.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -660,6 +679,29 @@ int main()
     optionsScoreToWinChoices.setCharacterSize(20);
     optionsScoreToWinChoices.setFillColor(sf::Color::Black);
     optionsScoreToWinChoices.setPosition(195.f, 320.f);
+
+    sf::Text optionsHitMode;
+    optionsHitMode.setFont(FontManager::GetFont("aileronRegular"));
+    optionsHitMode.setString("Hit Mode");
+    optionsHitMode.setCharacterSize(25);
+    optionsHitMode.setFillColor(sf::Color::Black);
+    optionsHitMode.setPosition(170.f, 355.f);
+
+    sf::Text optionsHitModeChoice1;
+    optionsHitModeChoice1.setFont(FontManager::GetFont("aileronRegular"));
+    optionsHitModeChoice1.setStyle(sf::Text::Italic | sf::Text::Underlined);
+    optionsHitModeChoice1.setString("Random Shots");
+    optionsHitModeChoice1.setCharacterSize(20);
+    optionsHitModeChoice1.setFillColor(sf::Color::Black);
+    optionsHitModeChoice1.setPosition(195.f, 385.f);
+
+    sf::Text optionsHitModeChoice2;
+    optionsHitModeChoice2.setFont(FontManager::GetFont("aileronRegular"));
+    optionsHitModeChoice2.setStyle(sf::Text::Italic | sf::Text::Underlined);
+    optionsHitModeChoice2.setString("Precise Shots");
+    optionsHitModeChoice2.setCharacterSize(20);
+    optionsHitModeChoice2.setFillColor(sf::Color::Black);
+    optionsHitModeChoice2.setPosition(425.f, 385.f);
 
     sf::Text creditsTitle;
     creditsTitle.setFont(FontManager::GetFont("yosterIsland"));
@@ -798,6 +840,11 @@ int main()
     sprites.emplace("scoreToWinRadio2", scoreToWinRadio2);
     sprites.emplace("scoreToWinRadio3", scoreToWinRadio3);
     sprites.emplace("scoreToWinRadioSelected", scoreToWinRadioSelected);
+    sprites.emplace("hitModeRadio1", hitModeRadio1);
+    sprites.emplace("hitModeRadio2", hitModeRadio2);
+    sprites.emplace("hitModeRadioSelected", hitModeRadioSelected);
+    sprites.emplace("randomMoreInfoBox", randomMoreInfoBox);
+    sprites.emplace("preciseMoreInfoBox", preciseMoreInfoBox);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -820,6 +867,9 @@ int main()
     texts.emplace("optionsCourtChoices", optionsCourtChoices);
     texts.emplace("optionsScoreToWin", optionsScoreToWin);
     texts.emplace("optionsScoreToWinChoices", optionsScoreToWinChoices);
+    texts.emplace("optionsHitMode", optionsHitMode);
+    texts.emplace("optionsHitModeChoice1", optionsHitModeChoice1);
+    texts.emplace("optionsHitModeChoice2", optionsHitModeChoice2);
     texts.emplace("creditsTitle", creditsTitle);
     texts.emplace("creditsText", creditsText);
     texts.emplace("playerScore", playerScore);
@@ -848,6 +898,8 @@ int main()
     bool isSwingingCPU = false;
     bool isServe = true;
     bool isNextPoint = false;
+    bool isRandomClicked = false;
+    bool isPreciseClicked = false;
     bool isTitleScreen = true;
     bool isRulesPage = false;
     bool isOptionsPage = false;
@@ -864,6 +916,7 @@ int main()
     float tennisBallY = Random::Float(-0.13f, -0.05f);
     string characterName = "dash";
     string randomCPUName = "dash";
+    string hitMode = "randomShots";
 
     chrono::time_point<chrono::high_resolution_clock> gameStartTime; // for keeping track of time passed
 
@@ -971,6 +1024,32 @@ int main()
                         sprites["scoreToWinRadioSelected"].setPosition(475.f, 325.f);
                         winCondition = 21;
                         firstToText.setString("First to " + to_string(winCondition));
+                    }
+                    if (optionsHitModeChoice1.getGlobalBounds().contains(mousePos.x, mousePos.y) && !isRandomClicked && isOptionsPage) {
+                        isRandomClicked = true;
+                        continue;
+                    }
+                    if (randomMoreInfoBox.getGlobalBounds().contains(mousePos.x, mousePos.y) && isRandomClicked && isOptionsPage) {
+                        isRandomClicked = false;
+                        continue;
+                    }
+                    if (optionsHitModeChoice2.getGlobalBounds().contains(mousePos.x, mousePos.y) && !isPreciseClicked && isOptionsPage) {
+                        isPreciseClicked = true;
+                        continue;
+                    }
+                    if (preciseMoreInfoBox.getGlobalBounds().contains(mousePos.x, mousePos.y) && isPreciseClicked && isOptionsPage) {
+                        isPreciseClicked = false;
+                        continue;
+                    }
+                    if (hitModeRadio1.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
+                        sprites["hitModeRadioSelected"].setPosition(175.f, 390.f);
+                        hitMode = "randomShots";
+                    }
+                    if (hitModeRadio2.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
+                        sprites["hitModeRadioSelected"].setPosition(405.f, 390.f);
+                        hitMode = "preciseShots";
                     }
                     if (closeButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isRulesPage || isOptionsPage || isCreditsPage)) {
                         isTitleScreen = true;
@@ -1212,10 +1291,24 @@ int main()
                     if (sprites["tennisBall"].getGlobalBounds().intersects(sprites["characterRacketHitZone"].getGlobalBounds())) {
                         sounds["tennisBallHit"].play();
                         tennisBallSpeed = characterPower[characterName] * -1.f;
-                        if (sprites[characterName + "Player"].getPosition().y <= 312.f)
-                            tennisBallY = Random::Float(0.0f, 0.13f);
-                        else
-                            tennisBallY = Random::Float(-0.13f, 0.0f);
+                        if (hitMode == "randomShots") {
+                            if (sprites[characterName + "Player"].getPosition().y <= 312.f)
+                                tennisBallY = Random::Float(0.0f, 0.13f);
+                            else
+                                tennisBallY = Random::Float(-0.13f, 0.0f);
+                        }
+                        else if (hitMode == "preciseShots") {
+                            if (sprites["tennisBall"].getPosition().y >= sprites["characterRacketHitZone"].getPosition().y - 20.f && sprites["tennisBall"].getPosition().y < sprites["characterRacketHitZone"].getPosition().y + 2.f)
+                                tennisBallY = -0.08f;
+                            if (sprites["tennisBall"].getPosition().y >= sprites["characterRacketHitZone"].getPosition().y + 2.f && sprites["tennisBall"].getPosition().y < sprites["characterRacketHitZone"].getPosition().y + 14.f)
+                                tennisBallY = -0.04f;
+                            if (sprites["tennisBall"].getPosition().y >= sprites["characterRacketHitZone"].getPosition().y + 14.f && sprites["tennisBall"].getPosition().y < sprites["characterRacketHitZone"].getPosition().y + 26.f)
+                                tennisBallY = 0.0f;
+                            if (sprites["tennisBall"].getPosition().y >= sprites["characterRacketHitZone"].getPosition().y + 26.f && sprites["tennisBall"].getPosition().y < sprites["characterRacketHitZone"].getPosition().y + 38.f)
+                                tennisBallY = 0.04f;
+                            if (sprites["tennisBall"].getPosition().y >= sprites["characterRacketHitZone"].getPosition().y + 38.f && sprites["tennisBall"].getPosition().y <= sprites["characterRacketHitZone"].getPosition().y + 60.f)
+                                tennisBallY = 0.08f;
+                        }
                     }
                 }
             }
@@ -1227,7 +1320,7 @@ int main()
         if (isRulesPage)
             DrawRulesPage(window, isMuted, courtSelected, sprites, texts);
         if (isOptionsPage)
-            DrawOptionsPage(window, isMuted, courtSelected, sprites, texts);
+            DrawOptionsPage(window, isMuted, isRandomClicked, isPreciseClicked, courtSelected, sprites, texts);
         if (isCreditsPage)
             DrawCreditsPage(window, isMuted, courtSelected, sprites, texts);
         if (isCharacterSelectScreen)
