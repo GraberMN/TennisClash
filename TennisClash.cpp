@@ -286,6 +286,23 @@ void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelec
     window.draw(texts["playerScore"]);
     window.draw(texts["randomCPUScore"]);
     window.draw(sprites["tennisBall"]);
+    window.draw(sprites["pauseButton"]);
+}
+
+void DrawPauseMenu(sf::RenderWindow& window, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
+    window.draw(sprites["pageBackground"]);
+    window.draw(texts["pauseMenuTitle"]);
+    window.draw(texts["optionsVolume"]);
+    window.draw(texts["optionsVolumeChoices"]);
+    window.draw(sprites["volumeRadio1"]);
+    window.draw(sprites["volumeRadio2"]);
+    window.draw(sprites["volumeRadio3"]);
+    window.draw(sprites["volumeRadio4"]);
+    window.draw(sprites["volumeRadio5"]);
+    window.draw(sprites["volumeRadioSelected"]);
+    window.draw(sprites["unpauseButton"]);
+    window.draw(texts["pauseMenuText"]);
+    window.draw(sprites["pauseTitleScreenButton"]);
 }
 
 void DrawWinScreen(sf::RenderWindow& window, unordered_map<string, sf::Sprite>& sprites) {
@@ -620,6 +637,13 @@ int main()
     hitZoneBorderRadio2.setPosition(405.f, 455.f);
     sf::Sprite hitZoneBorderRadioSelected(TextureManager::GetTexture("radioButtonYes"));
     hitZoneBorderRadioSelected.setPosition(175.f, 455.f);
+    sf::Sprite pauseButton(TextureManager::GetTexture("pauseButton"));
+    pauseButton.setPosition(840.f, 545.f);
+    sf::Sprite unpauseButton(TextureManager::GetTexture("unpauseButton"));
+    unpauseButton.setPosition(388.f, 235.f);
+    sf::Sprite pauseTitleScreenButton(TextureManager::GetTexture("titleScreenButton"));
+    pauseTitleScreenButton.setScale(0.8f, 0.8f);
+    pauseTitleScreenButton.setPosition(350.f, 445.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -785,6 +809,20 @@ int main()
     randomCPUScore.setFillColor(sf::Color::Green);
     randomCPUScore.setPosition(410.f, 40.f);
 
+    sf::Text pauseMenuTitle;
+    pauseMenuTitle.setFont(FontManager::GetFont("yosterIsland"));
+    pauseMenuTitle.setString("Pause Menu");
+    pauseMenuTitle.setCharacterSize(50);
+    pauseMenuTitle.setFillColor(sf::Color::Black);
+    pauseMenuTitle.setPosition(165.f, 100.f);
+
+    sf::Text pauseMenuText;
+    pauseMenuText.setFont(FontManager::GetFont("komikaAxis"));
+    pauseMenuText.setString("Press Play To Resume Game");
+    pauseMenuText.setCharacterSize(30);
+    pauseMenuText.setFillColor(sf::Color::Black);
+    pauseMenuText.setPosition(220.f, 380.f);
+
     // putting sprites, sounds, and texts into containers
     unordered_map<string, sf::Sprite> sprites;
     sprites.emplace("title", title);
@@ -885,6 +923,9 @@ int main()
     sprites.emplace("hitZoneBorderRadio1", hitZoneBorderRadio1);
     sprites.emplace("hitZoneBorderRadio2", hitZoneBorderRadio2);
     sprites.emplace("hitZoneBorderRadioSelected", hitZoneBorderRadioSelected);
+    sprites.emplace("pauseButton", pauseButton);
+    sprites.emplace("unpauseButton", unpauseButton);
+    sprites.emplace("pauseTitleScreenButton", pauseTitleScreenButton);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -917,6 +958,8 @@ int main()
     texts.emplace("playerScore", playerScore);
     texts.emplace("randomCPUScore", randomCPUScore);
     texts.emplace("firstToText", firstToText);
+    texts.emplace("pauseMenuTitle", pauseMenuTitle);
+    texts.emplace("pauseMenuText", pauseMenuText);
     
     unordered_map<string, float> characterSpeeds;
     characterSpeeds.emplace("dash", 0.3f);
@@ -948,6 +991,7 @@ int main()
     bool isCreditsPage = false;
     bool isCharacterSelectScreen = false;
     bool isGameScreen = false;
+    bool isPauseMenu = false;
     int characterSelected = 1;
     int randomCPU = characterSelected;
     int pointNumber = 1;
@@ -974,7 +1018,7 @@ int main()
             else if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2f mousePos((float)event.mouseButton.x, (float)event.mouseButton.y);
                 if (event.mouseButton.button == sf::Mouse::Left) {
-                    if (volumeButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    if (volumeButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isTitleScreen || isRulesPage || isOptionsPage || isCreditsPage || isCharacterSelectScreen)) {
                         ToggleMuted(isMuted);
                         HandleBackgroundMusic(isMuted, backgroundMusic);
                     }
@@ -1005,31 +1049,31 @@ int main()
                         isRulesPage = false;
                         isOptionsPage = false;
                     }
-                    if (volumeRadio1.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                    if (volumeRadio1.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isOptionsPage || isPauseMenu)) {
                         sounds["magicButtonClick"].play();
                         sprites["volumeRadioSelected"].setPosition(175.f, 195.f);
                         volumeSelected = 0.f;
                         ChangeVolume(volumeSelected, backgroundMusic, sounds);
                     }
-                    if (volumeRadio2.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                    if (volumeRadio2.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isOptionsPage || isPauseMenu)) {
                         sounds["magicButtonClick"].play();
                         sprites["volumeRadioSelected"].setPosition(270.f, 195.f);
                         volumeSelected = 25.f;
                         ChangeVolume(volumeSelected, backgroundMusic, sounds);
                     }
-                    if (volumeRadio3.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                    if (volumeRadio3.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isOptionsPage || isPauseMenu)) {
                         sounds["magicButtonClick"].play();
                         sprites["volumeRadioSelected"].setPosition(389.f, 195.f);
                         volumeSelected = 50.f;
                         ChangeVolume(volumeSelected, backgroundMusic, sounds);
                     }
-                    if (volumeRadio4.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                    if (volumeRadio4.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isOptionsPage || isPauseMenu)) {
                         sounds["magicButtonClick"].play();
                         sprites["volumeRadioSelected"].setPosition(509.f, 195.f);
                         volumeSelected = 75.f;
                         ChangeVolume(volumeSelected, backgroundMusic, sounds);
                     }
-                    if (volumeRadio5.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                    if (volumeRadio5.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isOptionsPage || isPauseMenu)) {
                         sounds["magicButtonClick"].play();
                         sprites["volumeRadioSelected"].setPosition(630.f, 195.f);
                         volumeSelected = 100.f;
@@ -1142,6 +1186,7 @@ int main()
                     if (okButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isCharacterSelectScreen) {
                         isGameScreen = true;
                         isCharacterSelectScreen = false;
+                        isServe = true;
                         gameStartTime = chrono::high_resolution_clock::now();
                         backgroundMusic.stop();
                         sounds["arcadeCountdown"].play();
@@ -1222,11 +1267,23 @@ int main()
                             sprites["janeRacket"].setRotation(240.f);
                         }
                     }
-                    if (titleScreenButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && gameWinner > 0) {
+                    if (pauseButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isGameScreen) {
+                        sounds["magicButtonClick"].play();
+                        isPauseMenu = true;
+                        isGameScreen = false;
+                    }
+                    if (unpauseButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isPauseMenu) {
+                        sounds["magicButtonClick"].play();
+                        isGameScreen = true;
+                        isPauseMenu = false;
+                    }
+                    if ((titleScreenButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && gameWinner > 0) || (pauseTitleScreenButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && isPauseMenu)) {
                         sounds["magicButtonClick"].play();
                         gameWinner = 0;
+                        isPauseMenu = false;
                         isTitleScreen = true;
                         HandleBackgroundMusic(isMuted, backgroundMusic);
+                        isServe = true;
                         isSwung = false;
                         isSwingingCPU = false;
                         characterSelected = 1;
@@ -1249,6 +1306,7 @@ int main()
                         sounds["magicButtonClick"].play();
                         gameWinner = 0;
                         isGameScreen = true;
+                        isServe = true;
                         isSwung = false;
                         isSwingingCPU = false;
                         pointNumber = 1;
@@ -1348,9 +1406,9 @@ int main()
                         tennisBallSpeed = characterPower[characterName] * -1.f;
                         if (hitMode == "randomShots") {
                             if (sprites[characterName + "Player"].getPosition().y <= 312.f)
-                                tennisBallY = Random::Float(0.0f, 0.13f);
+                                tennisBallY = Random::Float(-0.02f, 0.15f);
                             else
-                                tennisBallY = Random::Float(-0.13f, 0.0f);
+                                tennisBallY = Random::Float(-0.15f, 0.02f);
                         }
                         else if (hitMode == "preciseShots") {
                             if (sprites["tennisBall"].getPosition().y >= sprites["characterRacketHitZone"].getPosition().y - 20.f && sprites["tennisBall"].getPosition().y < sprites["characterRacketHitZone"].getPosition().y + 2.f)
@@ -1441,6 +1499,10 @@ int main()
                     isNextPoint = true;
                 }
             }
+        }
+        if (isPauseMenu) {
+            DrawGameScreen(window, isMuted, characterSelected, randomCPU, courtSelected, characterName, randomCPUName, hitZoneBorder, sprites, texts);
+            DrawPauseMenu(window, sprites, texts);
         }
         if (gameWinner == 1)
             DrawWinScreen(window, sprites);
