@@ -71,7 +71,7 @@ void DrawRulesPage(sf::RenderWindow& window, bool& isMuted, int& courtSelected, 
     DrawMuted(window, isMuted, sprites);
 }
 
-void DrawOptionsPage(sf::RenderWindow& window, bool& isMuted, bool& isRandomClicked, bool& isPreciseClicked, int& courtSelected, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
+void DrawOptionsPage(sf::RenderWindow& window, bool& isMuted, bool& isRandomClicked, bool& isPreciseClicked, int& courtSelected, string& hitZoneBorder, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
     DrawCorrectCourt(window, courtSelected, sprites);
     window.draw(sprites["title"]);
     window.draw(sprites["pageBackground"]);
@@ -103,6 +103,11 @@ void DrawOptionsPage(sf::RenderWindow& window, bool& isMuted, bool& isRandomClic
     window.draw(sprites["hitModeRadio1"]);
     window.draw(sprites["hitModeRadio2"]);
     window.draw(sprites["hitModeRadioSelected"]);
+    window.draw(texts["optionsHitZoneBorder"]);
+    window.draw(texts["optionsHitZoneBorderChoices"]);
+    window.draw(sprites["hitZoneBorderRadio1"]);
+    window.draw(sprites["hitZoneBorderRadio2"]);
+    window.draw(sprites["hitZoneBorderRadioSelected"]);
     if (isRandomClicked) 
         window.draw(sprites["randomMoreInfoBox"]);
     if (isPreciseClicked)
@@ -191,7 +196,7 @@ void DrawCharacterSelectScreen(sf::RenderWindow& window, bool& isMuted, int& cha
     DrawMuted(window, isMuted, sprites);
 }
 
-void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, string& characterName, unordered_map<string, sf::Sprite>& sprites) {
+void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, string& characterName, string& hitZoneBorder, unordered_map<string, sf::Sprite>& sprites) {
     if (characterSelected == 1) {
         window.draw(sprites["dashBannerRight"]);
         window.draw(sprites["dashRacket"]);
@@ -228,7 +233,10 @@ void DrawCorrectCharacter(sf::RenderWindow& window, int& characterSelected, stri
         window.draw(sprites["janePlayer"]);
         characterName = "jane";
     }
-    window.draw(sprites["characterRacketHitZone"]);
+    if (hitZoneBorder == "On")
+        window.draw(sprites["characterRacketHitZone"]);
+    else if (hitZoneBorder == "Off")
+        window.draw(sprites["characterRacketHitZoneInvis"]);
 }
 
 void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, string& randomCPUName, unordered_map<string, sf::Sprite>& sprites) {
@@ -271,9 +279,9 @@ void DrawRandomCPU(sf::RenderWindow& window, int& randomCPU, string& randomCPUNa
     window.draw(sprites["randomCPURacketHitZone"]);
 }
 
-void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, int& courtSelected, string& characterName, string& randomCPUName, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
+void DrawGameScreen(sf::RenderWindow& window, bool& isMuted, int& characterSelected, int& randomCPU, int& courtSelected, string& characterName, string& randomCPUName, string& hitZoneBorder, unordered_map<string, sf::Sprite>& sprites, unordered_map<string, sf::Text>& texts) {
     DrawCorrectCourt(window, courtSelected, sprites);
-    DrawCorrectCharacter(window, characterSelected, characterName, sprites);
+    DrawCorrectCharacter(window, characterSelected, characterName, hitZoneBorder, sprites);
     DrawRandomCPU(window, randomCPU, randomCPUName, sprites);
     window.draw(texts["playerScore"]);
     window.draw(texts["randomCPUScore"]);
@@ -318,21 +326,25 @@ void MoveCharacter(string& characterName, unordered_map<string, sf::Sprite>& spr
         sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName] * -1.f);
         sprites[characterName + "Racket"].move(0.f, characterSpeeds[characterName] * -1.f);
         sprites["characterRacketHitZone"].move(0.f, characterSpeeds[characterName] * -1.f);
+        sprites["characterRacketHitZoneInvis"].move(0.f, characterSpeeds[characterName] * -1.f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && sprites[characterName + "Player"].getPosition().y <= 500.f) {
         sprites[characterName + "Player"].move(0.f, characterSpeeds[characterName]);
         sprites[characterName + "Racket"].move(0.f, characterSpeeds[characterName]);
         sprites["characterRacketHitZone"].move(0.f, characterSpeeds[characterName]);
+        sprites["characterRacketHitZoneInvis"].move(0.f, characterSpeeds[characterName]);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && sprites[characterName + "Player"].getPosition().x <= 800.f) {
         sprites[characterName + "Player"].move(characterSpeeds[characterName], 0.f);
         sprites[characterName + "Racket"].move(characterSpeeds[characterName], 0.f);
         sprites["characterRacketHitZone"].move(characterSpeeds[characterName], 0.f);
+        sprites["characterRacketHitZoneInvis"].move(characterSpeeds[characterName], 0.f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && sprites[characterName + "Player"].getPosition().x >= 450.f) {
         sprites[characterName + "Player"].move(characterSpeeds[characterName] * -1.f, 0.f);
         sprites[characterName + "Racket"].move(characterSpeeds[characterName] * -1.f, 0.f);
         sprites["characterRacketHitZone"].move(characterSpeeds[characterName] * -1.f, 0.f);
+        sprites["characterRacketHitZoneInvis"].move(characterSpeeds[characterName] * -1.f, 0.f);
     }
 }
 
@@ -359,6 +371,7 @@ void StartNextPoint(int& pointNumber, int& gameWinner, float& tennisBallSpeed, f
             sprites[characterName + "Racket"].setPosition(785.f, 390.f);
             sprites[characterName + "Racket"].setRotation(60.f);
             sprites["characterRacketHitZone"].setPosition(720.f, 325.f);
+            sprites["characterRacketHitZoneInvis"].setPosition(720.f, 325.f);
             sprites[randomCPUName + "Player"].setPosition(150.f, 285.f);
             sprites[randomCPUName + "Player"].setRotation(180.f);
             sprites[randomCPUName + "Racket"].setPosition(116.f, 280.f);
@@ -374,6 +387,7 @@ void StartNextPoint(int& pointNumber, int& gameWinner, float& tennisBallSpeed, f
             sprites[characterName + "Racket"].setPosition(785.f, 240.f);
             sprites[characterName + "Racket"].setRotation(60.f);
             sprites["characterRacketHitZone"].setPosition(720.f, 175.f);
+            sprites["characterRacketHitZoneInvis"].setPosition(720.f, 175.f);
             sprites[randomCPUName + "Player"].setPosition(150.f, 435.f);
             sprites[randomCPUName + "Player"].setRotation(180.f);
             sprites[randomCPUName + "Racket"].setPosition(116.f, 430.f);
@@ -546,7 +560,9 @@ int main()
     janeRacket.setRotation(60.f);
     sf::Sprite characterRacketHitZone(TextureManager::GetTexture("racketHitZone"));
     characterRacketHitZone.setPosition(720.f, 175.f);
-    sf::Sprite randomCPURacketHitZone(TextureManager::GetTexture("racketHitZone"));
+    sf::Sprite characterRacketHitZoneInvis(TextureManager::GetTexture("racketHitZoneInvis"));
+    characterRacketHitZoneInvis.setPosition(720.f, 175.f);
+    sf::Sprite randomCPURacketHitZone(TextureManager::GetTexture("racketHitZoneInvis"));
     randomCPURacketHitZone.setPosition(118.f, 433.f);
     sf::Sprite tennisBall(TextureManager::GetTexture("tennisBall"));
     tennisBall.setPosition(150.f, 450.f);
@@ -598,6 +614,12 @@ int main()
     randomMoreInfoBox.setPosition(195.f, 385.f);
     sf::Sprite preciseMoreInfoBox(TextureManager::GetTexture("preciseMoreInfoBox"));
     preciseMoreInfoBox.setPosition(425.f, 385.f);
+    sf::Sprite hitZoneBorderRadio1(TextureManager::GetTexture("radioButtonNo"));
+    hitZoneBorderRadio1.setPosition(175.f, 455.f);
+    sf::Sprite hitZoneBorderRadio2(TextureManager::GetTexture("radioButtonNo"));
+    hitZoneBorderRadio2.setPosition(405.f, 455.f);
+    sf::Sprite hitZoneBorderRadioSelected(TextureManager::GetTexture("radioButtonYes"));
+    hitZoneBorderRadioSelected.setPosition(175.f, 455.f);
 
     sf::RectangleShape tempBackground(sf::Vector2f(900.f, 600.f));
     tempBackground.setFillColor(sf::Color::White);
@@ -702,6 +724,20 @@ int main()
     optionsHitModeChoice2.setCharacterSize(20);
     optionsHitModeChoice2.setFillColor(sf::Color::Black);
     optionsHitModeChoice2.setPosition(425.f, 385.f);
+
+    sf::Text optionsHitZoneBorder;
+    optionsHitZoneBorder.setFont(FontManager::GetFont("aileronRegular"));
+    optionsHitZoneBorder.setString("Hit Zone Border");
+    optionsHitZoneBorder.setCharacterSize(25);
+    optionsHitZoneBorder.setFillColor(sf::Color::Black);
+    optionsHitZoneBorder.setPosition(170.f, 420.f);
+
+    sf::Text optionsHitZoneBorderChoices;
+    optionsHitZoneBorderChoices.setFont(FontManager::GetFont("aileronRegular"));
+    optionsHitZoneBorderChoices.setString("On                                                   Off");
+    optionsHitZoneBorderChoices.setCharacterSize(20);
+    optionsHitZoneBorderChoices.setFillColor(sf::Color::Black);
+    optionsHitZoneBorderChoices.setPosition(195.f, 450.f);
 
     sf::Text creditsTitle;
     creditsTitle.setFont(FontManager::GetFont("yosterIsland"));
@@ -818,6 +854,7 @@ int main()
     sprites.emplace("joeRacket", joeRacket);
     sprites.emplace("janeRacket", janeRacket);
     sprites.emplace("characterRacketHitZone", characterRacketHitZone);
+    sprites.emplace("characterRacketHitZoneInvis", characterRacketHitZoneInvis);
     sprites.emplace("randomCPURacketHitZone", randomCPURacketHitZone);
     sprites.emplace("tennisBall", tennisBall);
     sprites.emplace("niceShotText", niceShotText);
@@ -845,6 +882,9 @@ int main()
     sprites.emplace("hitModeRadioSelected", hitModeRadioSelected);
     sprites.emplace("randomMoreInfoBox", randomMoreInfoBox);
     sprites.emplace("preciseMoreInfoBox", preciseMoreInfoBox);
+    sprites.emplace("hitZoneBorderRadio1", hitZoneBorderRadio1);
+    sprites.emplace("hitZoneBorderRadio2", hitZoneBorderRadio2);
+    sprites.emplace("hitZoneBorderRadioSelected", hitZoneBorderRadioSelected);
 
     unordered_map<string, sf::Sound> sounds;
     sounds.emplace("magicButtonClick", magicButtonClick);
@@ -870,6 +910,8 @@ int main()
     texts.emplace("optionsHitMode", optionsHitMode);
     texts.emplace("optionsHitModeChoice1", optionsHitModeChoice1);
     texts.emplace("optionsHitModeChoice2", optionsHitModeChoice2);
+    texts.emplace("optionsHitZoneBorder", optionsHitZoneBorder);
+    texts.emplace("optionsHitZoneBorderChoices", optionsHitZoneBorderChoices);
     texts.emplace("creditsTitle", creditsTitle);
     texts.emplace("creditsText", creditsText);
     texts.emplace("playerScore", playerScore);
@@ -917,6 +959,7 @@ int main()
     string characterName = "dash";
     string randomCPUName = "dash";
     string hitMode = "randomShots";
+    string hitZoneBorder = "On";
 
     chrono::time_point<chrono::high_resolution_clock> gameStartTime; // for keeping track of time passed
 
@@ -1051,6 +1094,16 @@ int main()
                         sprites["hitModeRadioSelected"].setPosition(405.f, 390.f);
                         hitMode = "preciseShots";
                     }
+                    if (hitZoneBorderRadio1.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
+                        sprites["hitZoneBorderRadioSelected"].setPosition(175.f, 455.f);
+                        hitZoneBorder = "On";
+                    }
+                    if (hitZoneBorderRadio2.getGlobalBounds().contains(mousePos.x, mousePos.y) && isOptionsPage) {
+                        sounds["magicButtonClick"].play();
+                        sprites["hitZoneBorderRadioSelected"].setPosition(405.f, 455.f);
+                        hitZoneBorder = "Off";
+                    }
                     if (closeButton.getGlobalBounds().contains(mousePos.x, mousePos.y) && (isRulesPage || isOptionsPage || isCreditsPage)) {
                         isTitleScreen = true;
                         isRulesPage = false;
@@ -1182,6 +1235,7 @@ int main()
                         randomCPUName = "dash";
                         pointNumber = 1;
                         sprites["characterRacketHitZone"].setPosition(720.f, 175.f);
+                        sprites["characterRacketHitZoneInvis"].setPosition(720.f, 175.f);
                         sprites["randomCPURacketHitZone"].setPosition(118.f, 433.f);
                         sprites["tennisBall"].setPosition(150.f, 450.f);
                         tennisBallSpeed = 0.15f;
@@ -1199,6 +1253,7 @@ int main()
                         isSwingingCPU = false;
                         pointNumber = 1;
                         sprites["characterRacketHitZone"].setPosition(720.f, 175.f);
+                        sprites["characterRacketHitZoneInvis"].setPosition(720.f, 175.f);
                         sprites["randomCPURacketHitZone"].setPosition(118.f, 433.f);
                         sprites["tennisBall"].setPosition(150.f, 450.f);
                         tennisBallSpeed = 0.15f;
@@ -1320,7 +1375,7 @@ int main()
         if (isRulesPage)
             DrawRulesPage(window, isMuted, courtSelected, sprites, texts);
         if (isOptionsPage)
-            DrawOptionsPage(window, isMuted, isRandomClicked, isPreciseClicked, courtSelected, sprites, texts);
+            DrawOptionsPage(window, isMuted, isRandomClicked, isPreciseClicked, courtSelected, hitZoneBorder, sprites, texts);
         if (isCreditsPage)
             DrawCreditsPage(window, isMuted, courtSelected, sprites, texts);
         if (isCharacterSelectScreen)
@@ -1330,7 +1385,7 @@ int main()
             MoveRandomCPU(randomCPUName, sprites, characterSpeeds);
             chrono::time_point<chrono::high_resolution_clock> currentTime = chrono::high_resolution_clock::now();
             chrono::duration<double> inGameTime = currentTime - gameStartTime;
-            DrawGameScreen(window, isMuted, characterSelected, randomCPU, courtSelected, characterName, randomCPUName, sprites, texts);
+            DrawGameScreen(window, isMuted, characterSelected, randomCPU, courtSelected, characterName, randomCPUName, hitZoneBorder, sprites, texts);
             if (inGameTime.count() <= 3.0) {
                 window.draw(firstToText);
                 if (inGameTime.count() <= 1.0)
